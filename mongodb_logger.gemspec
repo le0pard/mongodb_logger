@@ -8,8 +8,11 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{}
   gem.homepage      = ""
 
-  gem.add_development_dependency "mongo"
-  gem.add_development_dependency "bson_ext"
+  gem.add_development_dependency "rspec"
+  gem.add_runtime_dependency "bundler"
+  gem.add_runtime_dependency "mongo"
+  gem.add_runtime_dependency "bson_ext"
+  gem.add_runtime_dependency "activesupport"
 
   gem.rubyforge_project = "mongodb_logger"
 
