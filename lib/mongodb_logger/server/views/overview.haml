@@ -1,0 +1,12 @@
+#profile
+  %ul
+  - @logs.each do |log|
+    %li
+      #title= h log['id']
+      #controller= h log['controller']
+      #action= h log['action']
+      #url= h log['url']
+      #request_time= h log['request_time']
+      #runtime= h log['runtime']
+      #ip= h log['ip']
+      #path= h log['path']

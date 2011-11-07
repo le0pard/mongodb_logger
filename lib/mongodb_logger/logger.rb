@@ -26,7 +26,7 @@ module MongodbLogger
     end
 
     def add_metadata(options={})
-      options.each_pair do |key, value|
+      options.each do |key, value|
         unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params].include?(key.to_sym)
           @mongo_record[key] = value
         else
@@ -144,9 +144,7 @@ module MongodbLogger
 
       def check_for_collection
         # setup the capped collection if it doesn't already exist
-        unless @mongo_connection.collection_names.include?(@mongo_collection_name)
-          create_collection
-        end
+        create_collection unless @mongo_connection.collection_names.include?(@mongo_collection_name)
         @mongo_collection = @mongo_connection[@mongo_collection_name]
       end
 

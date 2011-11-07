@@ -1,0 +1,13 @@
+!!! 5
+%html
+  %head
+    %title= "MongoDB logger"
+    %meta{ :content => 'text/html; charset=utf-8', 'http-equiv' => 'Content-Type' }
+    %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
+  %body
+    #header
+      %h1= "MongoDB logger"
+      %span= "info" 
+    #content    
+      = yield
+    #footer

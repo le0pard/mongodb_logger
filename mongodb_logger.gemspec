@@ -9,10 +9,14 @@ Gem::Specification.new do |gem|
   gem.homepage      = ""
 
   gem.add_development_dependency "rspec"
-  gem.add_runtime_dependency "bundler"
-  gem.add_runtime_dependency "mongo"
-  gem.add_runtime_dependency "bson_ext"
-  gem.add_runtime_dependency "activesupport"
+  
+  gem.add_runtime_dependency "bundler", ">= 1.0.0"
+  gem.add_runtime_dependency "mongo", "~> 1.4.0"
+  gem.add_runtime_dependency "bson_ext", "~> 1.4.0"
+  gem.add_runtime_dependency "activesupport", ">= 3.0.0"
+  gem.add_runtime_dependency "sinatra", "~> 1.3.0"
+  gem.add_runtime_dependency "haml", "~> 3.1.3"
+  gem.add_runtime_dependency "vegas", "~> 0.1.2"
 
   gem.rubyforge_project = "mongodb_logger"
 
