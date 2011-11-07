@@ -8,8 +8,7 @@ module MongodbLogger
   class Logger < ActiveSupport::BufferedLogger
     include ReplicaSetHelper
 
-    PRODUCTION_COLLECTION_SIZE = 250.megabytes
-    DEFAULT_COLLECTION_SIZE = 100.megabytes
+    DEFAULT_COLLECTION_SIZE = 200.megabytes
     # Looks for configuration files in this order
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
@@ -31,7 +30,7 @@ module MongodbLogger
         unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params].include?(key.to_sym)
           @mongo_record[key] = value
         else
-          raise ArgumentError, ":#{key} is a reserved key for the central logger. Please choose a different key"
+          raise ArgumentError, ":#{key} is a reserved key for the mongodb logger. Please choose a different key"
         end
       end
     end
@@ -90,7 +89,7 @@ module MongodbLogger
       end
 
       def configure
-        default_capsize = Rails.env.production? ? PRODUCTION_COLLECTION_SIZE : DEFAULT_COLLECTION_SIZE
+        default_capsize = DEFAULT_COLLECTION_SIZE
         @mongo_collection_name = "#{Rails.env}_log"
         @authenticated = false
         @db_configuration = {
