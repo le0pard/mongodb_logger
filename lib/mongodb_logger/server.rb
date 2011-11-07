@@ -55,9 +55,20 @@ module MongodbLogger
 
     %w( overview ).each do |page|
       get "/#{page}" do
-        @logs = @collection.find().limit(100)
+        @logs = @collection.find().sort('$natural', -1).limit(100)
         show(page, {'logs' => @logs})
       end
+    end
+    
+    # main css
+    get '/main.css' do
+      content_type 'text/css', :charset => 'utf-8'
+      sass :main, :layout => false
+    end
+    
+    # application js
+    get '/application.js' do
+      coffee :application
     end
     
   end

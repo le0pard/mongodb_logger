@@ -1,0 +1,2 @@
+jQuery ->
+  #alert "111"

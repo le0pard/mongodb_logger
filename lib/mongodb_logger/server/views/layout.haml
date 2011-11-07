@@ -3,7 +3,10 @@
   %head
     %title= "MongoDB logger"
     %meta{ :content => 'text/html; charset=utf-8', 'http-equiv' => 'Content-Type' }
-    %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
+    %link{ :rel => "shortcut icon", :href => "#{u 'favicon.ico'}", :type => "image/x-icon"}
+    %script{ :type => "text/javascript", :src => "#{u 'jquery-1.7.min.js'}"}
+    %script{ :type => "text/javascript", :src => "#{u 'application.js'}"}
+    %link{ :rel => 'stylesheet', :href => "#{u 'main.css'}", :type => 'text/css'}
   %body
     #header
       %h1= "MongoDB logger"
