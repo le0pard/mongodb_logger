@@ -63,7 +63,7 @@ module MongodbLogger
     # main css
     get '/main.css' do
       content_type 'text/css', :charset => 'utf-8'
-      sass :main, :layout => false
+      sass :main, :layout => false, :cache_location => File.join(Rails.root, "tmp/")
     end
     
     # application js
