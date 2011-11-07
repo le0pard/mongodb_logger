@@ -5,7 +5,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Alexey Vasiliev"]
   gem.email         = ["leopard.not.a@gmail.com"]
   gem.description   = %q{MongoDB logger for Rails 3}
-  gem.summary       = %q{}
+  gem.summary       = %q{MongoDB logger for Rails 3}
   gem.homepage      = ""
 
   gem.add_development_dependency "rspec"
