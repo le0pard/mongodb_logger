@@ -1,5 +1,5 @@
-before_script:
-  - "bundle exec rake db:drop db:create db:migrate"
+#before_script:
+#  - "bundle exec rake db:drop db:create db:migrate"
 rvm:
   - 1.9.2
   - 1.9.3
