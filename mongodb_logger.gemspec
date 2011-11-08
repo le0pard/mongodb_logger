@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = ""
 
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "mocha"
   
   gem.add_runtime_dependency "bundler", ">= 1.0.0"
   gem.add_runtime_dependency "mongo", "~> 1.4.0"
