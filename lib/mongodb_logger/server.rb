@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'erb'
+require 'erubis'
 require 'time'
 
 if defined? Encoding
@@ -12,6 +12,7 @@ module MongodbLogger
 
     set :views,         "#{dir}/server/views"
     set :public_folder, "#{dir}/server/public"
+    set :erubis, :escape_html => true
 
     set :static, true
 
@@ -38,17 +39,17 @@ module MongodbLogger
         @db = Rails.logger.mongo_connection
         @collection = @db[Rails.logger.mongo_collection_name]
       rescue => e
-        # do something
+        erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
+        return false
       end
     end
 
-    def show(page, data, layout = true)
+    def show(page, layout = true)
       response["Cache-Control"] = "max-age=0, private, must-revalidate"
       begin
-        @logs = data['logs']
-        erb page.to_sym, {:layout => layout}
-      rescue Errno::ECONNREFUSED
-        erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
+        erb page.to_sym, :layout => layout
+      rescue => e
+        erb :error, :layout => false, :error => "Error in view. Debug: #{e.inspect}"
       end
     end
 
@@ -60,12 +61,18 @@ module MongodbLogger
     %w( overview ).each do |page|
       get "/#{page}" do
         @logs = @collection.find().sort('$natural', -1).limit(2000)
-        show(page, {'logs' => @logs})
+        show page
       end
+    end
+    
+    get "/log/:id" do
+      @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
+      show :show_log, !request.xhr?
     end
     
     # application js
     get '/application.js' do
+      content_type 'text/javascript'
       coffee :application
     end
     

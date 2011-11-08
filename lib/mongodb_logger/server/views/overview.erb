@@ -2,7 +2,9 @@
 <ul>
 <% @logs.each do |log| %>
   <li>
-    <%=h log['url']%>
+    <a href="<%= url_path("log/#{log['_id']}") %>">
+      <%= log['url']%>
+    </a>  
   </li>
 <% end %>
 </ul>

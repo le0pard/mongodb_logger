@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "i18n", "~> 0.6.0"
   gem.add_runtime_dependency "activesupport", ">= 3.0.0"
   gem.add_runtime_dependency "sinatra", "~> 1.3.0"
+  gem.add_runtime_dependency "erubis", "~> 2.7.0"
   gem.add_runtime_dependency "coffee-script", "~> 2.2.0"
   gem.add_runtime_dependency "vegas", "~> 0.1.2"
 
