@@ -9,18 +9,6 @@ task :test => "test:functionals"
 
 
 namespace :test do
-  desc "Run all tests against all permutations of ruby and rails"
-  task :functionals do
-    #rake_functionals
-  end
-
-  namespace :functionals do
-    desc "Clean out gemsets before running functional tests."
-    task :clean do
-      rake_functionals('--clean')
-    end
-  end
-
   desc "Run unit tests"
   Rake::TestTask.new(:units) do |test|
     test.libs << 'lib' << 'test'
@@ -34,4 +22,5 @@ namespace :test do
     test.pattern = 'test/unit/mongodb_logger_replica_test.rb'
     test.verbose = true
   end
+  
 end
