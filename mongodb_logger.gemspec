@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "i18n", "~> 0.6.0"
   gem.add_runtime_dependency "activesupport", ">= 3.0.0"
   gem.add_runtime_dependency "sinatra", "~> 1.3.0"
-  gem.add_runtime_dependency "haml", "~> 3.1.3"
   gem.add_runtime_dependency "coffee-script", "~> 2.2.0"
   gem.add_runtime_dependency "vegas", "~> 0.1.2"
 
@@ -31,4 +30,5 @@ Gem::Specification.new do |gem|
   gem.name          = "mongodb_logger"
   gem.require_paths = ["lib"]
   gem.version       = MongodbLogger::VERSION
+  gem.platform      = Gem::Platform::RUBY
 end

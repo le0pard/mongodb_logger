@@ -1,0 +1,8 @@
+<h1>Logs</h1>
+<ul>
+<% @logs.each do |log| %>
+  <li>
+    <%=h log['url']%>
+  </li>
+<% end %>
+</ul>

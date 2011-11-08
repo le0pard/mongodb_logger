@@ -34,17 +34,21 @@ module MongodbLogger
     end
     
     before do
-      @db = Rails.logger.mongo_connection
-      @collection = @db[Rails.logger.mongo_collection_name]
+      begin
+        @db = Rails.logger.mongo_connection
+        @collection = @db[Rails.logger.mongo_collection_name]
+      rescue => e
+        # do something
+      end
     end
 
     def show(page, data, layout = true)
       response["Cache-Control"] = "max-age=0, private, must-revalidate"
       begin
         @logs = data['logs']
-        haml page.to_sym, {:layout => layout}
+        erb page.to_sym, {:layout => layout}
       rescue Errno::ECONNREFUSED
-        haml :error, {:layout => false}, :error => "Can't connect to MongoDB!"
+        erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
       end
     end
 
@@ -55,15 +59,9 @@ module MongodbLogger
 
     %w( overview ).each do |page|
       get "/#{page}" do
-        @logs = @collection.find().sort('$natural', -1).limit(100)
+        @logs = @collection.find().sort('$natural', -1).limit(2000)
         show(page, {'logs' => @logs})
       end
-    end
-    
-    # main css
-    get '/main.css' do
-      content_type 'text/css', :charset => 'utf-8'
-      sass :main, :layout => false, :cache_location => File.join(Rails.root, "tmp/")
     end
     
     # application js
