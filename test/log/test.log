@@ -1,0 +1,218 @@
+#<File:0x007fc6e1023b68>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'
+#<File:0x007f9be283c158>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'
+#<File:0x007fe4b3139ee0>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'
+Test
+Test
+#<File:0x007fd44c2f7470>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'
+#<File:0x007f9efb3bf690>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:175:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:175:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'
+#<File:0x007ff56282fe10>
+[31m TESTING [0m
+[31m TESTING [0m
+[31m TESTING [0m
+Test
+Test
+Foo
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:35:in `block in log_exception'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `block in mongoize'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/benchmark.rb:280:in `measure'
+/Users/leo/programs/projects/mongodb_logger/lib/mongodb_logger/logger.rb:61:in `mongoize'
+/Users/leo/programs/projects/mongodb_logger/test/test_helper.rb:34:in `log_exception'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (5 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:330:in `assert_raises'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/assertions.rb:67:in `assert_raise'
+/Users/leo/programs/projects/mongodb_logger/test/unit/mongodb_logger_test.rb:174:in `block (4 levels) in <class:LoggerTest>'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `call'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/shoulda-2.11.3/lib/shoulda/context.rb:382:in `block in create_test_from_should_hash'
+/Users/leo/.rvm/gems/ruby-1.9.3-p0@mongodb_logger_gems/gems/mocha-0.10.0/lib/mocha/integration/mini_test/version_230_to_251.rb:28:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:787:in `block in _run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `map'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:780:in `_run_suite'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:565:in `block in _run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:563:in `_run_suites'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:746:in `_run_anything'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:909:in `run_tests'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:896:in `block in _run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `each'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:895:in `_run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/minitest/unit.rb:884:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:21:in `run'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'
+/Users/leo/.rvm/rubies/ruby-1.9.3-p0/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'

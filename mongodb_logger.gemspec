@@ -8,12 +8,15 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{MongoDB logger for Rails 3}
   gem.homepage      = ""
 
-  gem.add_development_dependency "rspec"
-  gem.add_development_dependency "mocha"
+  gem.add_development_dependency "rspec", "~> 2.7.0"
+  gem.add_development_dependency "shoulda", "~> 2.11.3"
+  gem.add_development_dependency "mocha", "~> 0.10.0"
   
+  gem.add_runtime_dependency "rake", "~> 0.9.0"
   gem.add_runtime_dependency "bundler", ">= 1.0.0"
   gem.add_runtime_dependency "mongo", "~> 1.4.0"
   gem.add_runtime_dependency "bson_ext", "~> 1.4.0"
+  gem.add_runtime_dependency "i18n", "~> 0.6.0"
   gem.add_runtime_dependency "activesupport", ">= 3.0.0"
   gem.add_runtime_dependency "sinatra", "~> 1.3.0"
   gem.add_runtime_dependency "haml", "~> 3.1.3"

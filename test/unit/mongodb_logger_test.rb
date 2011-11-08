@@ -8,7 +8,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
   EXCEPTION_MSG = "Foo"
 
-  context "A MongodbLogger::MongoLogger" do
+  context "A MongodbLogger::Logger" do
     setup do
       # Can use different configs, but most tests use database.yml
       FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, DEFAULT_CONFIG),  CONFIG_DIR)
@@ -52,8 +52,8 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         end
 
         should "authenticate with the credentials in the configuration" do
-          @central_logger.send(:connect)
-          assert @central_logger.authenticated?
+          @mongodb_logger.send(:connect)
+          assert @mongodb_logger.authenticated?
         end
 
         teardown do
@@ -64,51 +64,51 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
       context "after configuration" do
         setup do
-          @central_logger.send(:configure)
+          @mongodb_logger.send(:configure)
         end
 
         should "set the default host, port, and capsize if not configured" do
-          assert_equal 'localhost', @central_logger.db_configuration['host']
-          assert_equal 27017, @central_logger.db_configuration['port']
-          assert_equal CentralLogger::MongoLogger::DEFAULT_COLLECTION_SIZE, @central_logger.db_configuration['capsize']
+          assert_equal 'localhost', @mongodb_logger.db_configuration['host']
+          assert_equal 27017, @mongodb_logger.db_configuration['port']
+          assert_equal MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE, @mongodb_logger.db_configuration['capsize']
         end
 
         should "set the mongo collection name depending on the Rails environment" do
-          assert_equal "#{Rails.env}_log", @central_logger.mongo_collection_name
+          assert_equal "#{Rails.env}_log", @mongodb_logger.mongo_collection_name
         end
 
         should "set the application name when specified in the config file" do
-          assert_equal "central_foo", @central_logger.instance_variable_get(:@application_name)
+          assert_equal "mongo_foo", @mongodb_logger.instance_variable_get(:@application_name)
         end
 
         should "set safe insert when specified in the config file" do
-          assert @central_logger.instance_variable_get(:@safe_insert)
+          assert @mongodb_logger.instance_variable_get(:@safe_insert)
         end
 
         should "use the database name in the config file" do
-          assert_equal "system_log", @central_logger.db_configuration['database']
+          assert_equal "system_log", @mongodb_logger.db_configuration['database']
         end
 
         context "upon connecting to an empty database" do
           setup do
-            @central_logger.send(:connect)
+            @mongodb_logger.send(:connect)
             common_setup
             @collection.drop
           end
 
           should "expose a valid mongo connection" do
-            assert_instance_of Mongo::DB, @central_logger.mongo_connection
+            assert_instance_of Mongo::DB, @mongodb_logger.mongo_connection
           end
 
           should "not authenticate" do
-            assert !@central_logger.authenticated?
+            assert !@mongodb_logger.authenticated?
           end
 
           should "create a capped collection in the database with the configured size" do
-            @central_logger.send(:check_for_collection)
-            assert @con.collection_names.include?(@central_logger.mongo_collection_name)
+            @mongodb_logger.send(:check_for_collection)
+            assert @con.collection_names.include?(@mongodb_logger.mongo_collection_name)
             # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
-            assert @collection.stats["storageSize"] < CentralLogger::MongoLogger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+            assert @collection.stats["storageSize"] < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
           end
         end
       end
@@ -116,9 +116,9 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
     context "after instantiation" do
       setup do
-        @central_logger = CentralLogger::MongoLogger.new
+        @mongodb_logger = MongodbLogger::Logger.new
         common_setup
-        @central_logger.reset_collection
+        @mongodb_logger.reset_collection
       end
 
       context "upon insertion of a log record when active record is not used" do
@@ -130,7 +130,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         should_contain_one_log_record
 
         should "allow recreation of the capped collection to remove all records" do
-          @central_logger.reset_collection
+          @mongodb_logger.reset_collection
           assert_equal 0, @collection.count
         end
       end
@@ -143,7 +143,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         end
 
         should "detect logging is colorized" do
-          assert @central_logger.send(:logging_colorized?)
+          assert @mongodb_logger.send(:logging_colorized?)
         end
 
         should_contain_one_log_record
@@ -180,9 +180,9 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
     context "logging at INFO level" do
       setup do
-        @central_logger = CentralLogger::MongoLogger.new(:level => CentralLogger::MongoLogger::INFO)
+        @mongodb_logger = MongodbLogger::Logger.new(:level => MongodbLogger::Logger::INFO)
         common_setup
-        @central_logger.reset_collection
+        @mongodb_logger.reset_collection
         log("INFO")
       end
 

@@ -1,0 +1,8 @@
+test:
+  adapter: mysql
+  username: user
+  database: database
+  mongodb_logger:
+    database: system_log
+    application_name: mongo_foo
+    safe_insert: true
