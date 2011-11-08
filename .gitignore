@@ -17,3 +17,4 @@ test/tmp
 test/version_tmp
 test/log
 tmp
+.DS_Store
