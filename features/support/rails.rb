@@ -14,6 +14,14 @@ module RailsHelpers
   def rails_root
     LOCAL_RAILS_ROOT
   end
+  
+  def rails30?
+    rails_version =~ /^3.0/
+  end
+  
+  def rails31?
+    rails_version =~ /^3.1/
+  end
 
   def rails_version
     @rails_version ||= begin
@@ -35,6 +43,27 @@ module RailsHelpers
       gem += ", '#{version}'" if version
       file.puts(gem)
     end
+  end
+  
+  def require_thread
+    content = File.read(rakefile_path)
+    content = "require 'thread'\n#{content}"
+    File.open(rakefile_path, 'wb') { |file| file.write(content) }
+  end
+  
+  def copy_tests
+    FileUtils.cp(
+      File.join(PROJECT_ROOT, 'test', 'rails', 'app', 'controllers', 'order_controller.rb'), 
+      File.join(rails_root, 'app', 'controllers', 'order_controller.rb')
+    )
+    FileUtils.cp(
+      File.join(PROJECT_ROOT, 'test', 'config', 'samples', 'database.yml'), 
+      File.join(rails_root, 'config', 'database.yml')
+    )
+    FileUtils.cp_r(
+      File.join(PROJECT_ROOT, 'test', 'rails', 'test'), 
+      File.join(rails_root, 'test')
+    )
   end
   
 end

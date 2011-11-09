@@ -41,7 +41,7 @@ end
 GEM_ROOT = File.dirname(__FILE__).freeze
 LOCAL_GEM_ROOT = File.join(GEM_ROOT, 'tmp', 'local_gems').freeze
 RAILS_VERSIONS = IO.read('SUPPORTED_RAILS_VERSIONS').strip.split("\n")
-LOCAL_GEMS = [['sqlite3', nil]] +
+LOCAL_GEMS = [['sqlite3', nil], ['shoulda', nil], ["rspec", nil], ["mocha", nil], ["cucumber", nil]] +
   RAILS_VERSIONS.collect { |version| ['rails', version] }
 
 desc "Vendor test gems: Run this once to prepare your test environment"

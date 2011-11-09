@@ -20,10 +20,25 @@ When /^I generate a new Rails application$/ do
   else
     raise "Unable to generate a Rails application:\n#{@terminal.output}"
   end
+  require_thread if rails30?
 end
 
 When /^I configure my application to require the "([^\"]*)" gem(?: with version "(.+)")?$/ do |gem_name, version|
   bundle_gem(gem_name, version)
+end
+
+When /^I setup mongodb_logger tests$/ do
+  copy_tests
+end
+
+Then /^the tests should have run successfully$/ do
+  bundle_gem("therubyracer", nil) if rails31?
+  step %{I run "bundle install"}
+  @terminal.status.exitstatus.should == 0
+  step %{I run "rake db:create db:migrate RAILS_ENV=test --trace"}
+  @terminal.status.exitstatus.should == 0
+  step %{I run "rake test RAILS_ENV=test --trace"}
+  @terminal.status.exitstatus.should == 0
 end
 
 When /^I run "([^\"]*)"$/ do |command|

@@ -1,6 +1,7 @@
 require 'test_helper'
 require 'mongodb_logger/logger'
 require 'tempfile'
+require 'pathname'
 
 # test the basic stuff
 class MongodbLogger::LoggerTest < Test::Unit::TestCase
@@ -17,6 +18,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
     context "in instantiation" do
       setup do
         MongodbLogger::Logger.any_instance.stubs(:internal_initialize).returns(nil)
+        MongodbLogger::Logger.any_instance.stubs(:disable_file_logging?).returns(false)
         @mongodb_logger = MongodbLogger::Logger.new
       end
 
@@ -197,4 +199,54 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
       File.delete(file) if File.exist?(file)
     end
   end
+  
+  context "A MongodbLogger::Logger without file logging" do
+    setup do
+      FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, DEFAULT_CONFIG_WITH_NO_FILE_LOGGING),  File.join(CONFIG_DIR, DEFAULT_CONFIG))
+      @log_file = Pathname.new('log.out')
+      FileUtils.touch(@log_file)
+    end
+
+    context "in instantiation" do
+      should "not call super in the initialize method" do
+        MongodbLogger::Logger.any_instance.expects(:open).never # Stubbing out super doesn't work, so we use this side effect instead.
+        MongodbLogger::Logger.new
+      end
+
+      should "set level" do
+        level = stub('level')
+        logger = MongodbLogger::Logger.new(:level => level)
+        assert_equal level, logger.level
+      end
+      should "set buffer" do
+        assert_equal({}, MongodbLogger::Logger.new.instance_variable_get(:@buffer))
+      end
+      should "set auto flushing" do
+        assert_equal 1, MongodbLogger::Logger.new.instance_variable_get(:@auto_flushing)
+      end
+      should "set guard" do
+        assert MongodbLogger::Logger.new.instance_variable_get(:@guard).is_a?(Mutex)
+      end
+    end
+
+    context "after instantiation" do
+      context "upon insertion of a log record" do
+        setup do
+          @mongodb_logger = MongodbLogger::Logger.new(:path => @log_file)
+          log("Test")
+        end
+
+        should "not log the record to a file" do
+          assert_equal '', open(@log_file).read
+        end
+      end
+    end
+
+    teardown do
+      file = File.join(CONFIG_DIR, DEFAULT_CONFIG)
+      File.delete(file) if File.exist?(file)
+      File.delete(@log_file)
+    end
+  end
+  
 end

@@ -32,7 +32,7 @@ class OrderControllerTest < ActionController::TestCase
   end
 
   test "should log exceptions" do
-    assert_raise(RuntimeError, OrderController::LOG_MESSAGE) {get :blow_up}
+    assert_raise(RuntimeError, OrderController::LOG_MESSAGE) {get :new}
     assert_equal 1, @collection.find_one({"messages.error" => /^#{OrderController::LOG_MESSAGE}/})["messages"]["error"].count
     assert_equal 1, @collection.find_one({"is_exception" => true})["messages"]["error"].count
   end
@@ -43,6 +43,6 @@ class OrderControllerTest < ActionController::TestCase
   end
 
   test "should set the application name" do
-    assert_equal 'Rails3', @central_logger.instance_variable_get(:@application_name)
+    assert_equal 'RailsRoot', @mongodb_logger.instance_variable_get(:@application_name)
   end
 end

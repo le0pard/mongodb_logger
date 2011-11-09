@@ -1,4 +1,5 @@
 class OrderController < ApplicationController
+  include MongodbLogger::Base
   LOG_MESSAGE = "FOO"
 
   def index
@@ -7,10 +8,11 @@ class OrderController < ApplicationController
     render :text => "nothing"
   end
 
-  def blow_up
+  def new
     raise OrderController::LOG_MESSAGE
   end
 
   def create
+    render :text => "create"
   end
 end
