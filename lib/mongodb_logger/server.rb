@@ -40,7 +40,6 @@ module MongodbLogger
       begin
         @db = Rails.logger.mongo_connection
         @collection = @db[Rails.logger.mongo_collection_name]
-        @collection_count = @collection.count
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
@@ -78,6 +77,11 @@ module MongodbLogger
       end
       content_type :json
       { :count => count, :content => buffer.reverse.join("\n") }.to_json
+    end
+    
+    get "/push_logs" do
+      content_type :json
+      { :count => @collection.count, :content => nil }.to_json
     end
     
     get "/log/:id" do

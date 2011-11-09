@@ -1,5 +1,5 @@
 <h1>Logs</h1>
-<a id="tail_logs_link" href="#" rel="<%=@collection_count%>">Push</a>
+<a id="tail_logs_link" href="<%=h url_path("push_logs") %>">Push</a>
 <ul id="logs_list">
 <% @logs.each do |log| %>
   <%= partial(:"shared/log", :object => log) %>
