@@ -52,7 +52,7 @@ task :vendor_test_gems do
       gem += ", '#{version}'" if version
       file.puts(gem)
     end
-    @terminal.run(%{bundle install})
+    `bundle install`
   end
 end
 
