@@ -13,4 +13,4 @@ branches:
     - master
     - development
     - edge
-bundler_args: --path vendor/bundle
+bundler_args: --path tmp/local_gems
