@@ -2,6 +2,10 @@ module RailsHelpers
   def rails_root_exists?
     File.exists?(environment_path)
   end
+  
+  def environment_path
+    File.join(rails_root, 'config', 'environment.rb')
+  end
 
   def application_controller_filename
     controller_filename = File.join(rails_root, 'app', 'controllers', "application_controller.rb")
@@ -19,10 +23,6 @@ module RailsHelpers
 
   def gemfile_path
     gemfile = File.join(rails_root, 'Gemfile')
-  end
-
-  def environment_path
-    File.join(rails_root, 'config', 'environment.rb')
   end
 
   def rakefile_path
