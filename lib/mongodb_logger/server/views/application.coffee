@@ -5,10 +5,11 @@ MongodbLoggerJS =
   push_logs_url: null
   
   init: ->
-    $('#tail_logs_link').bind 'click', (event) =>
-      MongodbLoggerJS.push_logs_url = $(event.target).attr('href')
-      MongodbLoggerJS.push_logs(null)
-      return false
+    if $('#tail_logs_link').length > 0
+      $('#tail_logs_link').click (event) =>
+        MongodbLoggerJS.push_logs_url = $(event.target).attr('href')
+        MongodbLoggerJS.push_logs(null)
+        return false
   push_logs: (count) ->
     url = MongodbLoggerJS.push_logs_url
     if count?
@@ -20,8 +21,8 @@ MongodbLoggerJS =
       dataType: "json"
       success: (data) ->
         if count != data.count
-          if data.content?
+          if data.content? && data.content.length > 0
             $("#logs_list").prepend(data.content)
           count = data.count
-        callback = -> MongodbLoggerJS.push_logs(count)
-        setTimeout callback, 2000
+        fcallback = -> MongodbLoggerJS.push_logs(count)
+        setTimeout fcallback, 2000

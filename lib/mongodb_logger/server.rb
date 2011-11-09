@@ -67,21 +67,21 @@ module MongodbLogger
       end
     end
     
-    get "/push_logs/:count" do
-      count = params[:count].to_i
-      tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]]).skip(count)
+    get "/push_logs/?:count?" do
       buffer = []
-      while log = tail.next_document
-        buffer << partial(:"shared/log", :object => log)
-        count += 1
+      if params[:count]
+        count = params[:count].to_i
+        tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]]).skip(count)
+        while log = tail.next_document
+          buffer << partial(:"shared/log", :object => log)
+          count += 1
+        end
+        buffer.reverse!
+      else
+        count = @collection.count
       end
       content_type :json
-      { :count => count, :content => buffer.reverse.join("\n") }.to_json
-    end
-    
-    get "/push_logs" do
-      content_type :json
-      { :count => @collection.count, :content => nil }.to_json
+      { :count => count, :content => buffer.join("\n") }.to_json
     end
     
     get "/log/:id" do

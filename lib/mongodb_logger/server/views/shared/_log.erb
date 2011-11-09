@@ -1,5 +1,5 @@
 <li>
   <a href="<%=h url_path("log/#{log['_id']}") %>">
-    <%=h log['url']%>
+    <%=h log['request_time']%> | <%=h log['controller']%> | <%=h log['action']%> | <%=h log['ip']%> | <%=h log['url']%> | <%=h log['runtime']%>
   </a>  
 </li>
