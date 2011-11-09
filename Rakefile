@@ -44,28 +44,16 @@ RAILS_VERSIONS = IO.read('SUPPORTED_RAILS_VERSIONS').strip.split("\n")
 LOCAL_GEMS = [['sqlite3', nil]] +
   RAILS_VERSIONS.collect { |version| ['rails', version] }
 
-desc "Vendor test gems: Run this once to prepare your test environment"
+desc "Install gems"
 task :vendor_test_gems do
-  old_gem_path = ENV['GEM_PATH']
-  old_gem_home = ENV['GEM_HOME']
-  ENV['GEM_PATH'] = LOCAL_GEM_ROOT
-  ENV['GEM_HOME'] = LOCAL_GEM_ROOT
   LOCAL_GEMS.each do |gem_name, version|
-    gem_file_pattern = [gem_name, version || '*'].compact.join('-')
-    version_option = version ? "-v #{version}" : ''
-    pattern = File.join(LOCAL_GEM_ROOT, 'gems', "#{gem_file_pattern}")
-    existing = Dir.glob(pattern).first
-    unless existing
-      command = "gem install -i #{LOCAL_GEM_ROOT} --no-ri --no-rdoc --backtrace #{version_option} #{gem_name}"
-      puts "Vendoring #{gem_file_pattern}..."
-      unless system("#{command} 2>&1")
-        puts "Command failed: #{command}"
-        exit(1)
-      end
+    File.open(File.join(GEM_ROOT, 'Gemfile'), 'a') do |file|
+      gem = "gem '#{gem_name}'"
+      gem += ", '#{version}'" if version
+      file.puts(gem)
     end
+    @terminal.run(%{bundle install})
   end
-  ENV['GEM_PATH'] = old_gem_path
-  ENV['GEM_HOME'] = old_gem_home
 end
 
 Cucumber::Rake::Task.new(:cucumber) do |t|

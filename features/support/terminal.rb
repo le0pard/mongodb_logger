@@ -19,14 +19,6 @@ class Terminal
     @output = ""
     @status = 0
     @logger = Logger.new(File.join(TEMP_DIR, 'terminal.log'))
-
-    @invoke_heroku_rake_tasks_locally = false
-
-    @environment_variables = {
-      "GEM_HOME" => LOCAL_GEM_ROOT,
-      "GEM_PATH" => "#{LOCAL_GEM_ROOT}:#{BUILT_GEM_ROOT}",
-      "PATH" => "#{gem_bin_path}:#{ENV['PATH']}"
-    }
   end
 
   def cd(directory)
@@ -60,33 +52,15 @@ class Terminal
     end
     target = File.join(pkg_dir, gem_file)
     FileUtils.mv(gem_file, target)
-    install_gem_to(LOCAL_GEM_ROOT, target)
+    install_gem(target)
   end
 
   def install_gem(gem)
-    install_gem_to(LOCAL_GEM_ROOT, gem)
+    `gem install --no-ri --no-rdoc #{gem}`
   end
 
   def uninstall_gem(gem)
-    `gem uninstall -i #{LOCAL_GEM_ROOT} #{gem}`
-  end
-
-  def prepend_path(path)
-    @environment_variables['PATH'] = path + ":" + @environment_variables['PATH']
-  end
-
-  private
-
-  def install_gem_to(root, gem)
-    `gem install -i #{root} --no-ri --no-rdoc #{gem}`
-  end
-
-  def environment_settings
-    @environment_variables.map { |key, value| "#{key}=#{value}" }.join(' ')
-  end
-
-  def gem_bin_path
-    File.join(LOCAL_GEM_ROOT, "bin")
+    `gem uninstall #{gem}`
   end
 
   attr_reader :logger
