@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "mongo", "~> 1.4.0"
   gem.add_runtime_dependency "bson_ext", "~> 1.4.0"
   gem.add_runtime_dependency "i18n", "~> 0.6.0"
+  gem.add_runtime_dependency "json", "~> 1.6.1"
   gem.add_runtime_dependency "activesupport", ">= 3.0.0"
   gem.add_runtime_dependency "sinatra", "~> 1.3.0"
   gem.add_runtime_dependency "erubis", "~> 2.7.0"

@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'erubis'
-require 'time'
+require 'json'
+require 'mongodb_logger/server/partials'
 
 if defined? Encoding
   Encoding.default_external = Encoding::UTF_8
@@ -8,11 +9,12 @@ end
 
 module MongodbLogger
   class Server < Sinatra::Base
+    helpers Sinatra::Partials
+    
     dir = File.dirname(File.expand_path(__FILE__))
 
     set :views,         "#{dir}/server/views"
     set :public_folder, "#{dir}/server/public"
-    set :erubis, :escape_html => true
 
     set :static, true
 
@@ -38,6 +40,7 @@ module MongodbLogger
       begin
         @db = Rails.logger.mongo_connection
         @collection = @db[Rails.logger.mongo_collection_name]
+        @collection_count = @collection.count
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
@@ -47,9 +50,9 @@ module MongodbLogger
     def show(page, layout = true)
       response["Cache-Control"] = "max-age=0, private, must-revalidate"
       begin
-        erb page.to_sym, :layout => layout
+        erb page.to_sym, {:layout => layout}
       rescue => e
-        erb :error, :layout => false, :error => "Error in view. Debug: #{e.inspect}"
+        erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
       end
     end
 
@@ -63,6 +66,18 @@ module MongodbLogger
         @logs = @collection.find().sort('$natural', -1).limit(2000)
         show page
       end
+    end
+    
+    get "/push_logs/:count" do
+      count = params[:count].to_i
+      tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]]).skip(count)
+      buffer = []
+      while log = tail.next_document
+        buffer << partial(:"shared/log", :object => log)
+        count += 1
+      end
+      content_type :json
+      { :count => count, :content => buffer.reverse.join("\n") }.to_json
     end
     
     get "/log/:id" do

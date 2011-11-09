@@ -1,10 +1,7 @@
 <h1>Logs</h1>
-<ul>
+<a id="tail_logs_link" href="#" rel="<%=@collection_count%>">Push</a>
+<ul id="logs_list">
 <% @logs.each do |log| %>
-  <li>
-    <a href="<%= url_path("log/#{log['_id']}") %>">
-      <%= log['url']%>
-    </a>  
-  </li>
+  <%= partial(:"shared/log", :object => log) %>
 <% end %>
 </ul>
