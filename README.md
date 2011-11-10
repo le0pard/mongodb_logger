@@ -41,7 +41,7 @@ It:
 
 
 
-  File: mongodb_logger.yml:
+   File: mongodb_logger.yml:
 
       development:
         database: my_app
