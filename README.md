@@ -4,9 +4,9 @@ MongodbLogger is a alternative logger for Rails 3, which log all requests on you
 It:
 
 * simple to integrate into existing Rails 3 application;
-* allow store all logs from cluster into one scalable storage - MongoDB;
-* flexible schema of MongoDB allow to store and search any information;
-* web panel allow filter logs, build graphs using MapReduce by information from your logs;
+* allow to store all logs from web cluster into one scalable storage - MongoDB;
+* flexible schema of MongoDB allow to store and search any information from logs;
+* web panel allow filter logs, build graphs using MapReduce by information from logs;
 
 ## Installation
 
@@ -22,35 +22,37 @@ It:
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
    In the mongodb\_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb_logger' subkey.
 
-   database.yml:
+   File: database.yml:
 
-        development:
-          adapter: postgresql
-          database: my_app_development
-          username: postgres
-          mongodb_logger:
-            database: my_app               # required (the only required setting)
-            capsize: <%= 10.megabytes %>   # default: 250MB
-            host: localhost                # default: localhost
-            port: 27017                    # default: 27017
-            replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
-            safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
-            application_name: my_app       # default: Rails.application
-            disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
-            collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
+      development:
+        adapter: postgresql
+        database: my_app_development
+        username: postgres
+        mongodb_logger:
+          database: my_app               # required (the only required setting)
+          capsize: <%= 10.megabytes %>   # default: 250MB
+          host: localhost                # default: localhost
+          port: 27017                    # default: 27017
+          replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
+          safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
+          application_name: my_app       # default: Rails.application
+          disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
+          collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
-    mongodb_logger.yml:
 
-        development:
-          database: my_app
-          capsize: <%= 10.megabytes %>
-          host: localhost
-          port: 27017
-          replica_set: true
+
+  File: mongodb_logger.yml:
+
+      development:
+        database: my_app
+        capsize: <%= 10.megabytes %>
+        host: localhost
+        port: 27017
+        replica_set: true
 
 1. To setup web interface (optional), just mount MongodbLogger::Server in rails routes:
     
-    you\_rails\_app/config/routes.rb
+    File: you\_rails\_app/config/routes.rb
         
         mount MongodbLogger::Server.new, :at => "/mongodb"
         
