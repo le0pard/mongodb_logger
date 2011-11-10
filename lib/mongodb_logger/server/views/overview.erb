@@ -1,5 +1,16 @@
 <h1>Logs</h1>
-<a id="tail_logs_link" href="<%=h url_path("push_logs") %>">Push</a>
+<div id="tail_logs_block">
+  <div class="initial">
+    <a id="tail_logs_link" href="<%=h url_path("tail_logs") %>">
+      Push
+    </a>
+  </div>
+  <div class="info">
+    <a id="tail_logs_stop_link" href="#">
+      Stop
+    </a>
+  </div>
+</div>
 <ul id="logs_list">
 <% @logs.each do |log| %>
   <%= partial(:"shared/log", :object => log) %>

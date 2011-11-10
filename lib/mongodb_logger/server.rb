@@ -72,7 +72,7 @@ module MongodbLogger
       end
     end
     
-    get "/push_logs/?:count?" do
+    get "/tail_logs/?:count?" do
       buffer = []
       if params[:count]
         count = params[:count].to_i
