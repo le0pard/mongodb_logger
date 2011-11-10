@@ -38,7 +38,11 @@ module RailsHelpers
   end
   
   def routes_path
-    gemfile = File.join(rails_root, 'config', 'routes.rb')
+    File.join(rails_root, 'config', 'routes.rb')
+  end
+  
+  def logs_path
+    gemfile = File.join(rails_root, 'log')
   end
 
   def bundle_gem(gem_name, version = nil)
@@ -56,7 +60,10 @@ module RailsHelpers
   end
   
   def add_routes
-    # add here
+    content = File.read(routes_path)
+    flag = Regexp.escape("Application.routes.draw do\n")
+    content.gsub!(/#{flag}/m, '\0 resources :order')
+    File.open(routes_path, 'wb') { |file| file.write(content) }
   end
   
   def copy_tests
@@ -76,6 +83,7 @@ module RailsHelpers
       File.join(PROJECT_ROOT, 'test', 'rails', 'test', 'functional', 'order_controller_test.rb'), 
       File.join(rails_root, 'test', 'functional', 'order_controller_test.rb')
     )
+    FileUtils.chmod 0777, logs_path
   end
   
 end
