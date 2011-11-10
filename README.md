@@ -39,8 +39,6 @@ It:
           disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
           collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
-
-
    File: mongodb_logger.yml:
 
       development:
