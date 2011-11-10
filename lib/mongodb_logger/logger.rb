@@ -8,7 +8,7 @@ module MongodbLogger
   class Logger < ActiveSupport::BufferedLogger
     include ReplicaSetHelper
 
-    DEFAULT_COLLECTION_SIZE = 200.megabytes
+    DEFAULT_COLLECTION_SIZE = 250.megabytes
     # Looks for configuration files in this order
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
@@ -101,12 +101,12 @@ module MongodbLogger
 
       def configure
         default_capsize = DEFAULT_COLLECTION_SIZE
-        @mongo_collection_name = "#{Rails.env}_log"
         @authenticated = false
         @db_configuration = {
           'host' => 'localhost',
           'port' => 27017,
           'capsize' => default_capsize}.merge(resolve_config)
+        @mongo_collection_name = @db_configuration[:collection] || "#{Rails.env}_log"
         @application_name = resolve_application_name
         @safe_insert = @db_configuration['safe_insert'] || false
 
