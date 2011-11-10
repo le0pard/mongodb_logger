@@ -14,25 +14,46 @@
 
 <div class="filter">
   <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
-    <ul id="filter_fields_list">
-      
-    </ul>
+    <div>
+      <label for="f_controller">Controller</label>
+      <input id="f_controller" type="text" name="f[controller]" value="<%=get_field_val('controller')%>" />
+    </div>
+    <div>
+      <label for="f_action">Action</label>
+      <input id="f_action" type="text" name="f[action]" value="<%=get_field_val('action')%>" />
+    </div>
+    <div>
+      <label for="f_application_name">Application name</label>
+      <input id="f_application_name" type="text" name="f[application_name]" value="<%=get_field_val('application_name')%>" />
+    </div>
+    <div>
+      <label for="f_ip">IP</label>
+      <input id="f_ip" type="text" name="f[ip]" value="<%=get_field_val('ip')%>" />
+    </div>
+    <ul id="filter_fields_list"></ul>
     <a id="add_more_filter_link" href="#">Add more</a>
     <input type="submit" name="submit" value="Filter" />
+    <a href="<%=h url_path("overview") %>">Clear</a>
   </form>
   
   <div id="filter_block" style="display:none;">
     <div>
-      <input type="text" name="filter[][key]" />
-      <select name="filter[][condition]">
+      <select name="f[additional][][type]">
+        <option value="int">Int</option>
+        <option value="bool">Bool</option>
+      </select>
+      <input type="text" name="f[additional][][key]" />
+      <select name="f[additional][][condition]">
         <option value="eq">Equal</option>
         <option value="neq">Not equal</option>
       </select>
-      <input type="text" name="filter[][value]" />
+      <input type="text" name="f[additional][][value]" />
     </div>
     <a href="#" class="delete_filter_fields">Close</a>
   </div>
 </div>
+
+<div id="log_info"></div>
 
 <ul id="logs_list">
 <% @logs.each do |log| %>

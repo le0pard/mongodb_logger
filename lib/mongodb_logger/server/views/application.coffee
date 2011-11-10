@@ -20,6 +20,13 @@ MongodbLoggerJS =
       MongodbLoggerJS.tail_log_started = false
       $('#tail_logs_block').removeClass('started')
       return false
+    
+    $('.log_info').live 'click', (event) =>
+      elm_obj = $(event.target)
+      if elm_obj.attr('rel')
+        $('#log_info').load(elm_obj.attr('rel'))
+        return false  
+      
     $('#add_more_filter_link').live 'click', (event) =>
       li_el = $('<li></li>').append($('#filter_block').html())
       $('#filter_fields_list').append(li_el)

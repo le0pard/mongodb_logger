@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'erubis'
 require 'json'
 require 'mongodb_logger/server/partials'
+require 'mongodb_logger/server/model/filter'
 
 if defined? Encoding
   Encoding.default_external = Encoding::UTF_8
@@ -39,6 +40,10 @@ module MongodbLogger
       def path_prefix
         request.env['SCRIPT_NAME']
       end
+      
+      def get_field_val(key)
+        @filter_model ? @filter_model.get_val(key) : nil
+      end
     end
     
     before do
@@ -67,10 +72,13 @@ module MongodbLogger
 
     %w( overview ).each do |page|
       get "/#{page}/?" do
-        if params[:filter]
-          
+        if params[:f]
+          @filter_model = MongodbLogger::ServerModel::Filter.new(params[:f])
+          @logs = @collection.find(@filter_model.get_conditions)
+        else
+          @logs = @collection.find
         end
-        @logs = @collection.find().sort('$natural', -1).limit(2000)
+        @logs = @logs.sort('$natural', -1).limit(2000)
         show page
       end
     end
@@ -95,6 +103,11 @@ module MongodbLogger
     get "/log/:id" do
       @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
       show :show_log, !request.xhr?
+    end
+    
+    get "/log_info/:id" do
+      @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
+      partial(:"shared/log_info", :object => @log)
     end
     
     # application js
