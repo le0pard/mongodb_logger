@@ -11,6 +11,29 @@
     </a>
   </div>
 </div>
+
+<div class="filter">
+  <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
+    <ul id="filter_fields_list">
+      
+    </ul>
+    <a id="add_more_filter_link" href="#">Add more</a>
+    <input type="submit" name="submit" value="Filter" />
+  </form>
+  
+  <div id="filter_block" style="display:none;">
+    <div>
+      <input type="text" name="filter[][key]" />
+      <select name="filter[][condition]">
+        <option value="eq">Equal</option>
+        <option value="neq">Not equal</option>
+      </select>
+      <input type="text" name="filter[][value]" />
+    </div>
+    <a href="#" class="delete_filter_fields">Close</a>
+  </div>
+</div>
+
 <ul id="logs_list">
 <% @logs.each do |log| %>
   <%= partial(:"shared/log", :object => log) %>

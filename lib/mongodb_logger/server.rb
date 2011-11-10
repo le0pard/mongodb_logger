@@ -66,7 +66,10 @@ module MongodbLogger
     end
 
     %w( overview ).each do |page|
-      get "/#{page}" do
+      get "/#{page}/?" do
+        if params[:filter]
+          
+        end
         @logs = @collection.find().sort('$natural', -1).limit(2000)
         show page
       end
