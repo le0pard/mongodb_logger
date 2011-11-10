@@ -30,6 +30,13 @@ class OrderControllerTest < ActionController::TestCase
     get :index
     assert_equal Rails.root.basename.to_s, @collection.find_one({}, :fields => "application_name_again")["application_name_again"]
   end
+  
+  test "should log request parameters" do
+    get :index
+    log = @collection.find_one()
+    http_method = 'GET'
+    assert_equal http_method, log['method']
+  end
 
   test "should log exceptions" do
     assert_raise(RuntimeError, OrderController::LOG_MESSAGE) {get :new}
