@@ -2,6 +2,7 @@ module MongodbLogger
   module ServerModel
     class Filter
       
+      DEFAULT_LIMIT = 2000
       FIXED_PARAMS = ['action', 'controller', 'ip', 'application_name']
       attr_reader :params, :mongo_conditions
       
@@ -23,6 +24,12 @@ module MongodbLogger
       
       def get_val(key)
         (@params[key] && !@params[key].blank?) ? @params[key] : nil
+      end
+      
+      def get_limit
+        limit = @params['limit'].to_i
+        limit = DEFAULT_LIMIT if !limit || (limit && (limit < 1 || limit > 10000))
+        limit
       end
       
     end

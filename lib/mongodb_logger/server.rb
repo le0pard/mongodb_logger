@@ -42,7 +42,17 @@ module MongodbLogger
       end
       
       def get_field_val(key)
+        return MongodbLogger::ServerModel::Filter::DEFAULT_LIMIT if !@filter_model && "limit" == key
         @filter_model ? @filter_model.get_val(key) : nil
+      end
+      
+      def select_tag(name, values, selected = nil)
+        selector = ["<select name=#{name}>"]
+        values.each do |val|
+          selector << "<option value='#{val}' #{"selected='selected'" if val.to_s == selected.to_s}>#{val}</option>"
+        end
+        selector << "</select>"
+        selector.join("\n")
       end
     end
     
@@ -74,11 +84,11 @@ module MongodbLogger
       get "/#{page}/?" do
         if params[:f]
           @filter_model = MongodbLogger::ServerModel::Filter.new(params[:f])
-          @logs = @collection.find(@filter_model.get_conditions)
+          @logs = @collection.find(@filter_model.get_conditions).limit(@filter_model.get_limit)
         else
-          @logs = @collection.find
+          @logs = @collection.find.limit(MongodbLogger::ServerModel::Filter::DEFAULT_LIMIT)
         end
-        @logs = @logs.sort('$natural', -1).limit(2000)
+        @logs = @logs.sort('$natural', -1)
         show page
       end
     end
