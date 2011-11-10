@@ -43,6 +43,6 @@ class OrderControllerTest < ActionController::TestCase
   end
 
   test "should set the application name" do
-    assert_equal 'RailsRoot', @mongodb_logger.instance_variable_get(:@application_name)
+    assert_equal 'mongo_foo', @mongodb_logger.instance_variable_get(:@application_name)
   end
 end

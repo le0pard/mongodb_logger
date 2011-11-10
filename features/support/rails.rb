@@ -36,6 +36,10 @@ module RailsHelpers
   def rakefile_path
     File.join(rails_root, 'Rakefile')
   end
+  
+  def routes_path
+    gemfile = File.join(rails_root, 'config', 'routes.rb')
+  end
 
   def bundle_gem(gem_name, version = nil)
     File.open(gemfile_path, 'a') do |file|
@@ -51,6 +55,10 @@ module RailsHelpers
     File.open(rakefile_path, 'wb') { |file| file.write(content) }
   end
   
+  def add_routes
+    # add here
+  end
+  
   def copy_tests
     FileUtils.cp(
       File.join(PROJECT_ROOT, 'test', 'rails', 'app', 'controllers', 'order_controller.rb'), 
@@ -60,9 +68,13 @@ module RailsHelpers
       File.join(PROJECT_ROOT, 'test', 'config', 'samples', 'database.yml'), 
       File.join(rails_root, 'config', 'database.yml')
     )
-    FileUtils.cp_r(
-      File.join(PROJECT_ROOT, 'test', 'rails', 'test'), 
-      File.join(rails_root, 'test')
+    FileUtils.cp(
+      File.join(PROJECT_ROOT, 'test', 'rails', 'test', 'test_helper.rb'), 
+      File.join(rails_root, 'test', 'test_helper.rb')
+    )
+    FileUtils.cp(
+      File.join(PROJECT_ROOT, 'test', 'rails', 'test', 'functional', 'order_controller_test.rb'), 
+      File.join(rails_root, 'test', 'functional', 'order_controller_test.rb')
     )
   end
   

@@ -1,4 +1,5 @@
 require 'active_support/core_ext/string/inflections'
+require 'thor/actions/inject_into_file'
 
 Given /^I have built and installed the "([^\"]*)" gem$/ do |gem_name|
   @terminal.build_and_install_gem(File.join(PROJECT_ROOT, "#{gem_name}.gemspec"))
@@ -29,6 +30,7 @@ end
 
 When /^I setup mongodb_logger tests$/ do
   copy_tests
+  add_routes
 end
 
 Then /^the tests should have run successfully$/ do
