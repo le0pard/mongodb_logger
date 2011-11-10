@@ -12,7 +12,8 @@ require "bundler/gem_tasks"
 
 
 desc 'Default: run unit tests.'
-task :default => [:test, "cucumber:rails:all"]
+task :default => [:test]
+#task :default => [:test, "cucumber:rails:all"]
 
 desc "Clean out the tmp directory"
 task :clean do
