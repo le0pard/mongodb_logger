@@ -12,11 +12,11 @@ require 'mongodb_logger/server'
 
 Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
   :before_run => lambda {|v|
-    path = (ENV['MONGODBCONFIGDIR'] || v.args.first)
-    if path
-      # in some way add config dir here
+    config_file = (ENV['MONGODBCONFIGCONFIG'] || v.args.first)
+    if config_file
+      # setup in future
     else
-      raise ArgumentError, "please add config dir"
+      raise ArgumentError, "please provide config file"
     end
   }
 }) do |runner, opts, app|
