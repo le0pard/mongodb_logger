@@ -34,7 +34,7 @@ module MongodbLogger
 
     def add_metadata(options={})
       options.each do |key, value|
-        unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params].include?(key.to_sym)
+        unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :method].include?(key.to_sym)
           @mongo_record[key] = value
         else
           raise ArgumentError, ":#{key} is a reserved key for the mongodb logger. Please choose a different key"

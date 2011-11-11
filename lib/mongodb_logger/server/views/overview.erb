@@ -30,8 +30,10 @@
       <label for="f_ip">IP</label>
       <input id="f_ip" type="text" name="f[ip]" value="<%=get_field_val('ip')%>" />
     </div>
+    <!-- additional filters
     <ul id="filter_fields_list"></ul>
     <a id="add_more_filter_link" href="#">Add more</a>
+    -->
     <div>
       <label for="f_limit">Limit</label>
       <%=select_tag("f[limit]", [100, 500, 1000, 2000, 5000, 10000], get_field_val('limit'))%>
@@ -39,7 +41,7 @@
     <input type="submit" name="submit" value="Filter" />
     <a href="<%=h url_path("overview") %>">Clear</a>
   </form>
-  
+  <!-- additional filters
   <div id="filter_block" style="display:none;">
     <div>
       <select name="f[additional][][type]">
@@ -55,6 +57,7 @@
     </div>
     <a href="#" class="delete_filter_fields">Close</a>
   </div>
+  -->
 </div>
 
 <div id="log_info"></div>
