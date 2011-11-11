@@ -1,4 +1,4 @@
-Feature: Install the Gem in a Rails application
+Feature: Install the Gem in a Rails application and test it
 
   Background:
     Given I have built and installed the "mongodb_logger" gem
