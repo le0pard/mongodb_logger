@@ -50,7 +50,7 @@ It:
 
 1. To setup web interface (optional), first of all create autoload file in you Rails application 
    
-    File: you\_rails\_app/config/initializers/mongodb\_logger.rb
+   File: you\_rails\_app/config/initializers/mongodb\_logger.rb
         
         require 'mongodb_logger/server' # required
         # this secure you web interface by basic auth, but you can skip this, if you no need this
@@ -60,7 +60,7 @@ It:
    
    and just mount MongodbLogger::Server in rails routes:
     
-    File: you\_rails\_app/config/routes.rb
+   File: you\_rails\_app/config/routes.rb
         
         mount MongodbLogger::Server.new, :at => "/mongodb"
         
