@@ -48,7 +48,17 @@ It:
        port: 27017
        replica_set: true
 
-1. To setup web interface (optional), just mount MongodbLogger::Server in rails routes:
+1. To setup web interface (optional), first of all create autoload file in you Rails application 
+   
+    File: you\_rails\_app/config/initializers/mongodb\_logger.rb
+        
+        require 'mongodb_logger/server' # required
+        # this secure you web interface by basic auth, but you can skip this, if you no need this
+        MongodbLogger::Server.use Rack::Auth::Basic do |username, password|
+            [username, password] == ['admin', 'password']
+        end
+   
+   and just mount MongodbLogger::Server in rails routes:
     
     File: you\_rails\_app/config/routes.rb
         
