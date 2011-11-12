@@ -50,6 +50,8 @@ MongodbLoggerJS =
             if data.content? && data.content.length > 0
               $("#logs_list").prepend(data.content)
             count = data.count
+          if data.time
+            $('#tail_logs_time').text(data.time)
           if MongodbLoggerJS.tail_log_started
             fcallback = -> MongodbLoggerJS.tail_logs(count)
             setTimeout fcallback, 2000

@@ -113,7 +113,7 @@ module MongodbLogger
         count = @collection.count
       end
       content_type :json
-      { :count => count, :content => buffer.join("\n") }.to_json
+      { :count => count, :time => Time.now.getutc, :content => buffer.join("\n") }.to_json
     end
     
     get "/log/:id" do
