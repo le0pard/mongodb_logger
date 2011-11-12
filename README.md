@@ -129,7 +129,7 @@ It:
   * Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
   * Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>
   
-  Don't forgot setup MONGODBLOGGERCONFIG env variable, which provide information about MongodbLogger config. Example starting with unicorn:
+  Don't forget setup MONGODBLOGGERCONFIG env variable, which provide information about MongodbLogger config. Example starting with unicorn:
   
       MONGODBLOGGERCONFIG=examples/server_config.yml unicorn
 
