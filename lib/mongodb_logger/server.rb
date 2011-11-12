@@ -3,6 +3,7 @@ require 'erubis'
 require 'json'
 require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/model/filter'
+require 'mongodb_logger/server_config'
 
 if defined? Encoding
   Encoding.default_external = Encoding::UTF_8
@@ -58,8 +59,13 @@ module MongodbLogger
     
     before do
       begin
-        @db = Rails.logger.mongo_connection
-        @collection = @db[Rails.logger.mongo_collection_name]
+        if ServerConfig.db && ServerConfig.collection
+          @db = ServerConfig.db
+          @collection = ServerConfig.collection
+        else
+          @db = Rails.logger.mongo_connection
+          @collection = @db[Rails.logger.mongo_collection_name]
+        end
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false

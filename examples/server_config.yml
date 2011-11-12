@@ -1,0 +1,4 @@
+database: monkey_logs_dev
+host: localhost
+port: 27017
+collection: development_log

@@ -14,7 +14,7 @@ Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
   :before_run => lambda {|v|
     config_file = (ENV['MONGODBCONFIGCONFIG'] || v.args.first)
     if config_file
-      # setup in future
+      MongodbLogger::ServerConfig.set_config(config_file)
     else
       raise ArgumentError, "please provide config file"
     end
