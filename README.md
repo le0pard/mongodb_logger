@@ -127,7 +127,11 @@ It:
   Using Passenger? MongodbLogger ships with a `config.ru` you can use. See Phusion's guide:
 
   * Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
-  * Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>  
+  * Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>
+  
+  Don't forgot setup MONGODBLOGGERCONFIG env variable, which provide information about MongodbLogger config. Example starting with unicorn:
+  
+      MONGODBLOGGERCONFIG=examples/server_config.yml unicorn
 
 ## Querying via the Rails console
 
