@@ -124,7 +124,7 @@ It:
       
 ###  Passenger
 
-  Using Passenger? Resque ships with a `config.ru` you can use. See Phusion's guide:
+  Using Passenger? MongodbLogger ships with a `config.ru` you can use. See Phusion's guide:
 
   Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
   Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>  
