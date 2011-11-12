@@ -20,7 +20,7 @@ It:
 
 1. Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
-   In the mongodb\_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb_logger' subkey.
+   In the mongodb\_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb\_logger' subkey.
 
    File: database.yml:
 
@@ -39,7 +39,7 @@ It:
          disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
          collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
-   File: mongodb_logger.yml:
+   File: mongodb\_logger.yml:
 
      development:
        database: my_app
@@ -75,8 +75,8 @@ It:
         'method'           : request method (GET, POST, PUT, DELETE, OPTIONS)
       }
 
-  Beyond that, if you want to add extra information to the base of the document (let's say something like user_id on every request that it's available),
-  you can just call the Rails.logger.add_metadata method on your logger like so (for example from a before_filter):
+  Beyond that, if you want to add extra information to the base of the document (let's say something like user\_id on every request that it's available),
+  you can just call the Rails.logger.add\_metadata method on your logger like so (for example from a before\_filter):
 
       # make sure we're using the MongodbLogger in this environment
       if Rails.logger.respond_to?(:add_metadata)
@@ -126,8 +126,8 @@ It:
 
   Using Passenger? MongodbLogger ships with a `config.ru` you can use. See Phusion's guide:
 
-  Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
-  Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>  
+  * Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
+  * Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>  
 
 ## Querying via the Rails console
 
@@ -152,7 +152,7 @@ It:
       >> collection.find({:runtime => {'$gt' => 1000}}).count
       => 3
 
-  Find all order#show requests with a particular order id (id=order_id):
+  Find all order#show requests with a particular order id (id=order\_id):
 
       >> collection.find({"controller" => "order", "action"=> "show", "params.id" => order_id})
 
@@ -164,7 +164,7 @@ It:
 
       >> collection.find({"is_exception" => true})
 
-  Find all requests with a request_date greater than '11/18/2010 22:59:52 GMT'
+  Find all requests with a request\_date greater than '11/18/2010 22:59:52 GMT'
 
       >> collection.find({:request_time => {'$gt' => Time.utc(2010, 11, 18, 22, 59, 52)}})
 
