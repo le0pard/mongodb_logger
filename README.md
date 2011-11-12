@@ -47,24 +47,6 @@ It:
        host: localhost
        port: 27017
        replica_set: true
-
-1. To setup web interface (optional), first of all create autoload file in you Rails application 
-   
-   File: you\_rails\_app/config/initializers/mongodb\_logger.rb
-        
-        require 'mongodb_logger/server' # required
-        # this secure you web interface by basic auth, but you can skip this, if you no need this
-        MongodbLogger::Server.use Rack::Auth::Basic do |username, password|
-            [username, password] == ['admin', 'password']
-        end
-   
-   and just mount MongodbLogger::Server in rails routes:
-    
-   File: you\_rails\_app/config/routes.rb
-        
-        mount MongodbLogger::Server.new, :at => "/mongodb"
-        
-  Now you can see web interface by url "http://localhost:3000/mongodb"
   
   
 ## Usage
@@ -101,6 +83,51 @@ It:
        Rails.logger.add_metadata(:user_id => @current_user.id)
       end
 
+
+## The Front End
+  To setup web interface in you Rails application, first of all create autoload file in you Rails application 
+   
+   File: you\_rails\_app/config/initializers/mongodb\_logger.rb (example)
+        
+        require 'mongodb_logger/server' # required
+        # this secure you web interface by basic auth, but you can skip this, if you no need this
+        MongodbLogger::Server.use Rack::Auth::Basic do |username, password|
+            [username, password] == ['admin', 'password']
+        end
+   
+   and just mount MongodbLogger::Server in rails routes:
+    
+   File: you\_rails\_app/config/routes.rb
+        
+        mount MongodbLogger::Server.new, :at => "/mongodb"
+        
+  Now you can see web interface by url "http://localhost:3000/mongodb"
+  
+  If you've installed Resque as a gem and want running the front end without Rails application, you can do it by this command:
+  
+      mongodb_logger_web config.yml
+      
+  where config.yml is config, similar to config of Rails apps, but without Rails.env. Example:
+      
+      database: app_logs_dev
+      host: localhost
+      port: 27017
+      collection: development_log # set for see development logs
+      
+  parameter "collection" should be set, if your set custom for your Rails application or start this front end not for production
+  enviroment (by default taken "production\_log" collection, in Rails application gem generate "#{Rails.env}\_log" collection, 
+  if it is not defined in config).
+  
+  It's a thin layer around rackup so it's configurable as well:
+  
+      mongodb_logger_web config.yml -p 8282
+      
+###  Passenger
+
+  Using Passenger? Resque ships with a `config.ru` you can use. See Phusion's guide:
+
+  Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
+  Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>  
 
 ## Querying via the Rails console
 
