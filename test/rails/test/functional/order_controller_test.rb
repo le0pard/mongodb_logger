@@ -29,6 +29,7 @@ class OrderControllerTest < ActionController::TestCase
   test "should log extra metadata" do
     get :index
     assert_equal Rails.root.basename.to_s, @collection.find_one({}, :fields => "application_name_again")["application_name_again"]
+    assert_equal OrderController::LOG_USER_ID, @collection.find_one({}, :fields => "user_id")["user_id"]
   end
   
   test "should log request parameters" do

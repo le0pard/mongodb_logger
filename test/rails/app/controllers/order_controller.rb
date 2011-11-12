@@ -1,10 +1,12 @@
 class OrderController < ApplicationController
   include MongodbLogger::Base
   LOG_MESSAGE = "FOO"
+  LOG_USER_ID = 12345
 
   def index
     logger.debug LOG_MESSAGE
     logger.add_metadata(:application_name_again => Rails.root.basename.to_s)
+    logger.add_metadata(:user_id => LOG_USER_ID)
     render :text => "nothing"
   end
 
