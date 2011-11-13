@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = ""
 
   gem.add_development_dependency "rspec",       "~> 2.7.0"
-  gem.add_development_dependency "shoulda",     "~> 2.11.3"
+  gem.add_development_dependency "shoulda",     ">= 2.0.0"
   gem.add_development_dependency "mocha",       "~> 0.10.0"
   gem.add_development_dependency "cucumber",    "~> 1.1.2"
   
