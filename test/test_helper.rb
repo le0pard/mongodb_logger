@@ -1,5 +1,12 @@
 require 'test/unit'
-require 'shoulda'
+
+begin
+  require 'shoulda'
+rescue LoadError
+  require 'rubygems'
+  require 'shoulda'
+end
+
 require 'mocha'
 # mock rails class
 require 'pathname'
