@@ -13,4 +13,5 @@ branches:
   only:
     - master
     - development
+    - gem
 #bundler_args: --path vendor/bundle
