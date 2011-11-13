@@ -33,14 +33,16 @@ class Terminal
 
   def run(command)
     output << "#{command}\n"
-    FileUtils.cd(@cwd) do
-      # The ; forces ruby to shell out so the env settings work right
-      cmdline = "#{environment_settings} #{command} 2>&1 ; "
-      logger.debug(cmdline)
-      result = `#{cmdline}`
-      logger.debug(result)
-      output << result
-    end
+    current_dir = FileUtils.pwd
+    
+    # The ; forces ruby to shell out so the env settings work right
+    cmdline = "sh -c 'cd #{@cwd} && #{environment_settings} #{command} 2>&1 ; '"
+    logger.debug(cmdline)
+    result = `#{cmdline}`
+    logger.debug(result)
+    output << result
+    
+    `sh -c 'cd #{current_dir}'`
     @status = $?
   end
 

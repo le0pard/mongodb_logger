@@ -10,11 +10,11 @@ When /^I generate a new Rails application$/ do
   rails_create_command = 'new'
 
   load_rails = <<-RUBY
-    gem 'rails', '#{version_string}'; \
-    load Gem.bin_path('rails', 'rails', '#{version_string}')
+    gem "rails", "#{version_string}"; \
+    load Gem.bin_path("rails", "rails", "#{version_string}")
   RUBY
 
-  @terminal.run(%{ruby -rrubygems -rthread -e "#{load_rails.strip!}" #{rails_create_command} rails_root})
+  @terminal.run(%{ruby -rrubygems -rthread -e "#{load_rails.gsub("\"", "\\\"").strip!}" #{rails_create_command} rails_root})
   if rails_root_exists?
     @terminal.echo("Generated a Rails #{version_string} application")
   else
