@@ -13,5 +13,4 @@ branches:
   only:
     - master
     - development
-    - edge
 #bundler_args: --path vendor/bundle
