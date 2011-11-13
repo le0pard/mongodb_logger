@@ -36,9 +36,9 @@ Then /^the tests should have run successfully$/ do
   bundle_gem("therubyracer", nil) if rails31?
   step %{I run "bundle install"}
   @terminal.status.exitstatus.should == 0
-  step %{I run "rake db:create db:migrate RAILS_ENV=test --trace"}
+  step %{I run "bundle exec rake db:create db:migrate RAILS_ENV=test"}
   @terminal.status.exitstatus.should == 0
-  step %{I run "rake test RAILS_ENV=test --trace"}
+  step %{I run "bundle exec rake test RAILS_ENV=test"}
   @terminal.status.exitstatus.should == 0
 end
 
