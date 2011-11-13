@@ -1,0 +1,60 @@
+option {
+    padding: 0 3px 0 5px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    border: 0;
+    width: 100%;
+    padding: 4px 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font: 12px arial, sans-serif;
+    vertical-align: middle;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px #e6e6e6 inset, 0 1px 0 #fff;
+}
+
+select {
+    padding: 1px;
+    width: auto;
+    font: 12px arial, sans-serif;
+}
+
+textarea {
+    height: 100px;
+    max-width: 100%;
+}
+
+.input-wrapper.focused {
+    border-color: #40627B;
+    box-shadow: 0 0 2px #3E94D0, 0 1px 2px #e6e6e6 inset;
+}
+
+.input-wrapper.disabled {
+    border-color: #ccc;
+    background-color: #e4e4e4;
+}
+
+.input-wrapper.focus {
+    border-color: #1973b0;
+    box-shadow: 0 0 2px #1f8dd8;
+}
+
+.input-wrapper.error,
+.input-wrapper.ajax-error {
+    border-color: #FF6565;
+    background-color: #FFE1E1;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: 15px;
+    height: 15px;
+    vertical-align: 0;
+    margin-right: 3px;
+}

@@ -1,5 +1,8 @@
-<li>
-  <a class="log_info" href="<%=h url_path("log/#{log['_id']}") %>" rel="<%=h url_path("log_info/#{log['_id']}") %>">
-    <%=h log['request_time']%> | <%=h log['controller']%> | <%=h log['action']%> | <%=h log['ip']%> | <%=h log['url']%> | <%=h log['runtime']%>
-  </a>  
-</li>
+<tr class="log_info" data-url="<%=h url_path("log_info/#{log['_id']}") %>">
+  <td><%=h log['request_time']%></td>
+  <td><%=h log['controller']%></td>
+  <td><%=h log['action']%></td>
+  <td><%=h log['ip']%></td>
+  <td class="url_log"><%=h log['url']%></td>
+  <td><%=h log['runtime']%></td>
+</tr>

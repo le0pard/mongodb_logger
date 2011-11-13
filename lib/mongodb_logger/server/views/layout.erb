@@ -2,15 +2,31 @@
 <html>
 <head>
   <title>MongoDB logger</title>
-  <link href="<%=u 'stylesheets/reset.css' %>" media="screen" rel="stylesheet" type="text/css">
-  <link href="<%=u 'stylesheets/style.css' %>" media="screen" rel="stylesheet" type="text/css">
+  <link href="<%=u 'stylesheets/all.css' %>" media="screen" rel="stylesheet" type="text/css">
   <script src="<%=u 'javascripts/jquery-1.7.min.js' %>" type="text/javascript"></script>
   <script src="<%=u 'application.js' %>" type="text/javascript"></script>
 </head>
 <body>
-  <div id="ajax_loader">Loading...</div>
-  <div>
-    <%= yield %>
-  </div>
+<div class="page">          
+  <div class="header">
+    <div class="wrapper">
+      <a href="<%=h url_path("overview") %>" class="logo"><img src="<%=u 'images/logo.png'%>" alt="MongoDB Logger"></a> <span class="logger ">logger</span>
+    </div> <!-- wrapper -->
+  </div> <!-- header -->            
+  <div class="content">
+    <div class="wrapper">
+      <div class="mainbox">
+        <%= yield %>
+      </div> <!-- mainbox -->
+    </div> <!-- wrapper -->
+  </div> <!-- content -->
+
+  <div class="footer">
+    <div class="wrapper">
+      <p>Text</p>
+    </div> <!-- wrapper -->
+  </div> <!-- footer -->
+</div>
+  
 </body>
 </html>

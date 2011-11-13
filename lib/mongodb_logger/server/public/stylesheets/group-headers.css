@@ -1,0 +1,8 @@
+h1, .h1 {font-size: 22px;}
+h2, .h2 {font-size: 14px;}
+h3, .h3 {font-size: 13px;}
+
+h2 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}

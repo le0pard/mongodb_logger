@@ -6,13 +6,14 @@ MongodbLoggerJS =
   tail_log_started: false
   
   init: ->
+    
     $(document).ajaxStart =>
       $('#ajax_loader').show()
     $(document).ajaxStop =>
       $('#ajax_loader').hide()
     
     $('#tail_logs_link').live 'click', (event) =>
-      MongodbLoggerJS.tail_logs_url = $(event.target).attr('href')
+      MongodbLoggerJS.tail_logs_url = $(event.target).attr('data-url')
       $('#tail_logs_block').addClass('started')
       MongodbLoggerJS.tail_logs(null)
       return false
@@ -23,16 +24,13 @@ MongodbLoggerJS =
     
     $('.log_info').live 'click', (event) =>
       elm_obj = $(event.target)
-      if elm_obj.attr('rel')
-        $('#log_info').load(elm_obj.attr('rel'))
-        return false  
-      
-    $('#add_more_filter_link').live 'click', (event) =>
-      li_el = $('<li></li>').append($('#filter_block').html())
-      $('#filter_fields_list').append(li_el)
-    $('.delete_filter_fields').live 'click', (event) =>
-      elem = $(event.target)
-      elem.parents('li').remove()
+      url = elm_obj.attr('data-url')
+      url = elm_obj.parents('tr').attr('data-url') if !url?
+      if url?
+        elm_obj.parents('table').find('tr').removeClass('current')
+        elm_obj.parents('tr').addClass('current')
+        $('#log_info').load(url)
+      return false
       
   tail_logs: (count) ->
     url = MongodbLoggerJS.tail_logs_url
@@ -48,7 +46,7 @@ MongodbLoggerJS =
         success: (data) ->
           if count != data.count
             if data.content? && data.content.length > 0
-              $("#logs_list").prepend(data.content)
+              $('#logs_list tr:first').after(data.content)
             count = data.count
           if data.time
             $('#tail_logs_time').text(data.time)

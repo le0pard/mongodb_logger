@@ -1,2 +1,61 @@
-<h1><%= @log['_id'] %></h1>
-<h2><%= @log['url'] %></h2>
+<div class="topline">
+  <%= partial(:"shared/tabs") %>
+</div> <!-- topline -->
+<div class="unit-right">
+  <div class="pam">
+    <a href="<%=h url_path("overview") %>">Back</a>
+  </div> <!-- pam -->            
+</div> <!-- unit-right -->
+<h1 class="pam">Log #<%=h @log['_id'] %></h1>
+<ul class="list">
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Url:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['url'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Controller:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['controller'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Action:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['action'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">IP:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['ip'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Params:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <code>
+        <%=h @log['params'] %>
+      </code>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Runtime:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['runtime'] %>
+    </div> <!-- unit -->
+  </li>
+</ul>

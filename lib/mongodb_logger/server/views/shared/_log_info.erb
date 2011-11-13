@@ -1,5 +1,25 @@
-<div><%=log_info['_id']%></div>
-<div><%=log_info['controller']%></div>
-<div><%=log_info['action']%></div>
-<div><%=log_info['method']%></div>
-<div><%=log_info['runtime']%></div>
+<div class="pas">
+  <div class="unit-right ptxs">
+    <a href="<%=h url_path("log/#{log_info['_id']}") %>" target="_blank">Direct Link</a>
+  </div> <!-- unit-right -->
+  <h2 class="phs mvs"><span class="<%= log_info['is_exception'] ? 'failure' : 'success' %>">Message</span></h2>
+  <div class="phs">
+    <% if log_info['is_exception'] %>
+      Error: <%= log_info['messages']['error'] %>
+    <% else %>
+      Success: <%= log_info['messages']['info'] %>
+    <% end %>
+  </div> <!-- phs -->
+  <h2 class="phs mtm mbs">URL</h2>
+  <div class="phs">
+    <%=h log_info['url']%>
+  </div> <!-- phs --> 
+  <h2 class="phs mtm mbs">Received</h2>
+  <div class="phs">
+    <%=h log_info['request_time']%>
+  </div> <!-- phs -->
+  <h2 class="phs mtm mbs">IP</h2>
+  <div class="phs">
+    <%=h log_info['ip']%>
+  </div> <!-- phs -->
+</div> <!-- pas -->

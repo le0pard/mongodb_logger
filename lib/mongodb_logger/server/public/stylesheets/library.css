@@ -1,0 +1,134 @@
+/* colors */
+.positive {
+    color: #238c00;
+}
+
+.negative {
+    color: #cc0000;
+}
+
+.neutral {
+    color: #666;
+}
+
+.pale {
+    color: #999;
+}
+
+.opaque {
+    color: #333;
+}
+
+.firm {
+    color: #3084ca;
+}
+
+/* links */
+a {
+	color: #3078CA;
+}
+
+a:hover, a:active {
+	color: #333;
+}
+
+.inline {
+    display: inline;
+}
+
+.txtC {
+    text-align: center;
+}
+
+.txtR {
+    text-align: right;
+}
+
+.success {
+    padding-right: 15px;
+    background: url(../images/success.png) no-repeat 100% 50%;
+}
+
+.failure {
+    padding-right: 15px;
+    background: url(../images/failure.png) no-repeat 100% 50%;
+}
+
+code {
+    display: block;
+    overflow: auto;
+    height: 260px;
+    padding: 20px;
+    background-color: #4C565E;
+    color: #fff;
+    white-space: pre;
+}
+
+/* info */
+.info li {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.info .title {
+    float: left;
+    width: 70px;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #999;
+}
+
+.info .value {
+    float: left;
+}
+
+.list li {
+    border-top: 1px solid #ddd;
+}
+
+.list li:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+.filter {
+    background-color: #ededed;
+    box-shadow: 0 1px 2px #bbb inset;
+    border-bottom: 1px solid #bbb;
+}
+
+.filter-toggle {
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #bbb;
+    background: rgb(238,238,238);
+    background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(211,211,211,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(211,211,211,1)));
+    background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(211,211,211,1) 100%);
+    background: -o-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(211,211,211,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(211,211,211,1) 100%);
+    background: linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(211,211,211,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#d3d3d3',GradientType=0 );
+    
+}
+
+#tail_logs_block.started .info, #tail_logs_block .initial {
+  display: inline-block;
+}
+
+#tail_logs_block .info, #tail_logs_block.started .initial {
+  display: none;
+}
+
+#logs_list{
+    table-layout: fixed;
+}
+
+.url_log {
+    width: 200px;
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+}

@@ -1,6 +1,0 @@
-#tail_logs_block.started .initial, #tail_logs_block .info {
-    display: none;
-}
-#tail_logs_block.started .info {
-    display: block;
-}

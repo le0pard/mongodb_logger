@@ -1,0 +1,43 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 1em;
+    outline: none;
+}
+
+a img, iframe, fieldset, object {
+    border: none;
+}
+
+caption, th {
+    text-align: left;
+}
+
+td {
+    vertical-align: top;
+}
+
+sub, sup {
+    vertical-align: baseline;
+}
+
+ul {
+    list-style-type: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    background-color: white;
+}
+
+th, h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+cite, em {
+    font-style: normal;
+}

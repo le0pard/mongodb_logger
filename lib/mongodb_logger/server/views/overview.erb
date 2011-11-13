@@ -1,70 +1,94 @@
-<h1>Logs</h1>
-<div id="tail_logs_block">
-  <div class="initial">
-    <a id="tail_logs_link" href="<%=h url_path("tail_logs") %>">
-      Push
-    </a>
-  </div>
-  <div class="info">
-    <span id="tail_logs_time"></span>
-    <a id="tail_logs_stop_link" href="#">
-      Stop
-    </a>
-  </div>
-</div>
+<div class="topline">
+  <%= partial(:"shared/tabs") %>
+  <div class="unit-right">
+    <div id="tail_logs_block">
+      <div class="initial">
+        <a id="tail_logs_link" href="#" data-url="<%=h url_path("tail_logs") %>" class="button mts mrs">
+          <span class="start" data-url="<%=h url_path("tail_logs") %>">Tail</span>
+        </a>
+      </div>
+      <div class="info">
+        <span id="tail_logs_time"></span>
+        <a id="tail_logs_stop_link" href="#" class="button negative mts mrs">
+          <span class="stop">Stop</span>
+        </a>
+      </div>
+    </div>
+  </div> <!-- unit-right -->
+</div> <!-- topline -->
 
-<div class="filter">
-  <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
-    <div>
-      <label for="f_controller">Controller</label>
-      <input id="f_controller" type="text" name="f[controller]" value="<%=get_field_val('controller')%>" />
-    </div>
-    <div>
-      <label for="f_action">Action</label>
-      <input id="f_action" type="text" name="f[action]" value="<%=get_field_val('action')%>" />
-    </div>
-    <div>
-      <label for="f_application_name">Application name</label>
-      <input id="f_application_name" type="text" name="f[application_name]" value="<%=get_field_val('application_name')%>" />
-    </div>
-    <div>
-      <label for="f_ip">IP</label>
-      <input id="f_ip" type="text" name="f[ip]" value="<%=get_field_val('ip')%>" />
-    </div>
-    <!-- additional filters
-    <ul id="filter_fields_list"></ul>
-    <a id="add_more_filter_link" href="#">Add more</a>
-    -->
-    <div>
-      <label for="f_limit">Limit</label>
-      <%=select_tag("f[limit]", [100, 500, 1000, 2000, 5000, 10000], get_field_val('limit'))%>
-    </div>
-    <input type="submit" name="submit" value="Filter" />
-    <a href="<%=h url_path("overview") %>">Clear</a>
-  </form>
-  <!-- additional filters
-  <div id="filter_block" style="display:none;">
-    <div>
-      <select name="f[additional][][type]">
-        <option value="int">Int</option>
-        <option value="bool">Bool</option>
-      </select>
-      <input type="text" name="f[additional][][key]" />
-      <select name="f[additional][][condition]">
-        <option value="eq">Equal</option>
-        <option value="neq">Not equal</option>
-      </select>
-      <input type="text" name="f[additional][][value]" />
-    </div>
-    <a href="#" class="delete_filter_fields">Close</a>
-  </div>
-  -->
-</div>
+<div class="outer">
+  <div class="unit size3of4">
+    <div class="filter phm pvs">
+      <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
+        <div class="outer mvs">
+          <div class="unit size1of3">
+            <div class="unit size1of2">
+              <div class="prm">
+                <input id="f_controller" type="text" name="f[controller]" value="<%=get_field_val('controller')%>" placeholder="Controller" />
+              </div> <!-- prm -->                        
+            </div>
+            <div class="unit size1of2">
+              <div class="prm">
+                <input id="f_action" type="text" name="f[action]" value="<%=get_field_val('action')%>" placeholder="Action" />
+              </div>
+            </div>
+          </div>                
+          <div class="unit size1of3">                    
+              <div class="unit size1of2">                  
+                <%=select_tag("f[limit]", [100, 500, 1000, 2000, 5000, 10000], get_field_val('limit'))%>
+              </div>
+            </div>
+            <div class="unit size1of3 txtR">
+              <input type="submit" name="submit" value="Filter" class="button primary" />
+              <a href="<%=h url_path("overview") %>" class="button small mls">Clear</a>
+            </div>
+        </div> <!-- outer -->
+        <div class="outer mvs">
+          <div class="unit size1of3">
+            <div class="unit size1of2">
+              <div class="prm">
+                <input id="f_application_name" type="text" name="f[application_name]" value="<%=get_field_val('application_name')%>" placeholder="Application Name" />
+              </div>
+            </div>
+            <div class="unit size1of2">
+              <div class="prm">
+                 <input id="f_ip" type="text" name="f[ip]" value="<%=get_field_val('ip')%>" placeholder="IP" />
+              </div>
+            </div>
+          </div>
+          <div class="unit size1of3">
+            <div class="unit size1of2">
+              <div class="prm ptxs">                        
+                <input type="checkbox" id="err"><label for="err">Error</label>
+                </div>
+              </div>
+          </div> <!-- unit -->
+        </div> <!-- outer -->
+      </form>
+      </div> <!-- filter -->
 
-<div id="log_info"></div>
-
-<ul id="logs_list">
-<% @logs.each do |log| %>
-  <%= partial(:"shared/log", :object => log) %>
-<% end %>
-</ul>
+      <div class="filter-toggle">
+        Filter
+      </div> <!-- filter-toggle -->
+      <table id="logs_list">
+        <tr>
+          <th>Received</th>
+          <th>Action</th>
+          <th>Controller</th>
+          <th>IP</th>
+          <th>URL</th>
+          <th>Runtime</th>
+        </tr>
+        
+        <% @logs.each do |log| %>
+          <%= partial(:"shared/log", :object => log) %>
+        <% end %>
+      </table>
+  </div> <!-- unit size3of4 -->
+  
+  <div class="unit size1of4">
+    <div id="log_info" class="details">
+    </div>
+  </div> <!-- unit size1of4 -->
+</div> <!-- outer -->

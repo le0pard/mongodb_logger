@@ -1,0 +1,42 @@
+/* spacing helpers
+p,m = padding,margin
+a,t,r,b,l,h,v = all,top,right,bottom,left,horizontal,vertical
+s,m,l,n = small(10px),medium(20px),large(40px),none(0px)
+*/
+
+.ptn,.pvn,.pan{padding-top:0px}
+.pts,.pvs,.pas{padding-top:10px}
+.ptm,.pvm,.pam{padding-top:20px}
+.ptl,.pvl,.pal{padding-top:40px}
+.prn,.phn,.pan{padding-right:0px}
+.prs,.phs,.pas{padding-right:10px}
+.prm,.phm,.pam{padding-right:20px}
+.prl,.phl,.pal{padding-right:40px}
+.pbn,.pvn,.pan{padding-bottom:0px}
+.pbs,.pvs,.pas{padding-bottom:10px}
+.pbm,.pvm,.pam{padding-bottom:20px}
+.pbl,.pvl,.pal{padding-bottom:40px}
+.pln,.phn,.pan{padding-left:0px}
+.pls,.phs,.pas{padding-left:10px}
+.plm,.phm,.pam{padding-left:20px}
+.pll,.phl,.pal{padding-left:40px}
+.mtn,.mvn,.man{margin-top:0px}
+.mts,.mvs,.mas{margin-top:10px}
+.mtm,.mvm,.mam{margin-top:20px}
+.mtl,.mvl,.mal{margin-top:40px}
+.mrn,.mhn,.man{margin-right:0px}
+.mrs,.mhs,.mas{margin-right:10px}
+.mrm,.mhm,.mam{margin-right:20px}
+.mrl,.mhl,.mal{margin-right:40px}
+.mbn,.mvn,.man{margin-bottom:0px}
+.mbs,.mvs,.mas{margin-bottom:10px}
+.mbm,.mvm,.mam{margin-bottom:20px}
+.mbl,.mvl,.mal{margin-bottom:40px}
+.mln,.mhn,.man{margin-left:0px}
+.mls,.mhs,.mas{margin-left:10px}
+.mlm,.mhm,.mam{margin-left:20px}
+.mll,.mhl,.mal{margin-left:40px}
+
+.ptxs {
+    padding-top: 5px;
+}
