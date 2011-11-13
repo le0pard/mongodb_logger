@@ -42,20 +42,44 @@
   </li>
   <li class="outer pvs phm">
     <div class="unit size1of5">
-      <span class="pale">Params:</span>
+      <span class="pale">Runtime:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <code>
-        <%=h @log['params'] %>
-      </code>
+      <%=h @log['runtime'] %> ms
     </div> <!-- unit -->
   </li>
   <li class="outer pvs phm">
     <div class="unit size1of5">
-      <span class="pale">Runtime:</span>
+      <span class="pale">Params:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <%=h @log['runtime'] %>
+      <pre>
+        <%=h PP.pp(@log['params'].to_hash, "" ) %>
+      </pre>
     </div> <!-- unit -->
   </li>
+  <% unless @log['messages']['error'].blank? %>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Error message:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <pre>
+        <%=h @log['messages']['error'].join("\n") %>
+      </pre>
+    </div> <!-- unit -->
+  </li>
+  <% end %>
+  <% unless @log['messages']['info'].blank? %>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Info message:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <pre>
+        <%=h @log['messages']['info'].join("\n") %>
+      </pre>
+    </div> <!-- unit -->
+  </li>
+  <% end %>
 </ul>

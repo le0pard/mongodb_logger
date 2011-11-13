@@ -6,7 +6,6 @@ MongodbLoggerJS =
   tail_log_started: false
   
   init: ->
-    
     $(document).ajaxStart =>
       $('#ajax_loader').show()
     $(document).ajaxStop =>
