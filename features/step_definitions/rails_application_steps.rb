@@ -34,11 +34,11 @@ end
 
 Then /^the tests should have run successfully$/ do
   bundle_gem("therubyracer", nil) if rails31?
-  step %{I run "bundle install"}
+  step %{I run "#{File.join(LOCAL_GEM_ROOT, 'bin', 'bundle')} install"}
   @terminal.status.exitstatus.should == 0
-  step %{I run "bundle exec rake db:create db:migrate RAILS_ENV=test --trace"}
+  step %{I run "#{File.join(LOCAL_GEM_ROOT, 'bin', 'bundle')} exec rake db:create db:migrate RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
-  step %{I run "bundle exec rake test RAILS_ENV=test --trace"}
+  step %{I run "#{File.join(LOCAL_GEM_ROOT, 'bin', 'bundle')} exec rake test RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
 end
 

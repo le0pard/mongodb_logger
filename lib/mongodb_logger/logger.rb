@@ -129,8 +129,8 @@ module MongodbLogger
           config_file = Rails.root.join("config", filename)
           if config_file.file?
             config = YAML.load(ERB.new(config_file.read).result)[Rails.env]
-            config = config['mongodb_logger'] if config.has_key?('mongodb_logger')
-            break
+            config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
+            break unless config.blank?
           end
         end
         config

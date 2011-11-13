@@ -30,7 +30,7 @@ module RailsHelpers
   end
 
   def gemfile_path
-    gemfile = File.join(rails_root, 'Gemfile')
+    File.join(rails_root, 'Gemfile')
   end
 
   def rakefile_path
@@ -42,7 +42,7 @@ module RailsHelpers
   end
   
   def logs_path
-    gemfile = File.join(rails_root, 'log')
+    File.join(rails_root, 'log')
   end
 
   def bundle_gem(gem_name, version = nil)
