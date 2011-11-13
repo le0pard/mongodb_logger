@@ -6,7 +6,7 @@ end
 
 After do |story|
   if story.failed?
-    # puts @terminal.output
+    puts @terminal.output
   end
 end
 
