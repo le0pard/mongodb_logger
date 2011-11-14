@@ -126,11 +126,5 @@ module MongodbLogger
       partial(:"shared/log_info", :object => @log)
     end
     
-    # application js
-    get '/application.js' do
-      content_type 'text/javascript'
-      coffee :application
-    end
-    
   end
 end

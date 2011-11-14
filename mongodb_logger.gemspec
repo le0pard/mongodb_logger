@@ -11,13 +11,14 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
   gem.rdoc_options      = ["--charset=UTF-8"]
 
-  gem.add_development_dependency "rspec",       "~> 2.7.0"
-  gem.add_development_dependency "shoulda",     ">= 2.0.0"
-  gem.add_development_dependency "mocha",       "~> 0.10.0"
-  gem.add_development_dependency "cucumber",    "~> 1.1.2"
+  gem.add_development_dependency "rspec",           "~> 2.7.0"
+  gem.add_development_dependency "shoulda",         ">= 2.0.0"
+  gem.add_development_dependency "mocha",           "~> 0.10.0"
+  gem.add_development_dependency "cucumber",        "~> 1.1.2"
+  gem.add_development_dependency "coffee-script",   "~> 2.2.0"
+  gem.add_development_dependency "therubyracer",    "~> 0.9.9"
   
   gem.add_runtime_dependency "rake",            "~> 0.9.0"
-  gem.add_runtime_dependency "bundler",         ">= 1.0.0"
   gem.add_runtime_dependency "mongo",           "~> 1.4.0"
   gem.add_runtime_dependency "bson_ext",        "~> 1.4.0"
   gem.add_runtime_dependency "i18n",            ">= 0.4.1"
@@ -25,7 +26,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "activesupport",   ">= 3.0.0"
   gem.add_runtime_dependency "sinatra",         ">= 1.2.0"
   gem.add_runtime_dependency "erubis",          ">= 2.6.6"
-  gem.add_runtime_dependency "coffee-script",   "~> 2.2.0"
   gem.add_runtime_dependency "vegas",           "~> 0.1.2"
 
   gem.rubyforge_project = "mongodb_logger"
