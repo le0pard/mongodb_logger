@@ -6,7 +6,10 @@ Gem::Specification.new do |gem|
   gem.email         = ["leopard.not.a@gmail.com"]
   gem.description   = %q{MongoDB logger for Rails 3}
   gem.summary       = %q{MongoDB logger for Rails 3}
-  gem.homepage      = ""
+  gem.homepage      = "http://mongodb-logger.catware.org"
+
+  gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
+  gem.rdoc_options      = ["--charset=UTF-8"]
 
   gem.add_development_dependency "rspec",       "~> 2.7.0"
   gem.add_development_dependency "shoulda",     ">= 2.0.0"
