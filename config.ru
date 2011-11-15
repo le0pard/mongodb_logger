@@ -8,9 +8,10 @@ require 'mongodb_logger/server'
 # config file you want loaded on boot.
 if ENV['MONGODBLOGGERCONFIG'] && ::File.exists?(::File.expand_path(ENV['MONGODBLOGGERCONFIG']))
   MongodbLogger::ServerConfig.set_config(::File.expand_path(ENV['MONGODBLOGGERCONFIG']))
+  use Rack::ShowExceptions
+  run MongodbLogger::Server.new
 else
   raise "Please provide config file"
+  exit 1
 end
 
-use Rack::ShowExceptions
-run MongodbLogger::Server.new
