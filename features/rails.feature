@@ -7,4 +7,6 @@ Feature: Install the Gem in a Rails application and test it
     When I generate a new Rails application
     And I configure my application to require the "mongodb_logger" gem
     And I setup mongodb_logger tests
+    And I setup all gems for rails
+    And I prepare rails environment for testing
     Then the tests should have run successfully

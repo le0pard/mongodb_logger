@@ -32,12 +32,19 @@ When /^I setup mongodb_logger tests$/ do
   add_routes
 end
 
-Then /^the tests should have run successfully$/ do
+When /^I setup all gems for rails$/ do
   bundle_gem("therubyracer", nil) if rails31?
   step %{I run "bundle install"}
   @terminal.status.exitstatus.should == 0
+end
+
+When /^I prepare rails environment for testing$/ do
   step %{I run "rake db:create db:migrate RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
+end
+
+
+Then /^the tests should have run successfully$/ do
   step %{I run "rake test RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
 end
