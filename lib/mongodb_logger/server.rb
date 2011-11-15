@@ -1,6 +1,9 @@
 require 'sinatra/base'
 require 'erubis'
 require 'json'
+require 'active_support'
+
+require 'mongodb_logger/server/view_helpers'
 require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/model/filter'
 require 'mongodb_logger/server_config'
@@ -11,6 +14,7 @@ end
 
 module MongodbLogger
   class Server < Sinatra::Base
+    helpers Sinatra::ViewHelpers
     helpers Sinatra::Partials
     
     dir = File.dirname(File.expand_path(__FILE__))
@@ -42,19 +46,6 @@ module MongodbLogger
         request.env['SCRIPT_NAME']
       end
       
-      def get_field_val(key)
-        return MongodbLogger::ServerModel::Filter::DEFAULT_LIMIT if !@filter_model && "limit" == key
-        @filter_model ? @filter_model.get_val(key) : nil
-      end
-      
-      def select_tag(name, values, selected = nil)
-        selector = ["<select name=#{name}>"]
-        values.each do |val|
-          selector << "<option value='#{val}' #{"selected='selected'" if val.to_s == selected.to_s}>#{val}</option>"
-        end
-        selector << "</select>"
-        selector.join("\n")
-      end
     end
     
     before do
@@ -88,13 +79,8 @@ module MongodbLogger
 
     %w( overview ).each do |page|
       get "/#{page}/?" do
-        if params[:f]
-          @filter_model = MongodbLogger::ServerModel::Filter.new(params[:f])
-          @logs = @collection.find(@filter_model.get_conditions).limit(@filter_model.get_limit)
-        else
-          @logs = @collection.find.limit(MongodbLogger::ServerModel::Filter::DEFAULT_LIMIT)
-        end
-        @logs = @logs.sort('$natural', -1)
+        @filter = MongodbLogger::ServerModel::Filter.new(params[:filter])
+        @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural', -1).limit(@filter.get_mongo_limit)
         show page
       end
     end

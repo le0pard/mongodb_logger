@@ -25,22 +25,22 @@
           <div class="unit size1of3">
             <div class="unit size1of2">
               <div class="prm">
-                <input id="f_controller" type="text" name="f[controller]" value="<%=get_field_val('controller')%>" placeholder="Controller" />
+                <%= text_field_tag @filter, :controller, :placeholder => "Controller" %>
               </div> <!-- prm -->                        
             </div>
             <div class="unit size1of2">
               <div class="prm">
-                <input id="f_action" type="text" name="f[action]" value="<%=get_field_val('action')%>" placeholder="Action" />
+                <%= text_field_tag @filter, :action, :placeholder => "Action" %>
               </div>
             </div>
           </div>                
           <div class="unit size1of3">                    
-              <div class="unit size1of2">                  
-                <%=select_tag("f[limit]", [100, 500, 1000, 2000, 5000, 10000], get_field_val('limit'))%>
+              <div class="unit size1of2">
+                <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
               </div>
             </div>
             <div class="unit size1of3 txtR">
-              <input type="submit" name="submit" value="Filter" class="button primary" />
+              <%= submit_tag :submit, "Filter", :class => "button primary" %>
               <a href="<%=h url_path("overview") %>" class="button small mls">Clear</a>
             </div>
         </div> <!-- outer -->
@@ -48,21 +48,22 @@
           <div class="unit size1of3">
             <div class="unit size1of2">
               <div class="prm">
-                <input id="f_application_name" type="text" name="f[application_name]" value="<%=get_field_val('application_name')%>" placeholder="Application Name" />
+                <%= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
               </div>
             </div>
             <div class="unit size1of2">
               <div class="prm">
-                 <input id="f_ip" type="text" name="f[ip]" value="<%=get_field_val('ip')%>" placeholder="IP" />
+                <%= text_field_tag @filter, :ip, :placeholder => "IP" %>
               </div>
             </div>
           </div>
           <div class="unit size1of3">
             <div class="unit size1of2">
-              <div class="prm ptxs">                        
-                <input type="checkbox" id="err"><label for="err">Error</label>
-                </div>
+              <div class="prm ptxs">
+                <%#= f.check_box :is_exception %>
+                <%#= f.label :is_exception, "Filter exceptions" %>
               </div>
+            </div>
           </div> <!-- unit -->
         </div> <!-- outer -->
       </form>
