@@ -20,7 +20,7 @@ When /^I generate a new Rails application$/ do
   else
     raise "Unable to generate a Rails application:\n#{@terminal.output}"
   end
-  require_thread if rails30?
+  #require_thread if rails30?
 end
 
 When /^I configure my application to require the "([^\"]*)" gem(?: with version "(.+)")?$/ do |gem_name, version|
