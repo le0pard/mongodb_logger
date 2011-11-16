@@ -122,12 +122,14 @@ It:
   
       mongodb_logger_web config.yml -p 8282
       
-###  Passenger
+###  Passenger, Unicorn, Thin, etc.
 
-  Using Passenger? MongodbLogger ships with a `config.ru` you can use. See Phusion's guide:
+  Using Passenger, Unicorn, Thin, etc? MongodbLogger ships with a `config.ru` you can use. See  guide:
 
-  * Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
-  * Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>
+  * Passenger Apache: <http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application>
+  * Passenger Nginx: <http://www.modrails.com/documentation/Users%20guide%20Nginx.html#deploying_a_rack_app>
+  * Unicorn: <http://unicorn.bogomips.org>
+  * Thin: <http://code.macournoyer.com/thin/usage>
   
   Don't forget setup MONGODBLOGGERCONFIG env variable, which provide information about MongodbLogger config. Example starting with unicorn:
   
