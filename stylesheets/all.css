@@ -1,0 +1,59 @@
+#github{
+  right:-65px;
+  height:30px;
+  top:40px;
+  position:absolute;
+  text-decoration:none;
+  width:250px;
+  -moz-transform:rotate(45deg);
+  -webkit-transform:rotate(45deg);
+  -o-transform:rotate(45deg);
+  -ms-transform:rotate(45deg);
+  transform:rotate(45deg)
+}
+
+#github span{
+  background:#F37500;
+  border-top: 2px solid #FC9437;
+  border-bottom: 2px solid #FC9437;
+  color:#fff;
+  font-size:14px;
+  left:0;
+  padding:5px 0;
+  position:absolute;
+  text-align:center;
+  width:250px
+}
+
+#github span:last-child{
+  background:#6B6B6B;
+  color:#fff;
+  border-top: 2px solid #858585;
+  border-bottom: 2px solid #858585;
+  opacity:0
+}
+
+#github:hover span:first-child{
+  opacity:0
+}
+
+#github:hover span:last-child{
+  opacity:1
+}
+
+@media all and (-webkit-transform-3d){
+  #github span{
+    opacity:1 !important;
+    -webkit-backface-visibility:hidden;
+    -webkit-transition:-webkit-transform 1s
+  }
+  #github span:last-child{
+    -webkit-transform:rotateX(180deg)
+  }
+  #github:hover span:first-child{
+    -webkit-transform:rotateX(180deg)
+  }
+  #github:hover span:last-child{
+    -webkit-transform:rotateX(0)
+  }
+}
