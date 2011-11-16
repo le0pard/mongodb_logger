@@ -90,22 +90,3 @@
     </div> <!-- details -->    
   </div> <!-- unit size1of4 -->
 </div> <!-- outer -->
-
-<script type="text/javascript">
-        $(function() {
-            var offset = $("#log_info").offset();
-            var topPadding = 15;
-            $(window).scroll(function() {
-                if ($(window).scrollTop() > offset.top) {
-                    $("#log_info").stop().animate({
-                        marginTop: $(window).scrollTop() - offset.top + topPadding
-                    });
-                } else {
-                    $("#log_info").stop().animate({
-                        marginTop: 0
-                    });
-                };
-            });
-        });
-    </script>
-

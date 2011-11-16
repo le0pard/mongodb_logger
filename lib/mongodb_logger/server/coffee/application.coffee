@@ -4,6 +4,8 @@ $ ->
 MongodbLoggerJS = 
   tail_logs_url: null
   tail_log_started: false
+  log_info_offset: null
+  log_info_padding: 15
   
   init: ->
     $(document).ajaxStart =>
@@ -30,6 +32,15 @@ MongodbLoggerJS =
         elm_obj.parents('tr').addClass('current')
         $('#log_info').load(url)
       return false
+    # log info window  
+    MongodbLoggerJS.log_info_offset = $("#log_info").offset()
+    $(window).scroll =>
+      if $(window).scrollTop() > MongodbLoggerJS.log_info_offset.top
+          $("#log_info").stop().animate
+            marginTop: $(window).scrollTop() - MongodbLoggerJS.log_info_offset.top + MongodbLoggerJS.log_info_padding
+      else
+        $("#log_info").stop().animate
+          marginTop: 0
       
   tail_logs: (count) ->
     url = MongodbLoggerJS.tail_logs_url
