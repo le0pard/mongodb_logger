@@ -66,7 +66,7 @@ module MongodbLogger
     end
 
     def show(page, layout = true)
-     begin
+      begin
         erb page.to_sym, {:layout => layout}
       rescue => e
         erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
