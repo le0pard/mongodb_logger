@@ -19,7 +19,7 @@
 
 <div class="outer">
   <div class="unit size3of4">
-    <div class="filter phm pvs">
+    <div class="filter phm pvs" style="<%= 'display:block;' unless @filter.get_mongo_conditions.blank?  %>">
       <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
         <div class="outer mvs">
           <div class="unit size1of3">
@@ -65,7 +65,7 @@
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle" onclick="$('div.filter').slideToggle();">Filter</div>
+      <div class="filter-toggle">Filter</div>
       
       <table id="logs_list">
         <tr>

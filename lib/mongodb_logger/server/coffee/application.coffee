@@ -32,6 +32,9 @@ MongodbLoggerJS =
         elm_obj.parents('tr').addClass('current')
         $('#log_info').load(url)
       return false
+    # filter tougle
+    $('div.filter-toggle').live 'click', (event) =>
+      $('div.filter').slideToggle()
     # log info window  
     MongodbLoggerJS.log_info_offset = $("#log_info").offset()
     $(window).scroll =>
