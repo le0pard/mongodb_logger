@@ -19,6 +19,14 @@ module MongodbLogger
           self.class.send(:define_method, k, proc{self.instance_variable_get("@#{k}")})  ## method to return instance variable
           self.class.send(:define_method, "#{k}=", proc{|v| self.instance_variable_set("@#{k}", v)})  ## method to set instance variable
         end
+        
+        if !self.respond_to?("limit")
+          self.instance_variable_set("@limit", DEFAULT_LIMIT.to_s)  ##  create instance variable
+          self.class.send(:define_method, "limit", proc{self.instance_variable_get("@limit")})  ## method to return instance variable
+          self.class.send(:define_method, "limit=", proc{|v| self.instance_variable_set("@limit", DEFAULT_LIMIT.to_s)})  ## method to set instance variable
+        elsif self.limit.nil?
+          self.limit = DEFAULT_LIMIT.to_s
+        end 
         build_mongo_conditions
       end
       
@@ -36,7 +44,7 @@ module MongodbLogger
         end
         # set limit
         @mongo_limit = DEFAULT_LIMIT
-        @mongo_limit = self.limit if self.respond_to?("limit")
+        @mongo_limit = self.limit.to_i if self.respond_to?("limit")
       end
       
       def get_mongo_conditions

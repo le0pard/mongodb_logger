@@ -35,7 +35,8 @@
             </div>
           </div>                
             <div class="unit size1of3">
-              <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
+              <%= label_tag @filter, :limit, "Limit of logs" %>
+              <%= select_tag @filter, :limit, [50, 100, 500, 1000, 2000, 5000, 10000] %>
               <%= submit_tag :submit, "Filter", :class => "button primary" %>        
             </div>
         </div> <!-- outer -->
