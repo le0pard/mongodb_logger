@@ -36,7 +36,7 @@
           </div>                
             <div class="unit size1of3">
               <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
-              <%= submit_tag :submit, "Filter", :class => "button primary" %>              
+              <%= submit_tag :submit, "Filter", :class => "button primary" %>        
             </div>
         </div> <!-- outer -->
         <div class="outer mvs">
@@ -55,9 +55,10 @@
           <div class="unit size1of3">
             <div class="unit size1of2">
               <div class="prm ptxs">
+                <%= check_box_tag @filter, :is_exception %>
+                <%= label_tag @filter, :is_exception, "Filter exceptions" %>
+                <br />
                 <a href="<%=h url_path("overview") %>">Clear</a>
-                <%#= f.check_box :is_exception %>
-                <%#= f.label :is_exception, "Filter exceptions" %>
               </div>
             </div>
           </div> <!-- unit -->

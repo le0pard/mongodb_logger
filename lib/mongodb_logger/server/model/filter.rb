@@ -3,7 +3,7 @@ module MongodbLogger
     class Filter
       
       DEFAULT_LIMIT = 2000
-      FIXED_PARAMS = ['action', 'controller', 'ip', 'application_name']
+      FIXED_PARAMS = ['action', 'controller', 'ip', 'application_name', 'is_exception']
       attr_reader :params, :mongo_conditions, :mongo_limit
       
       def initialize(params)
@@ -27,7 +27,11 @@ module MongodbLogger
         FIXED_PARAMS.each do |param_key| 
           if self.respond_to?(param_key)
             value = self.send param_key
-            @mongo_conditions[param_key.to_s] = value unless value.blank?
+            if 'is_exception' == param_key
+              @mongo_conditions[param_key.to_s] = true if value && !value.blank?
+            else
+              @mongo_conditions[param_key.to_s] = value unless value.blank?
+            end
           end
         end
         # set limit
