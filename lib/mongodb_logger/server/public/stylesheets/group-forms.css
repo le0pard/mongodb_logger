@@ -5,7 +5,6 @@ option {
 input[type="text"],
 input[type="password"],
 textarea {
-    border: 0;
     width: 100%;
     padding: 4px 5px;
     -moz-box-sizing: border-box;

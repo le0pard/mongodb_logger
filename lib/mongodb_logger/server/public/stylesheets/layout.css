@@ -166,3 +166,10 @@ body {
 .footer a {
     color: #666;
 }
+
+
+/* 
+http://localhost:3000/mongodblogs/overview
+./bin/mongodb_logger_web ../mongo.yml -F
+
+ */

@@ -26,7 +26,7 @@ module MongodbLogger
     else
       set :public, "#{dir}/server/public"
     end
-    set :environment, :production
+    #set :environment, :production
     set :static, true
 
     helpers do

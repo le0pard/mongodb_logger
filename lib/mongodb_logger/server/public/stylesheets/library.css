@@ -91,6 +91,7 @@ pre {
 }
 
 .filter {
+    display: none;
     background-color: #ededed;
     box-shadow: 0 1px 2px #bbb inset;
     border-bottom: 1px solid #bbb;
@@ -114,6 +115,21 @@ pre {
     
 }
 
+.logs-time {
+    width: 200px;
+    padding: 7px 15px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font: 12px arial, sans-serif;
+    vertical-align: middle;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px #e6e6e6 inset, 0 1px 0 #fff;
+}
+
+
 #tail_logs_block.started .info, #tail_logs_block .initial {
   display: inline-block;
 }
@@ -128,7 +144,7 @@ pre {
 
 .url_log {
     width: 200px;
-    text-overflow: clip;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }

@@ -8,7 +8,7 @@
         </a>
       </div>
       <div class="info">
-        <span id="tail_logs_time"></span>
+        <span id="tail_logs_time" class="logs-time mrs"></span>
         <a id="tail_logs_stop_link" href="#" class="button negative mts mrs">
           <span class="stop">Stop</span>
         </a>
@@ -34,14 +34,9 @@
               </div>
             </div>
           </div>                
-          <div class="unit size1of3">                    
-              <div class="unit size1of2">
-                <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
-              </div>
-            </div>
-            <div class="unit size1of3 txtR">
-              <%= submit_tag :submit, "Filter", :class => "button primary" %>
-              <a href="<%=h url_path("overview") %>" class="button small mls">Clear</a>
+            <div class="unit size1of3">
+              <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
+              <%= submit_tag :submit, "Filter", :class => "button primary" %>              
             </div>
         </div> <!-- outer -->
         <div class="outer mvs">
@@ -60,6 +55,7 @@
           <div class="unit size1of3">
             <div class="unit size1of2">
               <div class="prm ptxs">
+                <a href="<%=h url_path("overview") %>">Clear</a>
                 <%#= f.check_box :is_exception %>
                 <%#= f.label :is_exception, "Filter exceptions" %>
               </div>
@@ -69,9 +65,8 @@
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle">
-        Filter
-      </div> <!-- filter-toggle -->
+      <div class="filter-toggle" onclick="$('div.filter').slideToggle();">Filter</div>
+      
       <table id="logs_list">
         <tr>
           <th>Received</th>
@@ -89,7 +84,28 @@
   </div> <!-- unit size3of4 -->
   
   <div class="unit size1of4">
-    <div id="log_info" class="details">
-    </div>
+    <div class="details">
+      <div id="log_info">
+      </div>
+    </div> <!-- details -->    
   </div> <!-- unit size1of4 -->
 </div> <!-- outer -->
+
+<script type="text/javascript">
+        $(function() {
+            var offset = $("#log_info").offset();
+            var topPadding = 15;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > offset.top) {
+                    $("#log_info").stop().animate({
+                        marginTop: $(window).scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $("#log_info").stop().animate({
+                        marginTop: 0
+                    });
+                };
+            });
+        });
+    </script>
+
