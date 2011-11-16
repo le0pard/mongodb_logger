@@ -26,7 +26,7 @@ module MongodbLogger
     else
       set :public, "#{dir}/server/public"
     end
-
+    set :environment, :production
     set :static, true
 
     helpers do
@@ -61,10 +61,11 @@ module MongodbLogger
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
       end
+      
+      cache_control :private, :must_revalidate, :max_age => 0
     end
 
     def show(page, layout = true)
-      response["Cache-Control"] = "max-age=0, private, must-revalidate"
       begin
         erb page.to_sym, {:layout => layout}
       rescue => e
@@ -110,6 +111,10 @@ module MongodbLogger
     get "/log_info/:id" do
       @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
       partial(:"shared/log_info", :object => @log)
+    end
+    
+    error do
+      erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect
     end
     
   end

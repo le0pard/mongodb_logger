@@ -43,19 +43,25 @@ module MongodbLogger
     end
 
     def add(severity, message = nil, progname = nil, &block)
-      if @level <= severity && message.present? && @mongo_record.present?
+      if @level && @level <= severity && message.present? && @mongo_record.present?
         # do not modify the original message used by the buffered logger
         msg = logging_colorized? ? message.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : message
         @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
       end
       # may modify the original message
-      disable_file_logging? ? message : super
+      disable_file_logging? ? message : (@level ? super : message)
     end
 
     # Drop the capped_collection and recreate it
     def reset_collection
-      @mongo_collection.drop
-      create_collection
+      if @mongo_connection && @mongo_collection
+        @mongo_collection.drop
+        create_collection
+      end
+    end
+    
+    def flush
+      # do nothing
     end
 
     def mongoize(options={})
