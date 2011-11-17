@@ -54,6 +54,20 @@ a:hover, a:active {
     background: url(../images/failure.png) no-repeat 100% 50%;
 }
 
+.notice {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: url(../images/success.png) no-repeat 0 0;
+}
+
+.error {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: url(../images/failure.png) no-repeat 0 0;
+}
+
 code {
     display: block;
     overflow: auto;
