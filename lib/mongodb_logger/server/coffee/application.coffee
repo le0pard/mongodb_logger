@@ -63,7 +63,7 @@ MongodbLoggerJS =
               count = data.count
               if data.content? && data.content.length > 0
                 elements = $(data.content)
-                elements.find('td.bubble').addClass('new')
+                elements.find('td.status-cell span').addClass('new')
                 $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
           if MongodbLoggerJS.tail_log_started
             fcallback = -> MongodbLoggerJS.tail_logs(count)
