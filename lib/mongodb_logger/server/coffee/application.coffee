@@ -62,8 +62,9 @@ MongodbLoggerJS =
             if count != data.count
               count = data.count
               if data.content? && data.content.length > 0
-                data.content += '<tr class="tail_date"><td colspan="6">' + data.time + '</td></tr>'
-                $('#logs_list tr:first').after(data.content).effect("highlight", {}, 1000)
+                elements = $(data.content)
+                elements.find('td.bubble').addClass('new')
+                $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
           if MongodbLoggerJS.tail_log_started
             fcallback = -> MongodbLoggerJS.tail_logs(count)
             setTimeout fcallback, 2000
