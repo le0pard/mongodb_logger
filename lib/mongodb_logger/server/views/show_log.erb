@@ -53,9 +53,7 @@
       <span class="pale">Params:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <pre>
-        <%=h @log['params'] %>
-      </pre>
+      <code><%=h @log['params'] %></code>
     </div> <!-- unit -->
   </li>
   <% unless @log['messages']['error'].blank? %>
@@ -64,7 +62,7 @@
       <span class="pale">Error message:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <pre><%=h @log['messages']['error'].join("\n") %></pre>
+      <code><%=h @log['messages']['error'].join("\n") %></code>
     </div> <!-- unit -->
   </li>
   <% end %>
@@ -74,7 +72,7 @@
       <span class="pale">Info message:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <pre><%=h @log['messages']['info'].join("\n") %></pre>
+      <code><%=h @log['messages']['info'].join("\n") %></code>
     </div> <!-- unit -->
   </li>
   <% end %>

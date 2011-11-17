@@ -1,13 +1,13 @@
 <div class="pas">
   <div class="unit-right ptxs">
-    <a href="<%=h url_path("log/#{log_info['_id']}") %>" target="_blank">Direct Link</a>
+    <a href="<%=h url_path("log/#{log_info['_id']}") %>" target="_blank">More Info</a>
   </div> <!-- unit-right -->
   <h2 class="phs mvs"><span class="<%= log_info['is_exception'] ? 'failure' : 'success' %>">Message</span></h2>
-  <div class="phs">
+  <div class="phs wrap_text">
     <% if log_info['is_exception'] %>
-      Error: <%= log_info['messages']['error'] %>
+      Error: <%= log_info['messages']['error'].join("\n").truncate(300, :separator => ' ') %>
     <% else %>
-      Info: <%= log_info['messages']['info'] %>
+      Info: <%= log_info['messages']['info'].join("\n").truncate(300, :separator => ' ') %>
     <% end %>
   </div> <!-- phs -->
   <h2 class="phs mtm mbs">URL</h2>

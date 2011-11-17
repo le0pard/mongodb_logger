@@ -54,7 +54,7 @@ a:hover, a:active {
     background: url(../images/failure.png) no-repeat 100% 50%;
 }
 
-pre {
+code {
     display: block;
     overflow: auto;
     height: 260px;
@@ -148,4 +148,8 @@ pre {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.wrap_text {
+    word-wrap: break-word;
 }

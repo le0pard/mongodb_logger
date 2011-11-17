@@ -19,7 +19,7 @@
 
 <div class="outer">
   <div class="unit size3of4">
-    <div class="filter phm pvs">
+    <div class="filter phm pvs" style="<%= 'display:block;' unless @filter.get_mongo_conditions.blank?  %>">
       <form action="<%=h url_path("overview") %>" method="get" accept-charset="UTF-8">
         <div class="outer mvs">
           <div class="unit size1of3">
@@ -35,8 +35,9 @@
             </div>
           </div>                
             <div class="unit size1of3">
-              <%#= select_tag @filter, :limit, :options => [100, 500, 1000, 2000, 5000, 10000] %>
-              <%= submit_tag :submit, "Filter", :class => "button primary" %>              
+              <%= label_tag @filter, :limit, "Limit of logs" %>
+              <%= select_tag @filter, :limit, [50, 100, 500, 1000, 2000, 5000, 10000] %>
+              <%= submit_tag :submit, "Filter", :class => "button primary" %>        
             </div>
         </div> <!-- outer -->
         <div class="outer mvs">
@@ -55,9 +56,10 @@
           <div class="unit size1of3">
             <div class="unit size1of2">
               <div class="prm ptxs">
+                <%= check_box_tag @filter, :is_exception %>
+                <%= label_tag @filter, :is_exception, "Filter exceptions" %>
+                <br />
                 <a href="<%=h url_path("overview") %>">Clear</a>
-                <%#= f.check_box :is_exception %>
-                <%#= f.label :is_exception, "Filter exceptions" %>
               </div>
             </div>
           </div> <!-- unit -->
@@ -65,10 +67,11 @@
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle" onclick="$('div.filter').slideToggle();">Filter</div>
+      <div class="filter-toggle">Filter</div>
       
       <table id="logs_list">
         <tr>
+          <th></th>
           <th>Received</th>
           <th>Controller</th>
           <th>Action</th>
@@ -90,22 +93,3 @@
     </div> <!-- details -->    
   </div> <!-- unit size1of4 -->
 </div> <!-- outer -->
-
-<script type="text/javascript">
-        $(function() {
-            var offset = $("#log_info").offset();
-            var topPadding = 15;
-            $(window).scroll(function() {
-                if ($(window).scrollTop() > offset.top) {
-                    $("#log_info").stop().animate({
-                        marginTop: $(window).scrollTop() - offset.top + topPadding
-                    });
-                } else {
-                    $("#log_info").stop().animate({
-                        marginTop: 0
-                    });
-                };
-            });
-        });
-    </script>
-

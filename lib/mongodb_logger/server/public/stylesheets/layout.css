@@ -102,6 +102,7 @@ body {
     border: 1px solid #ADB4B8;
     background-color: #fff;
     box-shadow: 0 1px 2px rgba(25,25,25,0.2);
+    min-height: 500px;
 }
 
 .details {
@@ -123,7 +124,7 @@ body {
     background: -ms-linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
     background: linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
-    
+    min-height: 400px;
 }
 
 /* nav */

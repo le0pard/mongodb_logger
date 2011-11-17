@@ -4,6 +4,8 @@ $ ->
 MongodbLoggerJS = 
   tail_logs_url: null
   tail_log_started: false
+  log_info_offset: null
+  log_info_padding: 15
   
   init: ->
     $(document).ajaxStart =>
@@ -30,6 +32,18 @@ MongodbLoggerJS =
         elm_obj.parents('tr').addClass('current')
         $('#log_info').load(url)
       return false
+    # filter tougle
+    $('div.filter-toggle').live 'click', (event) =>
+      $('div.filter').slideToggle()
+    # log info window  
+    MongodbLoggerJS.log_info_offset = $("#log_info").offset()
+    $(window).scroll =>
+      if $(window).scrollTop() > MongodbLoggerJS.log_info_offset.top
+          $("#log_info").stop().animate
+            marginTop: $(window).scrollTop() - MongodbLoggerJS.log_info_offset.top + MongodbLoggerJS.log_info_padding
+      else
+        $("#log_info").stop().animate
+          marginTop: 0
       
   tail_logs: (count) ->
     url = MongodbLoggerJS.tail_logs_url
@@ -48,8 +62,9 @@ MongodbLoggerJS =
             if count != data.count
               count = data.count
               if data.content? && data.content.length > 0
-                data.content += '<tr class="tail_date"><td colspan="6">' + data.time + '</td></tr>'
-                $('#logs_list tr:first').after(data.content).effect("highlight", {}, 1000)
+                elements = $(data.content)
+                elements.find('td.bubble').addClass('new')
+                $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
           if MongodbLoggerJS.tail_log_started
             fcallback = -> MongodbLoggerJS.tail_logs(count)
             setTimeout fcallback, 2000
