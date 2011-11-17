@@ -61,6 +61,10 @@ a:hover, a:active {
     background: url(../images/success.png) no-repeat 0 0;
 }
 
+.notice.new {
+    background: url(../images/newlog.png) no-repeat 0 0;
+}
+
 .error {
     width: 10px;
     height: 10px;
