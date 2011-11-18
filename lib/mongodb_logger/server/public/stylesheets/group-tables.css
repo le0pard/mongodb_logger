@@ -5,7 +5,7 @@ table {
 
 th {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     border-bottom: 2px solid #ccc;
 }
@@ -14,6 +14,9 @@ td {
     padding: 10px 20px;
     border-top: 1px solid #ddd;
     background: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 tr:nth-child(even) td {
@@ -43,6 +46,9 @@ td:last-child {
 
 .status-cell {
     width: 10px;
-    padding: 20px 0;
     text-align: center;
+}
+
+.url_log {
+    width: 10%;
 }

@@ -58,7 +58,14 @@ a:hover, a:active {
     width: 10px;
     height: 10px;
     display: inline-block;
+    margin-right: 4px;
+    margin-left: -14px;
     background: url(../images/success.png) no-repeat 0 0;
+}
+
+.arrow-down {
+    padding-right: 15px;
+    background: url(../images/arrow-down.png) no-repeat 100% 50%;
 }
 
 .notice.new {
@@ -160,13 +167,6 @@ code {
     table-layout: fixed;
 }
 
-
-.url_log {
-    width: 200px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
 
 .wrap_text {
     word-wrap: break-word;

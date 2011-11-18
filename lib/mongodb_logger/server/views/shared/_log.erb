@@ -1,6 +1,5 @@
 <tr class="log_info" data-url="<%=h url_path("log_info/#{log['_id']}") %>">
-  <td class="status-cell"><span class="<%= log['is_exception'] ? "error" : "notice" %>"></span></td>
-  <td><%=h log['request_time']%></td>
+  <td><span class="<%= log['is_exception'] ? "error" : "notice" %>"></span> <%=h log['request_time']%></td>
   <td><%=h log['controller']%></td>
   <td><%=h log['action']%></td>
   <td><%=h log['ip']%></td>

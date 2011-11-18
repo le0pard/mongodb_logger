@@ -15,6 +15,8 @@
       </div>
     </div>
   </div> <!-- unit-right -->
+  
+  <div id="ajax_loader"><img src="<%=u 'images/spinner.gif'%>" alt="loading..."></div>
 </div> <!-- topline -->
 
 <div class="outer">
@@ -32,12 +34,18 @@
               <div class="prm">
                 <%= text_field_tag @filter, :action, :placeholder => "Action" %>
               </div>
-            </div>
+            </div>            
           </div>                
             <div class="unit size1of3">
-              <%= label_tag @filter, :limit, "Limit of logs" %>
-              <%= select_tag @filter, :limit, [50, 100, 500, 1000, 2000, 5000, 10000] %>
-              <%= submit_tag :submit, "Filter", :class => "button primary" %>        
+              <div class="unit size1of2">
+                <%= label_tag @filter, :limit, "Limit of logs" %>
+                <%= select_tag @filter, :limit, [50, 100, 500, 1000, 2000, 5000, 10000] %>
+              </div> <!-- unit -->
+              <div class="unit size1of2">
+                <div class="plm">
+                  <%= submit_tag :submit, "Filter", :class => "button primary" %>
+                </div> <!-- plm -->                
+              </div> <!-- unit -->
             </div>
         </div> <!-- outer -->
         <div class="outer mvs">
@@ -58,26 +66,29 @@
               <div class="prm ptxs">
                 <%= check_box_tag @filter, :is_exception %>
                 <%= label_tag @filter, :is_exception, "Filter exceptions" %>
-                <br />
-                <a href="<%=h url_path("overview") %>">Clear</a>
               </div>
             </div>
+            <div class="unit size1of2">
+              <div class="ptxs plm">
+                <a href="<%=h url_path("overview") %>">Clear</a>
+              </div> <!-- ptxs -->              
+            </div> <!-- unit -->
           </div> <!-- unit -->
         </div> <!-- outer -->
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle">Filter</div>
+      <div class="filter-toggle"><span class="arrow-down">Filter</span></div>
       
       <table id="logs_list">
-        <tr>
-          <th></th>
+        <tr>          
           <th>Received</th>
           <th>Controller</th>
           <th>Action</th>
           <th>IP</th>
           <th>URL</th>
           <th>Runtime</th>
+          <!-- <th></th> -->
         </tr>
         
         <% @logs.each do |log| %>

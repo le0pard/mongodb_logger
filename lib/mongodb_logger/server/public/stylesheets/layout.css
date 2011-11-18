@@ -54,6 +54,7 @@ body {
 
 .topline {
     height: 50px;
+    position: relative;
     background: rgb(238,238,238);
     border-bottom: 1px solid #ADB4B8;
     background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%);
@@ -168,7 +169,12 @@ body {
     color: #666;
 }
 
-
+#ajax_loader {
+    position: absolute;
+    top: 15px;
+    margin-left: -110px;
+    left: 50%;
+}
 /* 
 http://localhost:3000/mongodblogs/overview
 ./bin/mongodb_logger_web ../mongo.yml -F
