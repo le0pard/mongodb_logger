@@ -23,6 +23,11 @@ tr:nth-child(even) td {
     background-color: #f8f8f8;
 }
 
+tr.newlog td {
+    font-weight: bold;
+    background: #ffe;
+}
+
 tr:hover td {
     background-color: #E7F4FB;
 }
