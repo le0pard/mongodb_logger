@@ -2,7 +2,7 @@ module MongodbLogger
   module ServerModel
     class Filter
       
-      DEFAULT_LIMIT = 2000
+      DEFAULT_LIMIT = 100
       FIXED_PARAMS = ['action', 'controller', 'ip', 'application_name', 'is_exception']
       attr_reader :params, :mongo_conditions, :mongo_limit
       
