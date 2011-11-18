@@ -170,6 +170,7 @@ body {
 }
 
 #ajax_loader {
+    display: none;
     position: absolute;
     top: 15px;
     margin-left: -110px;
