@@ -80,21 +80,24 @@
 
       <div class="filter-toggle"><span class="arrow-down">Filter</span></div>
       
-      <table id="logs_list">
-        <tr>          
-          <th>Received</th>
-          <th>Controller</th>
-          <th>Action</th>
-          <th>IP</th>
-          <th>URL</th>
-          <th>Runtime</th>
-          <!-- <th></th> -->
-        </tr>
+      <% if @logs.count > 0 %>
+        <table id="logs_list">
+          <tr>          
+            <th>Received</th>
+            <th>Controller</th>
+            <th>Action</th>
+            <th>IP</th>
+            <th>URL</th>
+            <th>Runtime</th>
+          </tr>
         
-        <% @logs.each do |log| %>
-          <%= partial(:"shared/log", :object => log) %>
-        <% end %>
-      </table>
+          <% @logs.each do |log| %>
+            <%= partial(:"shared/log", :object => log) %>
+          <% end %>
+        </table>
+      <% else %>
+        <div class="pale pal txtC">No logs found, try to filter out the other parameters</div>
+      <% end %>
   </div> <!-- unit size3of4 -->
   
   <div class="unit size1of4">
