@@ -57,6 +57,7 @@ module MongodbLogger
           @db = Rails.logger.mongo_connection
           @collection = @db[Rails.logger.mongo_collection_name]
         end
+        @collection_stats = @collection.stats
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false

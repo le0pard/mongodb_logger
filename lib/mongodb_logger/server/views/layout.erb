@@ -24,6 +24,14 @@
     </div> <!-- wrapper -->
   </div> <!-- content -->
   
+  
+  <ul>
+    <li><strong>DB name:</strong> <%=h @db.name %></li>
+    <li><strong>Collection name:</strong> <%=h @collection.name %></li>
+    <li><strong>Number of documents:</strong> <span id="db_collection_count"><%=h @collection_stats["count"] %></span></li>
+    <li><strong>Collection current/max size:</strong> <%=h number_to_human_size(@collection_stats["size"]) %> / <%=h number_to_human_size(@collection_stats["storageSize"]) %></li>
+  </ul>
+  
 </div>
   
 </body>

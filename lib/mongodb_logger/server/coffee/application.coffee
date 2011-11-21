@@ -66,6 +66,8 @@ MongodbLoggerJS =
             $('#tail_logs_time').text(data.time)
             if count != data.count
               count = data.count
+              if $("#db_collection_count").length > 0
+                $("#db_collection_count").text(count)
               if data.content? && data.content.length > 0
                 elements = $(data.content)
                 elements.addClass('newlog')
