@@ -13,7 +13,7 @@
       <span class="pale">Url:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <%=h @log['url'] %>
+      <a href="<%=h @log['url']%>" target="_blank"><%=h @log['url']%></a>
     </div> <!-- unit -->
   </li>
   <li class="outer pvs phm">
@@ -34,10 +34,26 @@
   </li>
   <li class="outer pvs phm">
     <div class="unit size1of5">
+      <span class="pale">Method:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['method'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
       <span class="pale">IP:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
       <%=h @log['ip'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Request Time:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['request_time'] %>
     </div> <!-- unit -->
   </li>
   <li class="outer pvs phm">
@@ -50,10 +66,26 @@
   </li>
   <li class="outer pvs phm">
     <div class="unit size1of5">
+      <span class="pale">Application Name:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['application_name'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
+      <span class="pale">Path:</span>
+    </div> <!-- unit -->
+    <div class="unit size4of5">
+      <%=h @log['path'] %>
+    </div> <!-- unit -->
+  </li>
+  <li class="outer pvs phm">
+    <div class="unit size1of5">
       <span class="pale">Params:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <code><%=h @log['params'] %></code>
+      <pre><code class="ruby"><%= pretty_hash(@log['params']) %></code></pre>
     </div> <!-- unit -->
   </li>
   <% unless @log['messages']['error'].blank? %>
@@ -62,7 +94,7 @@
       <span class="pale">Error message:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <code><%=h @log['messages']['error'].join("\n") %></code>
+      <pre><code class="ruby"><%=h @log['messages']['error'].join("\n") %></code></pre>
     </div> <!-- unit -->
   </li>
   <% end %>
@@ -72,7 +104,7 @@
       <span class="pale">Info message:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <code><%=h @log['messages']['info'].join("\n") %></code>
+      <pre><code class="ruby"><%=h @log['messages']['info'].join("\n") %></code></pre>
     </div> <!-- unit -->
   </li>
   <% end %>

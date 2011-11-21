@@ -35,16 +35,21 @@ MongodbLoggerJS =
     # filter tougle
     $('div.filter-toggle').live 'click', (event) =>
       $('div.filter').slideToggle()
-    # log info window  
-    MongodbLoggerJS.log_info_offset = $("#log_info").offset()
-    $(window).scroll =>
-      if $(window).scrollTop() > MongodbLoggerJS.log_info_offset.top
+    # log info window
+    if $("#log_info").length > 0
+      MongodbLoggerJS.log_info_offset = $("#log_info").offset()
+      $(window).scroll =>
+        if $(window).scrollTop() > MongodbLoggerJS.log_info_offset.top
           $("#log_info").stop().animate
             marginTop: $(window).scrollTop() - MongodbLoggerJS.log_info_offset.top + MongodbLoggerJS.log_info_padding
-      else
-        $("#log_info").stop().animate
-          marginTop: 0
-      
+        else
+          $("#log_info").stop().animate
+            marginTop: 0
+     
+    # init code highlight
+    hljs.tabReplace = '  '
+    hljs.initHighlightingOnLoad()
+    
   tail_logs: (count) ->
     url = MongodbLoggerJS.tail_logs_url
     if count?

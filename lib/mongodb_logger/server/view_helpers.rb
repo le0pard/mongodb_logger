@@ -1,6 +1,16 @@
 # view helpers
 module Sinatra::ViewHelpers
   
+  def pretty_hash(hash)
+    begin
+      Marshal::dump(hash)
+      h(hash.to_yaml).gsub("  ", "&nbsp; ")
+    rescue Exception => e  # errors from Marshal or YAML
+      # Object couldn't be dumped, perhaps because of singleton methods -- this is the fallback
+      h(object.inspect)
+    end
+  end
+  
   def text_field_tag(object, name, options = {})
     value = ""
     value = options.delete(:value) if options[:value]

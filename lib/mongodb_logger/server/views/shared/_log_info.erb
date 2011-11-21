@@ -10,9 +10,9 @@
       Info: <%= log_info['messages']['info'].join("\n").truncate(300, :separator => ' ') %>
     <% end %>
   </div> <!-- phs -->
-  <h2 class="phs mtm mbs">URL</h2>
+  <h2 class="phs mtm mbs">URL (method: <%=h log_info['method'] %>)</h2>
   <div class="phs wrap_text">
-    <%=h log_info['url']%>
+    <a href="<%=h log_info['url']%>" target="_blank"><%=h log_info['url']%></a>
   </div> <!-- phs --> 
   <h2 class="phs mtm mbs">Received</h2>
   <div class="phs">
