@@ -45,7 +45,9 @@
       <span class="pale">IP:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <%=h @log['ip'] %>
+      <a href="http://www.infosniper.net/index.php?ip_address=<%=h @log['ip'] %>&map_source=1&overview_map=1&lang=1&map_type=1&zoom_level=7" target="_blank">
+        <%=h @log['ip'] %>
+      </a>
     </div> <!-- unit -->
   </li>
   <li class="outer pvs phm">
