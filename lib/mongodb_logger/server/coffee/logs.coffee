@@ -58,10 +58,9 @@ MongodbLoggerJS =
       $('#ajax_loader').hide()
       # stop tailing
       MongodbLoggerJS.tail_log_started = false
-      # rebind pjax links
-      $('a[data-pjax]').pjax()
       # scroll on top
-      $('html, body').scrollTop(0)
+      if ($(window).scrollTop() > 100)
+        $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
       # init pages
       MongodbLoggerJS.init_on_pages()
   
