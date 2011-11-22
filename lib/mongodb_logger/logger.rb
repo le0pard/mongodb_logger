@@ -142,7 +142,8 @@ module MongodbLogger
       def connect
         @mongo_connection ||= Mongo::Connection.new(@db_configuration['host'],
                                                     @db_configuration['port'],
-                                                    :auto_reconnect => true).db(@db_configuration['database'])
+                                                    :auto_reconnect => true,
+                                                    :pool_timeout => 6).db(@db_configuration['database'])
 
         if @db_configuration['username'] && @db_configuration['password']
           # the driver stores credentials in case reconnection is required
