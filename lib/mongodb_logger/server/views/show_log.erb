@@ -86,27 +86,10 @@
       <span class="pale">Params:</span>
     </div> <!-- unit -->
     <div class="unit size4of5">
-      <pre><code class="json"><%= pretty_hash(@log['params']) %></code></pre>
+      <pre><code><%= pretty_hash(@log['params']) %></code></pre>
     </div> <!-- unit -->
   </li>
-  <% unless @log['messages']['error'].blank? %>
-  <li class="outer pvs phm">
-    <div class="unit size1of5">
-      <span class="pale">Error message:</span>
-    </div> <!-- unit -->
-    <div class="unit size4of5">
-      <pre><code class="json"><%=h @log['messages']['error'].join("\n") %></code></pre>
-    </div> <!-- unit -->
-  </li>
-  <% end %>
-  <% unless @log['messages']['info'].blank? %>
-  <li class="outer pvs phm">
-    <div class="unit size1of5">
-      <span class="pale">Info message:</span>
-    </div> <!-- unit -->
-    <div class="unit size4of5">
-      <pre><code class="json"><%=h @log['messages']['info'].join("\n") %></code></pre>
-    </div> <!-- unit -->
-  </li>
+  <% if @log['messages'] && !@log['messages'].blank? && @log['messages'].is_a?(Hash) %>
+    <%= partial(:"shared/message_tabs", :object => @log['messages']) %>
   <% end %>
 </ul>

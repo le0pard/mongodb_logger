@@ -1,0 +1,15 @@
+<li class="outer pvs phm">
+  <div class="unit size1of5">
+    <span class="pale">Messages:</span>
+  </div> <!-- unit -->
+  <div class="unit size4of5">
+    <ul class="message_tabs">
+    <% message_tabs.each do |key, val| %>
+      <li class='message_tab <%='active' if key == message_tabs.keys.first %>' data-tab='tab_<%=key %>'><%=key.capitalize %></li>
+    <% end %>
+    </ul>
+    <% message_tabs.each do |key, val| %>
+      <pre class="tab_<%=key %> tab_content <%='hidden' unless key == message_tabs.keys.first %>"><code><%=h (val.is_a?(Array) ? val.join("\n") : val) %></code></pre>
+    <% end %>
+  </div> <!-- unit -->
+</li>

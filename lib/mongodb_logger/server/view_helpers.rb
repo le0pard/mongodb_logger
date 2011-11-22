@@ -11,7 +11,6 @@ module Sinatra::ViewHelpers
     end
   end
   
-  
   # TODO: improve this
   def number_to_human_size(number, precision = 2)
     number = begin
@@ -36,7 +35,6 @@ module Sinatra::ViewHelpers
   rescue
     nil
   end
-  
   
   def text_field_tag(object, name, options = {})
     value = ""

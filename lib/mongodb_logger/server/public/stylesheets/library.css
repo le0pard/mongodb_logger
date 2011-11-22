@@ -171,3 +171,12 @@ code {
 .wrap_text {
     word-wrap: break-word;
 }
+
+li.message_tab {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.tab_content.hidden {
+  display:none;
+}
