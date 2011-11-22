@@ -5,6 +5,7 @@ require 'active_support'
 
 require 'mongodb_logger/server/view_helpers'
 require 'mongodb_logger/server/partials'
+require 'mongodb_logger/server/content_for'
 require 'mongodb_logger/server/model/filter'
 require 'mongodb_logger/server_config'
 
@@ -16,6 +17,7 @@ module MongodbLogger
   class Server < Sinatra::Base
     helpers Sinatra::ViewHelpers
     helpers Sinatra::Partials
+    helpers Sinatra::ContentFor
     
     dir = File.dirname(File.expand_path(__FILE__))
 
@@ -35,6 +37,10 @@ module MongodbLogger
       
       def current_page
         url_path request.path_info.sub('/','')
+      end
+      
+      def class_if_current(path = '')
+        'class="active"' if current_page[0, path.size] == path
       end
 
       def url_path(*path_parts)
@@ -83,7 +89,7 @@ module MongodbLogger
       get "/#{page}/?" do
         @filter = MongodbLogger::ServerModel::Filter.new(params[:filter])
         @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural', -1).limit(@filter.get_mongo_limit)
-        show page
+        show page, !request.xhr?
       end
     end
     

@@ -45,11 +45,28 @@ MongodbLoggerJS =
         else
           $("#log_info").stop().animate
             marginTop: 0
-     
+            
+    # init pjax
+    this.init_pjax()
+    this.init_on_pages()
+    
+  init_pjax: ->
+    $('a[data-pjax]').pjax()
+    $('body').bind 'pjax:start', () => 
+      $('#ajax_loader').show()
+    $('body').bind 'pjax:end', () => 
+      $('#ajax_loader').hide()
+      # stop tail
+      MongodbLoggerJS.tail_log_started = false
+      $('a[data-pjax]').pjax()
+      $('html, body').scrollTop(0)
+      MongodbLoggerJS.init_on_pages()
+  
+  init_on_pages: ->
     # init code highlight
     hljs.tabReplace = '  '
     hljs.initHighlightingOnLoad()
-    
+  
   tail_logs: (count) ->
     url = MongodbLoggerJS.tail_logs_url
     if count?

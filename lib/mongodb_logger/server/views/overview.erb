@@ -1,23 +1,8 @@
-<div class="topline">
-  <%= partial(:"shared/tabs") %>
-  <div class="unit-right">
-    <div id="tail_logs_block">
-      <div class="initial">
-        <a id="tail_logs_link" href="#" data-url="<%=h url_path("tail_logs") %>" class="button mts mrs">
-          <span class="start" data-url="<%=h url_path("tail_logs") %>">Tail</span>
-        </a>
-      </div>
-      <div class="info">
-        <span id="tail_logs_time" class="logs-time mrs"></span>
-        <a id="tail_logs_stop_link" href="#" class="button negative mts mrs">
-          <span class="stop">Stop</span>
-        </a>
-      </div>
-    </div>
-  </div> <!-- unit-right -->
-  
-  <div id="ajax_loader"><img src="<%=u 'images/spinner.gif'%>" alt="loading..."></div>
-</div> <!-- topline -->
+<% content_for :right_top_panel do %>
+  <%= partial(:"shared/tail_panel") %>
+<% end %>
+
+<%= partial(:"shared/top_panel") %>
 
 <div class="outer">
   <div class="unit size3of4">

@@ -1,6 +1,6 @@
 <div class="pas">
   <div class="unit-right ptxs">
-    <a href="<%=h url_path("log/#{log_info['_id']}") %>" target="_blank">More Info</a>
+    <a href="<%=h url_path("log/#{log_info['_id']}") %>" data-pjax='#main_pjax'>More Info</a>
   </div> <!-- unit-right -->
   <h2 class="phs mvs"><span class="<%= log_info['is_exception'] ? 'failure' : 'success' %>">Message</span></h2>
   <div class="phs wrap_text">
