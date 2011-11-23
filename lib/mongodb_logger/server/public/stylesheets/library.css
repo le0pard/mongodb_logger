@@ -227,3 +227,9 @@ li.message_tab {
     box-shadow: 0 2px 5px #ccc inset;
     text-shadow: 0 1px 0 #fff;
 }
+
+a[target="_blank"] {
+    display: inline-block;
+    background: url(../images/external.png) no-repeat 0 3px;
+    padding-left: 17px;
+}
