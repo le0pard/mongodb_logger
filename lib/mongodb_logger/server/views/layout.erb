@@ -25,19 +25,21 @@
     </div> <!-- wrapper -->
   </div> <!-- content -->
   
+  <div class="wrapper pbm">
+    <ul>
+      <li><strong>DB name:</strong> <%=h @db.name %></li>
+      <li><strong>Collection name:</strong> <%=h @collection.name %></li>
+      <li><strong>Number of documents:</strong> <span id="db_collection_count"><%=h @collection_stats["count"] %></span></li>
+      <% if @collection_stats["capped"] && 1 == @collection_stats["capped"] %>
+        <li><strong>Collection current/max size:</strong> <%=h number_to_human_size(@collection_stats["size"]) %> / <%=h number_to_human_size(@collection_stats["max"]) %></li>
+      <% else %>
+        <li>WARNING!!! You do not use capped collection for logs. 
+          <a href="http://www.mongodb.org/display/DOCS/Capped+Collections" target="_blank">More info.</a>
+        </li>
+      <% end %>
+    </ul>
+  </div> <!-- wrapper -->
   
-  <ul>
-    <li><strong>DB name:</strong> <%=h @db.name %></li>
-    <li><strong>Collection name:</strong> <%=h @collection.name %></li>
-    <li><strong>Number of documents:</strong> <span id="db_collection_count"><%=h @collection_stats["count"] %></span></li>
-    <% if @collection_stats["capped"] && 1 == @collection_stats["capped"] %>
-      <li><strong>Collection current/max size:</strong> <%=h number_to_human_size(@collection_stats["size"]) %> / <%=h number_to_human_size(@collection_stats["max"]) %></li>
-    <% else %>
-      <li>WARNING!!! You do not use capped collection for logs. 
-        <a href="http://www.mongodb.org/display/DOCS/Capped+Collections" target="_blank">More info.</a>
-      </li>
-    <% end %>
-  </ul>
 </div>
   
 </body>
