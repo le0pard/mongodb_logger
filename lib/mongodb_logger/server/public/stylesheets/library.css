@@ -55,6 +55,8 @@ a:hover, a:active {
 }
 
 .notice {
+    position: relative;
+    top: 1px;
     width: 10px;
     height: 10px;
     display: inline-block;
@@ -64,6 +66,8 @@ a:hover, a:active {
 }
 
 .error {
+    position: relative;
+    top: 1px;
     width: 10px;
     height: 10px;
     display: inline-block;
@@ -126,6 +130,7 @@ code {
     line-height: 24px;
     font-weight: bold;
     cursor: pointer;
+    text-shadow: 0 1px 0 #fff;
     border-bottom: 1px solid #bbb;
     background: rgb(238,238,238);
     background: -moz-linear-gradient(top,  rgba(238,238,238,1) 0%, rgba(211,211,211,1) 100%);
@@ -177,4 +182,48 @@ li.message_tab {
 
 .tab_content.hidden {
   display:none;
+}
+
+
+.message_tabs {
+    height: 30px;
+    position: relative;
+    background: rgb(238,238,238);
+    border: 1px solid #ADB4B8;
+    background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1)));
+    background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+    background: -o-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+    background: -ms-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+    background: linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 );
+}
+
+.message_tabs li.message_tab {
+    float: left;
+    padding: 0 20px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;    
+    border-right: 1px solid #bbb;
+    border-top: 0;
+    color: #333;
+    background: transparent;
+}
+
+.message_tabs li:hover {
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0.62) 0%, rgba(23,146,212,0.5) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.62)), color-stop(100%,rgba(23,146,212,0.5)));
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
+    background: -o-linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
+    background: -ms-linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
+    background: linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9effffff', endColorstr='#801792d4',GradientType=0 );
+    
+}
+
+.message_tabs li.active {
+    background: #f4f4f4;
+    box-shadow: 0 2px 5px #ccc inset;
+    text-shadow: 0 1px 0 #fff;
 }

@@ -43,8 +43,7 @@ body {
 }
 
 .content {
-    padding-bottom: 120px;
-    padding-top: 20px;
+    padding: 20px 0;
 }
 
 .header {
