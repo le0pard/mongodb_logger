@@ -20,7 +20,7 @@ textarea {
 
 select {
     padding: 1px;
-    width: auto;
+    width: 100%;
     font: 12px arial, sans-serif;
 }
 

@@ -1,7 +1,30 @@
-<div>
-  <%= select_tag dynamic_filter, :type, MongodbLogger::ServerModel::AdditionalFilter::VAR_TYPES %>
-  <%= text_field_tag dynamic_filter, :key, :placeholder => "key" %>
-  <%= select_tag dynamic_filter, :condition, MongodbLogger::ServerModel::AdditionalFilter::DEFAULT_CONDITIONS %>
-  <%= text_field_tag dynamic_filter, :value, :placeholder => "value" %>
+<div class="outer mvs">
+  <div class="unit size1of3">
+    <div class="unit size1of2">
+      <div class="prm">
+        <%= select_tag dynamic_filter, :type, MongodbLogger::ServerModel::AdditionalFilter::VAR_TYPES %>
+      </div> <!-- prm -->      
+    </div> <!-- unit -->
+    <div class="unit size1of2">
+      <div class="prm">
+        <%= text_field_tag dynamic_filter, :key, :placeholder => "key" %>
+      </div> <!-- prm -->      
+    </div> <!-- unit -->
+  </div>
+  <div class="unit size1of3">
+    <div class="unit size1of2">
+      <div class="prm">
+        <%= select_tag dynamic_filter, :condition, MongodbLogger::ServerModel::AdditionalFilter::DEFAULT_CONDITIONS %>
+      </div> <!-- prm -->      
+    </div>
+    <div class="unit size1of2">
+      <div class="prm">
+        <%= text_field_tag dynamic_filter, :value, :placeholder => "value" %>
+      </div> <!-- prm -->      
+    </div>
+  </div>
+  <div class="unit size1of3">
+    <a href="#" class="close_more_filter">Close</a>
+  </div> <!-- unit -->
+
 </div>
-<a href="#" class="close_more_filter">Close</a>

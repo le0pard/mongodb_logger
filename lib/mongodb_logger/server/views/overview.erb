@@ -23,51 +23,47 @@
           </div>                
             <div class="unit size1of3">
               <div class="unit size1of2">
-                <%= label_tag @filter, :limit, "Limit of logs" %>
-                <%= select_tag @filter, :limit, [50, 100, 200, 500, 1000] %>
-              </div> <!-- unit -->
+                <div class="prm">
+                  <%= select_tag @filter, :limit, [50, 100, 200, 500, 1000] %>
+                </div> <!-- prm -->                
+              </div> <!-- unit -->   
               <div class="unit size1of2">
-                <div class="plm">
-                  <ul id="more_filter_list">
-                    <% @filter.more_filters.each_with_index do |f_filter, index| %>
-                      <li>
-                        <%= partial(:"shared/dynamic_filter", :object => f_filter) %>
-                      </li>
-                    <% end %>
-                  </ul>
-                  <a id="add_more_filter" href="<%=h url_path("add_filter") %>">Add</a>
-                  <%= submit_tag :submit, "Filter", :class => "button primary" %>
-                </div> <!-- plm -->                
-              </div> <!-- unit -->
-            </div>
-        </div> <!-- outer -->
-        <div class="outer mvs">
-          <div class="unit size1of3">
-            <div class="unit size1of2">
-              <div class="prm">
-                <%= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
+                <div class="prm">
+                  <%= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
+                </div>
               </div>
             </div>
-            <div class="unit size1of2">
-              <div class="prm">
-                <%= text_field_tag @filter, :ip, :placeholder => "IP" %>
+            <div class="unit size1of3">
+              <div class="unit size1of2">
+                <div class="prm">
+                  <%= text_field_tag @filter, :ip, :placeholder => "IP" %>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="unit size1of3">
-            <div class="unit size1of2">
-              <div class="prm ptxs">
+              <div class="unit size1of2">
                 <%= check_box_tag @filter, :is_exception %>
-                <%= label_tag @filter, :is_exception, "Filter exceptions" %>
-              </div>
-            </div>
-            <div class="unit size1of2">
-              <div class="ptxs plm">
-                <a href="<%=h url_path("overview") %>">Clear</a>
-              </div> <!-- ptxs -->              
+                <%= label_tag @filter, :is_exception, "Exceptions" %>
+              </div> <!-- unit -->
             </div> <!-- unit -->
-          </div> <!-- unit -->
         </div> <!-- outer -->
+        
+        <div class="outer">
+              <ul id="more_filter_list">
+                <% @filter.more_filters.each_with_index do |f_filter, index| %>
+                  <li>
+                    <%= partial(:"shared/dynamic_filter", :object => f_filter) %>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="mbs">
+                <a id="add_more_filter" href="<%=h url_path("add_filter") %>" class="add">+ Add Filter</a>
+              </div>
+              
+        </div> <!-- outer -->
+        
+        <div class="outer">
+          <%= submit_tag :submit, "Filter", :class => "button primary mrs" %> <a href="<%=h url_path("overview") %>">Clear</a>
+        </div> <!-- outer -->
+        
       </form>
       </div> <!-- filter -->
 
