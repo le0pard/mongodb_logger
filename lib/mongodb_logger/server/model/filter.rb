@@ -9,7 +9,6 @@ module MongodbLogger
       attr_reader :params, :mongo_conditions
       # dynamic filters
       FORM_NAME = "filter"
-      DYNAMIC_NAME = "more"
       attr_accessor :more_filters
       
       def initialize(params)
@@ -36,9 +35,9 @@ module MongodbLogger
       
       def create_dynamic_filters
         self.more_filters = []
-        @params[DYNAMIC_NAME].each do |filter|
-          self.more_filters << AdditionalFilter.new(filter)
-        end if !@params.blank? && @params[DYNAMIC_NAME] && !@params[DYNAMIC_NAME].blank?
+        @params[AdditionalFilter::FORM_NAME].each do |filter|
+          self.more_filters << AdditionalFilter.new(filter, self)
+        end if !@params.blank? && @params[AdditionalFilter::FORM_NAME] && !@params[AdditionalFilter::FORM_NAME].blank?
       end
       
       def build_mongo_conditions

@@ -28,6 +28,14 @@
               </div> <!-- unit -->
               <div class="unit size1of2">
                 <div class="plm">
+                  <ul id="more_filter_list">
+                    <% @filter.more_filters.each_with_index do |f_filter, index| %>
+                      <li>
+                        <%= partial(:"shared/dynamic_filter", :object => f_filter) %>
+                      </li>
+                    <% end %>
+                  </ul>
+                  <a id="add_more_filter" href="<%=h url_path("add_filter") %>">Add</a>
                   <%= submit_tag :submit, "Filter", :class => "button primary" %>
                 </div> <!-- plm -->                
               </div> <!-- unit -->

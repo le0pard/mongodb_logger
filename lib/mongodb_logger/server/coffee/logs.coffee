@@ -35,7 +35,21 @@ MongodbLoggerJS =
     # filter tougle
     $('div.filter-toggle').live 'click', (event) =>
       $('div.filter').slideToggle()
+      
+    # additional filters
+    $('#add_more_filter').live 'click', (event) =>
+      url = $(event.target).attr('href')
+      $.ajax
+        url: url
+        success: (data) ->
+          content = $('<li></li>').html(data)
+          $('#more_filter_list').append(content)
+      return false
     
+    $('.close_more_filter').live 'click', (event) =>
+      $(event.target).parents('li').remove()
+      return false
+      
     # message tabs
     $('li.message_tab').live 'click', (event) =>
       elm_obj = $(event.target)
@@ -45,7 +59,7 @@ MongodbLoggerJS =
         $('pre.tab_content').addClass('hidden')
         elm_obj.addClass('active')
         $('.' + tab).removeClass('hidden')
-           
+          
     # init pjax
     this.init_pjax()
     this.init_on_pages()
