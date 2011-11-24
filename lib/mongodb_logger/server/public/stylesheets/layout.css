@@ -117,13 +117,6 @@ body {
     background-color: #fefefe;
     box-shadow: 2px 2px 5px #e4e4e4 inset;
     background: rgb(255,255,255);
-    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 1%, rgba(244,244,244,1) 49%, rgba(255,255,255,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgba(255,255,255,1)), color-stop(49%,rgba(244,244,244,1)), color-stop(100%,rgba(255,255,255,1)));
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
-    background: -o-linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
-    background: linear-gradient(top,  rgba(255,255,255,1) 1%,rgba(244,244,244,1) 49%,rgba(255,255,255,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
     min-height: 400px;
 }
 
@@ -175,6 +168,17 @@ body {
     margin-left: -110px;
     left: 50%;
 }
+
+.stats {
+    height: 50px;
+    padding: 0 20px;
+    background: #5a3920;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.1;
+}
+
+
 /* 
 http://localhost:3000/mongodblogs/overview
 ./bin/mongodb_logger_web ../mongo.yml -F

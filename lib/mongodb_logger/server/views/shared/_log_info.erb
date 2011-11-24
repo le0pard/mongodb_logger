@@ -1,4 +1,7 @@
 <div class="pas">
+  <div class="unit-right">
+    <a href="<%=h url_path("log/#{log_info['_id']}") %>" data-pjax='#main_pjax' class="button small grey">More Info</a>
+  </div> <!-- unit-right -->
   <h2 class="phs mvs"><span class="<%= log_info['is_exception'] ? 'failure' : 'success' %>">Message</span></h2>
   <div class="phs wrap_text">
     <% if log_info['is_exception'] && log_info['messages'] && log_info['messages']['error'] %>
@@ -20,8 +23,5 @@
     <a href="http://www.infosniper.net/index.php?ip_address=<%=h log_info['ip']%>&map_source=1&overview_map=1&lang=1&map_type=1&zoom_level=7" target="_blank">
       <%=h log_info['ip']%>
     </a>
-  </div> <!-- phs -->
-  <div class="phs mtm">
-    <a href="<%=h url_path("log/#{log_info['_id']}") %>" data-pjax='#main_pjax' class="button small">More Info</a>
   </div> <!-- phs -->
 </div> <!-- pas -->

@@ -4,11 +4,22 @@
     border: 1px solid #777;
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(100,100,100,0.4), 0 1px 0 rgba(255,255,255,0.3) inset;
-    background: rgb(255,255,255);
     text-decoration: none;    
     font-weight: bold;
-    color: #333;
+    color: #fff;
     cursor: pointer;
+    background: rgb(5,171,239);
+    background: -moz-linear-gradient(top,  rgba(5,171,239,1) 0%, rgba(3,105,173,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(5,171,239,1)), color-stop(100%,rgba(3,105,173,1)));
+    background: -webkit-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
+    background: -o-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
+    background: linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05abef', endColorstr='#0369ad',GradientType=0 );   
+}
+
+.button.grey {
+    color: #333;
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1)));
     background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%);
@@ -20,19 +31,6 @@
 
 .button.small {
     padding: 2px 10px;
-}
-
-.button:hover {
-    color: #fff;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.4);
-    background: rgb(5,171,239);
-    background: -moz-linear-gradient(top,  rgba(5,171,239,1) 0%, rgba(3,105,173,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(5,171,239,1)), color-stop(100%,rgba(3,105,173,1)));
-    background: -webkit-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
-    background: -o-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
-    background: linear-gradient(top,  rgba(5,171,239,1) 0%,rgba(3,105,173,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05abef', endColorstr='#0369ad',GradientType=0 );
 }
 
 .button.negative {
@@ -55,23 +53,29 @@
     text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 }
 
+.button:hover {
+    color: #fff;
+}
+
+.button.grey:hover {
+    color: #333;
+}
+
+
 .button.primary:hover {
     background: #6bc102;
     border-color: #57910C;
 }
 
-.button:hover .start {
-    background-position: 0 -35px;
-}
 
 .start {
     display: inline-block;
     padding-left: 13px;
-    background: url(../images/play-icon.png) no-repeat 0 4px;
+    background: url(../images/play-icon.png) no-repeat 0 -35px;
 }
 
 .stop {
     display: inline-block;
     padding-left: 13px;
-    background: url(../images/stop-icon.png) no-repeat 0 11px;
+    background: url(../images/stop-icon.png) no-repeat 0 5px;
 }
