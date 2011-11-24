@@ -174,9 +174,8 @@ body {
 
 .stats {
     position: relative;
-    width: 300px;
+    width: 25%;
     height: 50px;
-    padding: 0 15px;
     color: #fff;
     font-size: 11px;
     line-height: 1.1;
