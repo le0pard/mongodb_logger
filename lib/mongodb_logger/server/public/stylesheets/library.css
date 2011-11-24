@@ -166,10 +166,6 @@ code {
   display: none;
 }
 
-#logs_list{
-    table-layout: fixed;
-}
-
 
 .wrap_text {
     word-wrap: break-word;

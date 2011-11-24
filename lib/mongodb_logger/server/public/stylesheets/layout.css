@@ -3,6 +3,7 @@ html, body {
 }
 
 body {
+    min-width: 1000px;
 	font: 12px/140% helvetica, arial, sans-serif;
 	color: #333;
 	background: #F3F4EB;
@@ -23,7 +24,9 @@ body {
 }
 
 .wrapper {
-    margin: 0 20px;
+    width: 96%;
+    max-width: 1600px;
+    margin: 0 auto;
     position: relative;
 }
 

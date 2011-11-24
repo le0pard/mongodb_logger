@@ -55,5 +55,32 @@ td:last-child {
 }
 
 .url_log {
-    width: 10%;
+    width: 40%;
+}
+
+.url-text {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.td-time {
+    width: 120px;
+}
+
+.td-controller {
+    width: 15%;
+}
+
+.td-action {
+    width: 15%;
+}
+
+.td-ip {
+    width: 15%;
+}
+
+.td-runtime {
+    width: 15%;
 }
