@@ -299,3 +299,25 @@ a[target="_blank"] {
     text-decoration: none;
 }
 
+.warning {
+    position: absolute;
+    bottom: 1px;
+    padding: 3px 0;
+    clear: both;
+    width: 100%;
+    font-size: 10px;
+    background-color: #FCF6C4;
+    color: black;
+    text-shadow: none;
+}
+
+.warning p {
+    padding: 0 10px;
+}
+
+a.more {
+    padding-left: 0;
+    background: none;
+    font-weight: bold;
+}
+
