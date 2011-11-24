@@ -54,9 +54,6 @@ td:last-child {
     text-align: center;
 }
 
-.url_log {
-    width: 40%;
-}
 
 .url-text {
     max-width: 120px;
@@ -66,7 +63,7 @@ td:last-child {
 }
 
 .td-time {
-    width: 120px;
+    width: 100px;
 }
 
 .td-controller {
@@ -82,5 +79,9 @@ td:last-child {
 }
 
 .td-runtime {
+    width: 15%;
+}
+
+.url_log {
     width: 15%;
 }

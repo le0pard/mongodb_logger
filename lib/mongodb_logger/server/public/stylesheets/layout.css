@@ -173,12 +173,29 @@ body {
 }
 
 .stats {
+    position: relative;
+    width: 300px;
     height: 50px;
-    padding: 0 20px;
-    background: #5a3920;
+    padding: 0 15px;
     color: #fff;
     font-size: 11px;
     line-height: 1.1;
+    text-shadow: 0 1px 0 rgba(0,0,0, 0.7);
+    background: rgb(119,73,43);
+    background: -moz-linear-gradient(top,  rgba(119,73,43,1) 0%, rgba(89,54,32,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(119,73,43,1)), color-stop(100%,rgba(89,54,32,1)));
+    background: -webkit-linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
+    background: -o-linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
+    background: linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#77492b', endColorstr='#593620',GradientType=0 );
+    
+}
+
+.stats strong {
+    display: inline-block;
+    width: 60px;
+    color: #e7c5a9;
 }
 
 
