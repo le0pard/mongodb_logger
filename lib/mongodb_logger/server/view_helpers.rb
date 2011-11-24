@@ -11,6 +11,14 @@ module Sinatra::ViewHelpers
     end
   end
   
+  def create_additional_fields(object)
+    name_prefix = "#{MongodbLogger::ServerModel::Filter::FORM_NAME}[#{MongodbLogger::ServerModel::Filter::DYNAMIC_NAME}][]"
+    filter_fields = []
+    filter_fields << "<div>"
+    filter_fields << ""
+    filter_fields << "</div>"
+  end
+  
   # TODO: improve this
   def number_to_human_size(number, precision = 2)
     number = begin
