@@ -27,7 +27,7 @@
         
         <div class="progress">
           <span class="size"><%=h number_to_human_size(@collection_stats["size"]) %> of <%=h number_to_human_size(@collection_stats["max"]) %></span>
-          <div class="used" style="width: 60%"></div>
+          <div class="used" style="width: <%=((@collection_stats["size"] / @collection_stats["max"]) * 100).round%>%"></div>
         </div> <!-- progress -->
                   
         <% else %>
