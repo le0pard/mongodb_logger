@@ -1,8 +1,8 @@
 <tr class="log_info" data-url="<%=h url_path("log_info/#{log['_id']}") %>">
-  <td><span class="<%= log['is_exception'] ? "error" : "notice" %>"></span> <%=h log['request_time']%></td>
-  <td><%=h log['controller']%></td>
-  <td><%=h log['action']%></td>
-  <td><%=h log['ip']%></td>
-  <td class="url_log"><%=h log['url']%></td>
-  <td><%=h log['runtime']%></td>
+  <td class="td-time"><span class="<%= log['is_exception'] ? "error" : "notice" %>"></span> <%=h log['request_time']%></td>
+  <td class="td-controller"><%=h log['controller']%></td>
+  <td class="td-action"><%=h log['action']%></td>
+  <td class="url_log"><%=h log['method']%></td>
+  <td class="td-ip"><%=h log['ip']%></td>
+  <td class="td-runtime"><%=h log['runtime']%></td>
 </tr>
