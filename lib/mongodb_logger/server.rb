@@ -6,6 +6,7 @@ require 'active_support'
 require 'mongodb_logger/server/view_helpers'
 require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/content_for'
+require 'mongodb_logger/server/model/additional_filter'
 require 'mongodb_logger/server/model/filter'
 require 'mongodb_logger/server_config'
 
@@ -87,7 +88,7 @@ module MongodbLogger
 
     %w( overview ).each do |page|
       get "/#{page}/?" do
-        @filter = MongodbLogger::ServerModel::Filter.new(params[:filter])
+        @filter = ServerModel::Filter.new(params[:filter])
         @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural', -1).limit(@filter.get_mongo_limit)
         show page, !request.xhr?
       end
@@ -107,7 +108,7 @@ module MongodbLogger
         count = @collection.count
       end
       content_type :json
-      { :count => count, :time => Time.now.getutc, :content => buffer.join("\n") }.to_json
+      { :count => count, :time => Time.now.strftime("%F %T"), :content => buffer.join("\n") }.to_json
     end
     
     get "/log/:id" do
@@ -119,6 +120,12 @@ module MongodbLogger
       @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
       partial(:"shared/log_info", :object => @log)
     end
+    
+     get "/add_filter/?" do
+        @filter = ServerModel::Filter.new(nil)
+        @filter_more = ServerModel::AdditionalFilter.new(nil, @filter)
+        partial(:"shared/dynamic_filter", :object => @filter_more)
+      end
     
     error do
       erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect

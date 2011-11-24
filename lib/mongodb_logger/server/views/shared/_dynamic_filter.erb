@@ -1,0 +1,7 @@
+<div>
+  <%= select_tag dynamic_filter, :type, MongodbLogger::ServerModel::AdditionalFilter::VAR_TYPES %>
+  <%= text_field_tag dynamic_filter, :key, :placeholder => "key" %>
+  <%= select_tag dynamic_filter, :condition, MongodbLogger::ServerModel::AdditionalFilter::DEFAULT_CONDITIONS %>
+  <%= text_field_tag dynamic_filter, :value, :placeholder => "value" %>
+</div>
+<a href="#" class="close_more_filter">Close</a>
