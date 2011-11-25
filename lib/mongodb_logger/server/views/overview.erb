@@ -1,5 +1,7 @@
-<% content_for :right_top_panel do %>
-  <%= partial(:"shared/tail_panel") %>
+<% if @collection_stats["capped"] && 1 == @collection_stats["capped"] %>
+  <% content_for :right_top_panel do %>
+    <%= partial(:"shared/tail_panel") %>
+  <% end %>
 <% end %>
 
 <%= partial(:"shared/top_panel") %>
