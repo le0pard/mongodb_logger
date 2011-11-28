@@ -21,7 +21,7 @@
         </div> <!-- unit -->
         <div class="unit size1of3">
           <div class="pts prs txtR">
-            <span id="db_collection_count" class="log-num"><%=h @collection_stats["count"] %></span></div>
+            <span id="db_collection_count" class="log-num" title="count of logs"><%=h @collection_stats["count"] %></span></div>
         </div> <!-- unit -->
         <% if @collection_stats["capped"] && 1 == @collection_stats["capped"] %>
         
