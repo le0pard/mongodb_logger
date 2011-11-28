@@ -19,22 +19,9 @@
           <div class="ptxs pls"><strong>DB:</strong> <%=h @db.name %></div>
           <div class="pls"><strong>Collection:</strong> <%=h @collection.name %></div>
         </div> <!-- unit -->
-        <div class="unit size1of3">
-          <div class="pts prs txtR">
-            <span id="db_collection_count" class="log-num" title="count of logs"><%=h @collection_stats["count"] %></span></div>
-        </div> <!-- unit -->
-        <% if @collection_stats["capped"] && 1 == @collection_stats["capped"] %>
-        
-        <div class="progress">
-          <span class="size"><%=h number_to_human_size(@collection_stats["size"]) %> of <%=h number_to_human_size(@collection_stats["storageSize"]) %></span>
-          <div class="used" style="width: <%=((@collection_stats["size"].to_f / @collection_stats["storageSize"].to_f) * 100).round%>%"></div>
-        </div> <!-- progress -->
-                  
-        <% else %>
-          <div class="warning"><p>You do not use capped collection for logs. 
-            <a href="http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-Convertingacollectiontocapped" target="_blank" class="more">More info.</a></p>
-          </div>
-        <% end %>
+        <div id="collection_stats">
+          <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
+        </div>
       </div>
       <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#main_pjax'><img src="<%=u 'images/logo.png'%>" alt="MongoDB Logger"></a> <span class="logger ">logger</span>
     </div> <!-- wrapper -->

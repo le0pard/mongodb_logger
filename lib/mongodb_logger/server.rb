@@ -107,8 +107,11 @@ module MongodbLogger
       else
         count = @collection.count
       end
+      
       content_type :json
-      { :count => count, :time => Time.now.strftime("%F %T"), :content => buffer.join("\n") }.to_json
+      { :count => count, :time => Time.now.strftime("%F %T"), 
+        :content => buffer.join("\n"), 
+        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats) }.to_json
     end
     
     get "/log/:id" do

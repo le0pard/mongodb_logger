@@ -1,0 +1,14 @@
+<div class="unit size1of3">
+  <div class="pts prs txtR">
+    <span class="log-num" title="count of logs"><%=h collection_stats["count"] %></span></div>
+</div> <!-- unit -->
+<% if collection_stats["capped"] && 1 == collection_stats["capped"] %>
+  <div class="progress">
+    <span class="size"><%=h number_to_human_size(collection_stats["size"]) %> of <%=h number_to_human_size(collection_stats["storageSize"]) %></span>
+    <div class="used" style="width: <%=((collection_stats["size"].to_f / collection_stats["storageSize"].to_f) * 100).round%>%"></div>
+  </div> <!-- progress -->
+<% else %>
+  <div class="warning"><p>You do not use capped collection for logs. 
+    <a href="http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-Convertingacollectiontocapped" target="_blank" class="more">More info.</a></p>
+  </div>
+<% end %>
