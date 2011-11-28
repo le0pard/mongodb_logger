@@ -26,7 +26,7 @@
             <div class="unit size1of3">
               <div class="unit size1of2">
                 <div class="prm">
-                  <%= select_tag @filter, :limit, [50, 100, 200, 500, 1000] %>
+                  <%= select_tag @filter, :limit, [[50, "Limits - 50"], [100, "Limits - 100"], [200, "Limits - 200"], [500, "Limits - 500"], [1000, "Limits - 1000"]] %>
                 </div> <!-- prm -->                
               </div> <!-- unit -->   
               <div class="unit size1of2">

@@ -85,7 +85,12 @@ module Sinatra::ViewHelpers
     select_tag = []
     select_tag << "<select id='#{object.form_name}_#{name.to_s}' name='#{object.form_name}[#{name.to_s}]' #{attr.join(" ")}>"
     options_array.each do |val|
-      select_tag << "<option value='#{val}' #{"selected='selected'" if value && val.to_s == value}>#{val}</option>"
+      if val.is_a?(Array) && 2 == val.length
+        skey, sval = val[0], val[1]
+      else
+        skey = sval = val
+      end
+      select_tag << "<option value='#{skey}' #{"selected='selected'" if value && skey.to_s == value}>#{sval}</option>"
     end
     select_tag << "</select>"
     select_tag.join("\n")
