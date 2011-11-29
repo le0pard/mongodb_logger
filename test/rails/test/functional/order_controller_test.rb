@@ -32,10 +32,17 @@ class OrderControllerTest < ActionController::TestCase
     assert_equal OrderController::LOG_USER_ID, @collection.find_one({}, :fields => "user_id")["user_id"]
   end
   
-  test "should log request parameters" do
+  test "should write GET request method" do
     get :index
     log = @collection.find_one()
     http_method = 'GET'
+    assert_equal http_method, log['method']
+  end
+  
+  test "should write POST request method" do
+    post :create
+    log = @collection.find_one()
+    http_method = 'POST'
     assert_equal http_method, log['method']
   end
 
@@ -43,6 +50,12 @@ class OrderControllerTest < ActionController::TestCase
     assert_raise(RuntimeError, OrderController::LOG_MESSAGE) {get :new}
     assert_equal 1, @collection.find_one({"messages.error" => /^#{OrderController::LOG_MESSAGE}/})["messages"]["error"].count
     assert_equal 1, @collection.find_one({"is_exception" => true})["messages"]["error"].count
+  end
+  
+  test "should log find by params keys" do
+    some_name = "name"
+    post :create, :activity => {:name =>  some_name}
+    assert_equal 1, @collection.find({"params.activity.name" => some_name}).count
   end
 
   test "should not log passwords" do
