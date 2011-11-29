@@ -35,6 +35,7 @@ MongodbLoggerJS =
     # filter tougle
     $('div.filter-toggle').live 'click', (event) =>
       $('div.filter').slideToggle()
+      $('div.filter-toggle span.arrow-down').toggleClass('rotate')
       
     # additional filters
     $('#add_more_filter').live 'click', (event) =>

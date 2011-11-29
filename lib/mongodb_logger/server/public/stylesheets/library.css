@@ -81,6 +81,10 @@ a:hover, a:active {
     background: url(../images/arrow-down.png) no-repeat 100% 50%;
 }
 
+.arrow-down.rotate {
+    background: url(../images/arrow-up.png) no-repeat 100% 50%;
+}
+
 code {
     display: block;
     overflow: auto;

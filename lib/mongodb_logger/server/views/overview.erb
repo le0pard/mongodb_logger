@@ -69,7 +69,7 @@
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle"><span class="arrow-down">Filter</span></div>
+      <div class="filter-toggle"><span class="arrow-down <%= 'rotate' unless @filter.get_mongo_conditions.blank? %>">Filter</span></div>
       
       <% if @logs.count > 0 %>
         <table id="logs_list">
