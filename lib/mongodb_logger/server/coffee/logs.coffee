@@ -95,13 +95,13 @@ MongodbLoggerJS =
           $("#log_info").stop().animate
             marginTop: 0
   
-  tail_logs: (count) ->
+  tail_logs: (log_last_id) ->
     url = MongodbLoggerJS.tail_logs_url
-    if count?
-      url = MongodbLoggerJS.tail_logs_url + "/" + count 
+    if log_last_id? && log_last_id.length > 0
+      url = MongodbLoggerJS.tail_logs_url + "/" + log_last_id 
     else
       MongodbLoggerJS.tail_log_started = true
-      count = 0
+      log_last_id = ""
     if MongodbLoggerJS.tail_log_started
       $.ajax
         url: url
@@ -109,14 +109,14 @@ MongodbLoggerJS =
         success: (data) ->
           if data.time
             $('#tail_logs_time').text(data.time)
-            if count != data.count
-              count = data.count
-              if data.collection_stats && $("#collection_stats").length > 0
-                $("#collection_stats").html(data.collection_stats)
-              if data.content? && data.content.length > 0
-                elements = $(data.content)
-                elements.addClass('newlog')
-                $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
+            if data.log_last_id?
+              log_last_id = data.log_last_id
+            if data.content? && data.content.length > 0
+              elements = $(data.content)
+              elements.addClass('newlog')
+              $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
+            if data.collection_stats && $("#collection_stats").length > 0
+              $("#collection_stats").html(data.collection_stats)
           if MongodbLoggerJS.tail_log_started
-            fcallback = -> MongodbLoggerJS.tail_logs(count)
+            fcallback = -> MongodbLoggerJS.tail_logs(log_last_id)
             setTimeout fcallback, 2000

@@ -94,22 +94,26 @@ module MongodbLogger
       end
     end
     
-    get "/tail_logs/?:count?" do
+    get "/tail_logs/?:log_last_id?" do
       buffer = []
-      if params[:count]
-        count = params[:count].to_i
-        tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]]).skip(count)
-        while log = tail.next_document
+      last_id = nil
+      if params[:log_last_id] && !params[:log_last_id].blank?
+        log_last_id = params[:log_last_id]
+        tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]], 
+          :selector => {'_id' => { '$gt' => BSON::ObjectId(log_last_id) }})
+        while log = tail.next
           buffer << partial(:"shared/log", :object => log)
-          count += 1
+          log_last_id = log['_id']
         end
         buffer.reverse!
       else
-        count = @collection.count
+        @log = @collection.find().sort('$natural', -1).limit(1).first
+        log_last_id = @log['_id'] unless @log.blank?
       end
       
       content_type :json
-      { :count => count, :time => Time.now.strftime("%F %T"), 
+      { :log_last_id => log_last_id, 
+        :time => Time.now.strftime("%F %T"), 
         :content => buffer.join("\n"), 
         :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats) }.to_json
     end
