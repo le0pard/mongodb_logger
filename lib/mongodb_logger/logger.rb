@@ -21,7 +21,7 @@ module MongodbLogger
       internal_initialize
     rescue => e
       # should use a config block for this
-      Rails.env.production? ? (raise e) : (puts "!!! MongodbLoggerError:  Using BufferedLogger due to exception: " + e.message)
+      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
     ensure
       if disable_file_logging?
         @level          = level
