@@ -107,7 +107,7 @@ module MongodbLogger
         end
         buffer.reverse!
       else
-        @log = @collection.find_one(:order => [['$natural', -1]])
+        @log = @collection.find_one({}, {:sort => ['$natural', -1]})
         log_last_id = @log['_id'] unless @log.blank?
       end
       
