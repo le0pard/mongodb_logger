@@ -107,7 +107,7 @@ module MongodbLogger
         end
         buffer.reverse!
       else
-        @log = @collection.find().sort('$natural', -1).limit(1).first
+        @log = @collection.find_one(:order => [['$natural', -1]])
         log_last_id = @log['_id'] unless @log.blank?
       end
       
@@ -119,12 +119,12 @@ module MongodbLogger
     end
     
     get "/log/:id" do
-      @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
+      @log = @collection.find_one(BSON::ObjectId(params[:id]))
       show :show_log, !request.xhr?
     end
     
     get "/log_info/:id" do
-      @log = @collection.find_one({'_id' => BSON::ObjectId(params[:id])})
+      @log = @collection.find_one(BSON::ObjectId(params[:id]))
       partial(:"shared/log_info", :object => @log)
     end
     
