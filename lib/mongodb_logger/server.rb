@@ -103,12 +103,12 @@ module MongodbLogger
           :selector => {'_id' => { '$gt' => BSON::ObjectId(log_last_id) }})
         while log = tail.next
           buffer << partial(:"shared/log", :object => log)
-          log_last_id = log['_id']
+          log_last_id = log["_id"].to_s
         end
         buffer.reverse!
       else
         @log = @collection.find_one({}, {:sort => ['$natural', -1]})
-        log_last_id = @log['_id'] unless @log.blank?
+        log_last_id = @log["_id"].to_s unless @log.blank?
       end
       
       content_type :json
