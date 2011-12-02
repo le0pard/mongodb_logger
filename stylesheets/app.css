@@ -1,3 +1,38 @@
+/* Foundation v2.1.1 http://foundation.zurb.com */
+/* Artfully masterminded by ZURB  */
+
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Page Name 1
+:: Page Name 2
+*/
+
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+
+
+
+
+
+/* -----------------------------------------
+   Page Name 1
+----------------------------------------- */
+
+
+
+
+
+
+/* -----------------------------------------
+   Page Name 2
+----------------------------------------- */
+
+
+
 #github{
   right:-65px;
   height:30px;
@@ -13,9 +48,9 @@
 }
 
 #github span{
-  background:#F37500;
-  border-top: 2px solid #FC9437;
-  border-bottom: 2px solid #FC9437;
+  background:#121621;
+  border-top: 2px solid #686A6C;
+  border-bottom: 2px solid #686A6C;
   color:#fff;
   font-size:14px;
   left:0;
