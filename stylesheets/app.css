@@ -34,7 +34,7 @@
 }
 
 #mainTitle .columns {
-  font-size: 1.4em;
+  font-size: 1.4rem;
   text-align: center;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .header-container .columns{
-  font-size: 1.8em;
+  font-size: 1.8rem;
   color: #675238;
   font-weight: bold;
 }
