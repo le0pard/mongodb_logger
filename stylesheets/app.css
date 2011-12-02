@@ -14,8 +14,50 @@
    Shared Styles
 ----------------------------------------- */
 
+#topBar {
+  border-bottom: solid 4px #442D22;
+}
 
+#appVersion .columns {
+  background: #442D22;
+  padding: 10px;
+  color: #FFF;
+  text-align: center;
+}
 
+.paddingTop {
+  margin: 20px 0px;
+}
+
+.paddingMiddle {
+  margin: 10px 0px;
+}
+
+#mainTitle .columns {
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.header-container {
+  padding: 15px 0px;
+  background: #F6F4CD;
+  border-top: 1px solid #E3DD64;
+  border-bottom: 1px solid #FFF;
+}
+
+.header-container .columns{
+  font-size: 1.8em;
+  color: #675238;
+  font-weight: bold;
+}
+
+#featuresBlock .columns h4 {
+  color: #442D22;
+}
+
+#featuresBlock .columns p {
+  font-size: 1.2em;
+}
 
 
 /* -----------------------------------------
