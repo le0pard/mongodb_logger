@@ -68,7 +68,7 @@
   <div class="header-container container">
 	  <div class="row">
       <div class="three columns centered">
-        Features
+        <h2>Features</h2>
       </div>
     </div>
   </div>
@@ -105,7 +105,7 @@
   <div class="header-container container">
 	  <div class="row">
       <div class="three columns centered">
-        The Front End
+        <h2>The Front End</h2>
       </div>
     </div>
   </div>
@@ -154,7 +154,7 @@
   <div class="header-container container">
 	  <div class="row">
       <div class="three columns centered">
-        Getting Started
+        <h2>Getting Started</h2>
       </div>
     </div>
   </div>
@@ -180,9 +180,9 @@
           </li>
           <li>
             <p>Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also look for a separate mongodb_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml. In the mongodb_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb_logger' subkey. Example mongodb_logger.yml:</p>
-            <pre>development:
+            <pre>production:
   database: my_app
-  capsize: <%= 10.megabytes %>
+  capsize: <%= 500.megabytes %>
   host: localhost
   port: 27017
   replica_set: true</pre>
