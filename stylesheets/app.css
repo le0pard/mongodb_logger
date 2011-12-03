@@ -34,7 +34,7 @@
 }
 
 #mainTitle .columns {
-  font-size: 1.4rem;
+  font-size: 2rem;
   text-align: center;
 }
 
@@ -46,9 +46,10 @@
 }
 
 .header-container .columns{
-  font-size: 1.8rem;
+  font-size: 2.4rem;
   color: #675238;
   font-weight: bold;
+  text-align: center;
 }
 
 #featuresBlock .columns h4 {
@@ -56,16 +57,54 @@
 }
 
 #featuresBlock .columns p {
-  font-size: 1.2em;
+  font-size: 1.6rem;
 }
 
+#gettingStarted li {
+  font-size: 1.6rem;
+}
+
+.rounded_block {
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  border: 3px solid #442D22;
+}
+
+#bottomBorder {
+  background: #E1E2D9;
+  padding: 1px 0px;
+}
 
 /* -----------------------------------------
    Page Name 1
 ----------------------------------------- */
 
 
+pre {
+  font-family: 'Droid Sans Mono', 'Courier New', monospace;
 
+  font-size: 1.6rem;
+  line-height: 28px;
+  padding: 5px 10px;
+  
+  letter-spacing: -1px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  color: #FFF;
+  background: #4C565E;
+  border: 1px solid rgb(224, 224, 224);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .1);
+  
+  overflow: hidden;
+  
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  border: 1px solid #4C565E;
+}
 
 
 
@@ -74,63 +113,14 @@
 ----------------------------------------- */
 
 
-
-#github{
-  right:-65px;
-  height:30px;
-  top:40px;
-  position:absolute;
-  text-decoration:none;
-  width:250px;
-  -moz-transform:rotate(45deg);
-  -webkit-transform:rotate(45deg);
-  -o-transform:rotate(45deg);
-  -ms-transform:rotate(45deg);
-  transform:rotate(45deg)
+.icons{
+  background-image:url('../images/mongodb/sprite.png');
+  background-repeat:no-repeat
 }
 
-#github span{
-  background:#121621;
-  border-top: 2px solid #686A6C;
-  border-bottom: 2px solid #686A6C;
-  color:#fff;
-  font-size:14px;
-  left:0;
-  padding:5px 0;
-  position:absolute;
-  text-align:center;
-  width:250px
-}
-
-#github span:last-child{
-  background:#6B6B6B;
-  color:#fff;
-  border-top: 2px solid #858585;
-  border-bottom: 2px solid #858585;
-  opacity:0
-}
-
-#github:hover span:first-child{
-  opacity:0
-}
-
-#github:hover span:last-child{
-  opacity:1
-}
-
-@media all and (-webkit-transform-3d){
-  #github span{
-    opacity:1 !important;
-    -webkit-backface-visibility:hidden;
-    -webkit-transition:-webkit-transform 1s
-  }
-  #github span:last-child{
-    -webkit-transform:rotateX(180deg)
-  }
-  #github:hover span:first-child{
-    -webkit-transform:rotateX(180deg)
-  }
-  #github:hover span:last-child{
-    -webkit-transform:rotateX(0)
-  }
-}
+.ICO_1{width:11.16668701171875px;height:62.3333740234375px;background-position:0 0}
+.ICO_4{width:42px;height:42px;background-position:-11.16668701171875px 0}
+.ICO_2{width:42px;height:42px;background-position:-53.16668701171875px 0}
+.icon_features{width:42px;height:42px;background-position:-95.16668701171875px 0}
+.mongoc{width:91px;height:33px;background-position:-11.16668701171875px -42px}
+.ICO_5{width:20px;height:20px;background-position:-137.16668701171875px 0}

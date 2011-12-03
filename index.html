@@ -20,6 +20,9 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+	
+	<link rel="stylesheet" href="stylesheets/fancybox/jquery.fancybox.css?v=2.0.3" type="text/css" media="screen" />
+	  
 </head>
 <body>
   <div id="topBar" class="container">
@@ -55,14 +58,16 @@
     </div>  
   </div>
   
+  <!-- padding -->
   <div class="paddingTop container">
     <div class="row">
     </div>  
   </div>
   
+  <!-- features -->
   <div class="header-container container">
 	  <div class="row">
-      <div class="two columns centered">
+      <div class="three columns centered">
         Features
       </div>
     </div>
@@ -90,12 +95,159 @@
     </div>
   </div>
   
+  <!-- padding -->
+  <div class="paddingTop container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <!-- screenshots -->
+  <div class="header-container container">
+	  <div class="row">
+      <div class="three columns centered">
+        The Front End
+      </div>
+    </div>
+  </div>
+  
+  <div class="paddingMiddle container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <div id="screenshotsBlock" class="container">
+	  <div class="row">
+      <div class="four columns">
+        <h4>Log List</h4>
+        <p class="rounded_block">
+          <a class="fancybox" rel="group" href="images/mongodb/image1_big.png">
+            <img src="images/mongodb/image1.png" alt="Log List" />
+          </a>
+        </p>
+      </div>
+      <div class="four columns">
+        <h4>Log Filters</h4>
+        <p class="rounded_block">
+          <a class="fancybox" rel="group" href="images/mongodb/image2_big.png">
+            <img src="images/mongodb/image2.png" alt="Log Filters" />
+          </a>
+        </p>
+      </div>
+      <div class="four columns">
+        <h4>Log Details</h4>
+        <p class="rounded_block">
+          <a class="fancybox" rel="group" href="images/mongodb/image3_big.png">
+            <img src="images/mongodb/image3.png" alt="Log Details" />
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- padding -->
+  <div class="paddingTop container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <!-- getting started -->
+  <div class="header-container container">
+	  <div class="row">
+      <div class="three columns centered">
+        Getting Started
+      </div>
+    </div>
+  </div>
+  
+  <div class="paddingMiddle container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <div id="gettingStarted" class="container">
+	  <div class="row">
+      <div class="twelve columns">
+        <ol>
+          <li>
+            <p>Add the following to your Gemfile then refresh your dependencies by executing "bundle install" (or just simple "bundle"):</p>
+            <pre>gem "mongodb_logger"</pre>
+            <p>or install by rubygems</p>
+            <pre>gem install mongodb_logger</pre>
+          </li>
+          <li>
+            <p>Add the following line to your ApplicationController:</p>
+            <pre>include MongodbLogger::Base</pre>
+          </li>
+          <li>
+            <p>Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also look for a separate mongodb_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml. In the mongodb_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb_logger' subkey. Example mongodb_logger.yml:</p>
+            <pre>development:
+  database: my_app
+  capsize: <%= 10.megabytes %>
+  host: localhost
+  port: 27017
+  replica_set: true</pre>
+          </li>
+          <li>
+            <p>To setup web interface in you Rails application, first of all create autoload file in you Rails application (create file in "config/initializers/" directory):</p>
+            <pre>require 'mongodb_logger/server' # required
+# this secure you web interface by basic auth, but you can skip this, if you no need this
+MongodbLogger::Server.use Rack::Auth::Basic do |username, password|
+  [username, password] == ['admin', 'password']
+end</pre>
+            <p>and mount web in Rails routes:</p>
+            <pre>mount MongodbLogger::Server.new, :at => "/mongodb"</pre>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  
+  <!-- padding -->
+  <div class="paddingTop container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <div id="bottomBorder" class="container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <!-- padding -->
+  <div class="paddingTop container">
+    <div class="row">
+    </div>  
+  </div>
+  
+  <div id="appCopiright" class="container">
+    <div class="row">
+      <div class="two columns">
+        &copy; Catware.org
+      </div>
+    </div>  
+  </div>
+  
+  <!-- padding -->
+  <div class="paddingTop container">
+    <div class="row">
+    </div>  
+  </div>
   
   
   <!-- github -->
-  <a id="github" href="https://github.com/le0pard/mongodb_logger">
-    <span>Fork me on GitHub!</span>
-    <span>And Pull Request :)</span>
-  </a>
+  <a href="https://github.com/le0pard/mongodb_logger">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub">
+    </a>
+    
+    
+  <!-- scripts -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <!-- Add fancyBox -->
+  <script type="text/javascript" src="javascripts/fancybox/jquery.fancybox.pack.js?v=2.0.3"></script>
+  <script type="text/javascript">
+  	$(function() {
+  		$(".fancybox").fancybox();
+  	});
+  </script>
 </body>
 </html>
