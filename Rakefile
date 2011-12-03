@@ -16,6 +16,7 @@ require "bundler/gem_tasks"
 #########################################
 
 require 'coffee-script'
+require 'uglifier'
 namespace :js do
   desc "compile coffee-scripts from ./lib/mongodb_logger/server/coffee to ./lib/mongodb_logger/server/public/javascripts"
   task :compile do
@@ -24,7 +25,7 @@ namespace :js do
     
     Dir.foreach(source) do |cf|
       unless cf == '.' || cf == '..' 
-        js = CoffeeScript.compile File.read("#{source}#{cf}") 
+        js = Uglifier.compile(CoffeeScript.compile File.read("#{source}#{cf}")) 
         open "#{javascripts}#{cf.gsub('.coffee', '.js')}", 'w' do |f|
           f.puts js
         end 
