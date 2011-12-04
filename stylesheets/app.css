@@ -77,6 +77,43 @@
   color: #442D22;
 }
 
+#appCopiright a {
+  color: #666;
+  display:table;
+}
+
+#appCopiright a span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#appCopiright a img {
+  vertical-align: middle;
+}
+
+/* icons */
+
+.features_icon {
+  background: url('../images/mongodb/features_icon.png') no-repeat;
+  padding-left: 28px;
+}
+
+.front_end_icon {
+  background: url('../images/mongodb/overlay_icon.png') no-repeat;
+  padding-left: 28px;
+}
+
+.getting_started_icon {
+  background: url('../images/mongodb/getstarted_icon.png') no-repeat;
+  padding-left: 28px;
+}
+
+.bullet_icon {
+  background: url('../images/mongodb/bullet.png') no-repeat 0 8px;
+  padding-left: 14px;
+}
+
 /* -----------------------------------------
    Page Name 1
 ----------------------------------------- */
@@ -112,16 +149,3 @@ pre {
 /* -----------------------------------------
    Page Name 2
 ----------------------------------------- */
-
-
-.icons{
-  background-image:url('../images/mongodb/sprite.png');
-  background-repeat:no-repeat
-}
-
-.ICO_1{width:11.16668701171875px;height:62.3333740234375px;background-position:0 0}
-.ICO_4{width:42px;height:42px;background-position:-11.16668701171875px 0}
-.ICO_2{width:42px;height:42px;background-position:-53.16668701171875px 0}
-.icon_features{width:42px;height:42px;background-position:-95.16668701171875px 0}
-.mongoc{width:91px;height:33px;background-position:-11.16668701171875px -42px}
-.ICO_5{width:20px;height:20px;background-position:-137.16668701171875px 0}
