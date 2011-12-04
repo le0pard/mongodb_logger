@@ -36,6 +36,7 @@
 #mainTitle .columns {
   font-size: 2rem;
   text-align: center;
+  line-height: 22px;
 }
 
 .header-container {
