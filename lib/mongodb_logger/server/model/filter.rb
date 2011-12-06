@@ -58,7 +58,7 @@ module MongodbLogger
         self.more_filters.each do |m_filter|
           unless m_filter.mongo_conditions.blank?
             cond = m_filter.mongo_conditions
-            if @mongo_conditions[m_filter.key]
+            if @mongo_conditions[m_filter.key] && @mongo_conditions[m_filter.key].is_a?(Hash)
               @mongo_conditions[m_filter.key].merge!(cond[m_filter.key])
             else
              @mongo_conditions.merge!(m_filter.mongo_conditions)  

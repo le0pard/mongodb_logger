@@ -7,4 +7,6 @@
 @import "group-buttons.css";
 @import "group-forms.css";
 @import "group-tables.css";
+
+@import "humanity/jquery-ui-1.8.16.custom.css";
 @import "highlight/zenburn.css";

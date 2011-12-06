@@ -1,3 +1,5 @@
+require 'date'
+
 module MongodbLogger
   module ServerModel
     class AdditionalFilter
@@ -5,8 +7,21 @@ module MongodbLogger
       FORM_NAME               = "more"
       FIXED_PARAMS_ON_FORM    = ['type', 'key', 'condition', 'value']
       
-      VAR_TYPES               = ["int", "str", "bool"]
-      DEFAULT_CONDITIONS      = ["equals", "not equals", "exists", "regexes", "<", "<=", ">=", ">"]
+      VAR_TYPES               = ["integer", "string", "boolean", "date"]
+      
+      VAR_TYPE_CONDITIONS = [
+        ["equals", "not equals", "regexes", "<", "<=", ">=", ">"],
+        ["equals", "not equals", "regexes", "<", "<=", ">=", ">"],
+        ["equals", "exists"],
+        ["<", "<=", ">=", ">"]
+      ]
+      
+      VAR_TYPE_VALUES = [
+        [],
+        [],
+        ["true", "false"],
+        []
+      ]
       
       attr_reader :form_data, :filter_model
       
@@ -27,6 +42,22 @@ module MongodbLogger
         self.class.send(:define_method, "#{k}=", proc{|v| self.instance_variable_set("@#{k}", v)})  ## method to set instance variable
       end
       
+      def self.get_type_index(type)
+        type.nil? ? 0 : VAR_TYPES.index(type)
+      end
+      
+      def get_type_index
+        @type.nil? ? 0 : VAR_TYPES.index(@type)
+      end
+      
+      def selected_values
+        VAR_TYPE_VALUES[get_type_index]
+      end
+      
+      def is_selected_values?
+        !VAR_TYPE_VALUES[get_type_index].blank?
+      end
+      
       def form_name
         "#{filter_model.form_name}[#{FORM_NAME}][]"
       end
@@ -35,10 +66,13 @@ module MongodbLogger
         data = Hash.new
         return data if self.key.blank?
         m_value = case self.type
-        when "int"
+        when "integer"
           self.value.to_i
-        when "bool"
+        when "boolean"
           ("true" == self.value || "1" == self.value) ? true : false
+        when "date"
+          val_date = Date.parse(self.value) rescue nil
+          Time.utc(val_date.year, val_date.month, val_date.day) unless val_date.nil?
         else
           self.value
         end

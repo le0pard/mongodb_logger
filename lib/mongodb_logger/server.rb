@@ -118,6 +118,19 @@ module MongodbLogger
         :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats) }.to_json
     end
     
+    get "/changed_filter/:type" do
+      type_id = ServerModel::AdditionalFilter.get_type_index params[:type]
+      conditions = ServerModel::AdditionalFilter::VAR_TYPE_CONDITIONS[type_id]
+      values = ServerModel::AdditionalFilter::VAR_TYPE_VALUES[type_id]
+      
+      content_type :json
+      { 
+        :type_id => type_id,
+        :conditions => conditions,
+        :values => values
+      }.to_json
+    end
+    
     get "/log/:id" do
       @log = @collection.find_one(BSON::ObjectId(params[:id]))
       show :show_log, !request.xhr?
@@ -128,11 +141,11 @@ module MongodbLogger
       partial(:"shared/log_info", :object => @log)
     end
     
-     get "/add_filter/?" do
-        @filter = ServerModel::Filter.new(nil)
-        @filter_more = ServerModel::AdditionalFilter.new(nil, @filter)
-        partial(:"shared/dynamic_filter", :object => @filter_more)
-      end
+    get "/add_filter/?" do
+      @filter = ServerModel::Filter.new(nil)
+      @filter_more = ServerModel::AdditionalFilter.new(nil, @filter)
+      partial(:"shared/dynamic_filter", :object => @filter_more)
+    end
     
     error do
       erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect

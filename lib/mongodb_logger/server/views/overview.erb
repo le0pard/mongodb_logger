@@ -66,6 +66,21 @@
           <%= submit_tag :submit, "Filter", :class => "button primary mrs" %> <a href="<%=h url_path("overview") %>">Clear</a>
         </div> <!-- outer -->
         
+        <div class="outer">
+          <div class="pvs">
+            <hr />
+          </div>
+        </div>  
+          
+        <div class="outer">
+          <div class="unit size1of1">
+            <div class="pvs">
+              <strong>Mongodb Condition:</strong><br /> 
+              <%=h @filter.get_mongo_conditions.inspect %>
+            </div>
+          </div>
+        </div>
+        
       </form>
       </div> <!-- filter -->
 

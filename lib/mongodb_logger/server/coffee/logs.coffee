@@ -13,17 +13,17 @@ MongodbLoggerJS =
     $(document).ajaxStop =>
       $('#ajax_loader').hide()
     
-    $('#tail_logs_link').live 'click', (event) =>
+    $(document).on 'click', '#tail_logs_link', (event) =>
       MongodbLoggerJS.tail_logs_url = $(event.target).attr('data-url')
       $('#tail_logs_block').addClass('started')
       MongodbLoggerJS.tail_logs(null)
       return false
-    $('#tail_logs_stop_link').live 'click', (event) =>
+    $(document).on 'click', '#tail_logs_stop_link', (event) =>
       MongodbLoggerJS.tail_log_started = false
       $('#tail_logs_block').removeClass('started')
       return false
     
-    $('.log_info').live 'click', (event) =>
+    $(document).on 'click', '.log_info', (event) =>
       elm_obj = $(event.target)
       url = elm_obj.attr('data-url')
       url = elm_obj.parents('tr').attr('data-url') if !url?
@@ -33,12 +33,12 @@ MongodbLoggerJS =
         $('#log_info').load(url)
       return false
     # filter tougle
-    $('div.filter-toggle').live 'click', (event) =>
+    $(document).on 'click', 'div.filter-toggle', (event) =>
       $('div.filter').slideToggle()
       $('div.filter-toggle span.arrow-down').toggleClass('rotate')
       
     # additional filters
-    $('#add_more_filter').live 'click', (event) =>
+    $(document).on 'click', '#add_more_filter', (event) =>
       url = $(event.target).attr('href')
       $.ajax
         url: url
@@ -47,12 +47,46 @@ MongodbLoggerJS =
           $('#more_filter_list').append(content)
       return false
     
-    $('.close_more_filter').live 'click', (event) =>
+    $(document).on 'change', 'select.filter_type', (event) =>
+      elm_object = $(event.target)
+      url = elm_object.attr('rel') + "/" + elm_object.val()
+      $.ajax
+        url: url
+        dataType: "json"
+        success: (data) ->
+          cond_options = ""
+          value_input = ""
+          $.each data.conditions, (key, val) =>
+            cond_options += '<option value="' + val + '">' + val + '</option>'
+          elm_object.parents('div.filter_block').find('select.filter_conditions').empty().append(cond_options) 
+          if data.values.length > 0
+            value_input = '<select id="filter[more][]_value" name="filter[more][][value]">'
+            $.each data.values, (key, val) =>
+              value_input += '<option value="' + val + '">' + val + '</option>'
+            value_input += '</select>'
+          else
+            value_input = '<input type="text" name="filter[more][][value]" value="" placeholder="value">'
+          elm_object.parents('div.filter_block').find('div.filter_values').html(value_input)
+          if "date" == elm_object.val()
+            elm_object.parents('div.filter_block').find('div.filter_values input').datepicker
+              dateFormat: "yy-mm-dd"
+              changeMonth: true
+              changeYear: true
+              yearRange: 'c-50:c+10'
+      return false
+    
+    $(document).on 'click', '.close_more_filter', (event) =>
       $(event.target).parents('li').remove()
       return false
       
+    $('div.filter_values input').datepicker
+      dateFormat: "yy-mm-dd"
+      changeMonth: true
+      changeYear: true
+      yearRange: 'c-50:c+10'
+      
     # message tabs
-    $('li.message_tab').live 'click', (event) =>
+    $(document).on 'click', 'li.message_tab', (event) =>
       elm_obj = $(event.target)
       tab = elm_obj.attr('data-tab')
       if tab?
