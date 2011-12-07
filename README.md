@@ -103,7 +103,7 @@ It:
         
   Now you can see web interface by url "http://localhost:3000/mongodb"
   
-  If you've installed Resque as a gem and want running the front end without Rails application, you can do it by this command:
+  If you've installed MongodbLogger as a gem and want running the front end without Rails application, you can do it by this command:
   
       mongodb_logger_web config.yml
       
