@@ -6,9 +6,11 @@ require 'active_support'
 require 'mongodb_logger/server/view_helpers'
 require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/content_for'
+
 require 'mongodb_logger/server/model/additional_filter'
 require 'mongodb_logger/server/model/filter'
 require 'mongodb_logger/server/model/analytic'
+
 require 'mongodb_logger/server_config'
 
 if defined? Encoding
@@ -158,7 +160,7 @@ module MongodbLogger
       end
       post "/#{page}/?" do
         @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
-        @analytic_data = @analytic.get_collection.find()
+        @analytic_data = @analytic.get_data
         partial(:"shared/analytic_table", :object => @analytic_data)
       end
     end
