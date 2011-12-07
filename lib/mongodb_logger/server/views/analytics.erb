@@ -20,12 +20,12 @@
             <div class="unit size1of2">
               <div class="unit size1of2">
                 <div class="prm">
-                  <%#= select_tag @filter, :limit, [[50, "Limits - 50"], [100, "Limits - 100"], [200, "Limits - 200"], [500, "Limits - 500"], [1000, "Limits - 1000"]] %>
+                  <%= text_field_tag @analytic, :start_date, :placeholder => "Start date", :class => "datepicker" %>
                 </div> <!-- prm -->                
               </div> <!-- unit -->   
               <div class="unit size1of2">
                 <div class="prm">
-                  <%#= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
+                  <%= text_field_tag @analytic, :end_date, :placeholder => "End date", :class => "datepicker" %>
                 </div>
               </div>
             </div>

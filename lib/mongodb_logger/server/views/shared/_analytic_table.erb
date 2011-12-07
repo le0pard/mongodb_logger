@@ -1,23 +1,17 @@
 <% if analytic_table.count > 0 %>
   <table>
-    <% single_object = analytic_table.first %>
-    <tr> 
-      <% single_object['_id'].keys.each do |key| %>         
-        <th><%=h key %></th>
-      <% end %>
-      <% single_object['value'].keys.each do |key| %>         
-        <th><%=h key %></th>
-      <% end %>
+    <tr>
+      <th>Year</th>
+      <th>Month</th>
+      <th>Day</th>
+      <th>Requests</th>
     </tr>
-  
     <% analytic_table.each do |analytic_data| %>
       <tr>
-      <% analytic_data['_id'].each do |key, value| %>
-        <td><%=h value.to_i %></td>
-      <% end %>
-      <% analytic_data['value'].each do |key, value| %>
-        <td><%=h value.to_i %></td>
-      <% end %>
+        <td><%=h analytic_data['_id']['year'].to_i %></td>
+        <td><%=h analytic_data['_id']['month'].to_i %></td>
+        <td><%=h analytic_data['_id']['day'].to_i %></td>
+        <td><%=h analytic_data['value']['count'].to_i %></td>
       </tr>
     <% end %>
   </table>

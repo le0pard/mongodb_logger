@@ -22,7 +22,7 @@
         <% if dynamic_filter.is_selected_values? %>
           <%= select_tag dynamic_filter, :value, dynamic_filter.selected_values %>
         <% else %>
-          <%= text_field_tag dynamic_filter, :value, :placeholder => "value" %>
+          <%= text_field_tag dynamic_filter, :value, :placeholder => "value", :class => dynamic_filter.type %>
         <% end %>
       </div> <!-- prm -->      
     </div>

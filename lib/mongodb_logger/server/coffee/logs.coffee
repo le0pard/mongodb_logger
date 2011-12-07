@@ -79,12 +79,6 @@ MongodbLoggerJS =
       $(event.target).parents('li').remove()
       return false
       
-    $('div.filter_values input').datepicker
-      dateFormat: "yy-mm-dd"
-      changeMonth: true
-      changeYear: true
-      yearRange: 'c-50:c+10'
-      
     # message tabs
     $(document).on 'click', 'li.message_tab', (event) =>
       elm_obj = $(event.target)
@@ -124,6 +118,12 @@ MongodbLoggerJS =
     # code highlight
     $('pre code').each (i, e) ->
       hljs.highlightBlock(e, '  ')
+      
+    $( ".datepicker, .filter_values input.date" ).datepicker
+      dateFormat: "yy-mm-dd"
+      changeMonth: true
+      changeYear: true
+      yearRange: 'c-50:c+10'
     
     # log info window
     if $("#log_info").length > 0
