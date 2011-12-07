@@ -1,0 +1,61 @@
+<%= partial(:"shared/top_panel") %>
+
+<div class="outer">
+  <div class="unit size3of4">
+    <div class="filter phm pvs">
+      <form id="analyticForm" action="<%=h url_path("analytics") %>" method="post" accept-charset="UTF-8">
+        <div class="outer mvs">
+          <div class="unit size1of2">
+            <div class="unit size1of2">
+              <div class="prm">
+                <%= select_tag @analytic, :type, MongodbLogger::ServerModel::Analytic::ANALYTIC_TYPES %>
+              </div> <!-- prm -->                        
+            </div>
+            <div class="unit size1of2">
+              <div class="prm">
+                <%#= text_field_tag @filter, :action, :placeholder => "Action" %>
+              </div>
+            </div>            
+          </div>                
+            <div class="unit size1of2">
+              <div class="unit size1of2">
+                <div class="prm">
+                  <%#= select_tag @filter, :limit, [[50, "Limits - 50"], [100, "Limits - 100"], [200, "Limits - 200"], [500, "Limits - 500"], [1000, "Limits - 1000"]] %>
+                </div> <!-- prm -->                
+              </div> <!-- unit -->   
+              <div class="unit size1of2">
+                <div class="prm">
+                  <%#= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
+                </div>
+              </div>
+            </div>
+        </div> <!-- outer -->
+        
+        <div class="outer">
+          <%= submit_tag :submit, "Analyze", :class => "button primary mrs" %> <a href="<%=h url_path("analytics") %>">Clear</a>
+        </div> <!-- outer -->
+        
+      </form>
+      </div> <!-- filter -->
+
+      <div class="filter-toggle"><span class="arrow-down">Analyze</span></div>
+      
+      <div id="analyticData">
+        <div class="pal txtC">
+          Select what to analyze
+        </div>
+      </div>
+      
+  </div> <!-- unit size3of4 -->
+  
+  <div class="unit size1of4">
+    <div class="details">
+      
+      <div id="log_info">
+        <div class="pale h2 pal txtC">
+          Please choose analytic
+        </div> <!-- pale h2 -->
+      </div>
+    </div> <!-- details -->    
+  </div> <!-- unit size1of4 -->
+</div> <!-- outer -->

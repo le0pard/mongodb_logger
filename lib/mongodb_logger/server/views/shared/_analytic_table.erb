@@ -1,0 +1,26 @@
+<% if analytic_table.count > 0 %>
+  <table>
+    <% single_object = analytic_table.first %>
+    <tr> 
+      <% single_object['_id'].keys.each do |key| %>         
+        <th><%=h key %></th>
+      <% end %>
+      <% single_object['value'].keys.each do |key| %>         
+        <th><%=h key %></th>
+      <% end %>
+    </tr>
+  
+    <% analytic_table.each do |analytic_data| %>
+      <tr>
+      <% analytic_data['_id'].each do |key, value| %>
+        <td><%=h value.to_i %></td>
+      <% end %>
+      <% analytic_data['value'].each do |key, value| %>
+        <td><%=h value.to_i %></td>
+      <% end %>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <div class="pale pal txtC">No data found, try another filter</div>
+<% end %>

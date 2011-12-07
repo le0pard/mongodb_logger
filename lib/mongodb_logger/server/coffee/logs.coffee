@@ -94,6 +94,13 @@ MongodbLoggerJS =
         $('pre.tab_content').addClass('hidden')
         elm_obj.addClass('active')
         $('.' + tab).removeClass('hidden')
+    
+    $(document).on 'submit', '#analyticForm', (event) =>
+      element = $('#analyticForm')
+      url = element.attr('action')
+      data = element.serializeArray()
+      $('#analyticData').load url, data
+      return false
           
     # init pjax
     this.init_pjax()

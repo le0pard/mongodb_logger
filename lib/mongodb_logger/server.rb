@@ -8,6 +8,7 @@ require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/content_for'
 require 'mongodb_logger/server/model/additional_filter'
 require 'mongodb_logger/server/model/filter'
+require 'mongodb_logger/server/model/analytic'
 require 'mongodb_logger/server_config'
 
 if defined? Encoding
@@ -131,11 +132,13 @@ module MongodbLogger
       }.to_json
     end
     
+    # log info
     get "/log/:id" do
       @log = @collection.find_one(BSON::ObjectId(params[:id]))
       show :show_log, !request.xhr?
     end
     
+    # log info right
     get "/log_info/:id" do
       @log = @collection.find_one(BSON::ObjectId(params[:id]))
       partial(:"shared/log_info", :object => @log)
@@ -145,6 +148,19 @@ module MongodbLogger
       @filter = ServerModel::Filter.new(nil)
       @filter_more = ServerModel::AdditionalFilter.new(nil, @filter)
       partial(:"shared/dynamic_filter", :object => @filter_more)
+    end
+    
+    # analytics
+    %w( analytics ).each do |page|
+      get "/#{page}/?" do
+        @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
+        show page, !request.xhr?
+      end
+      post "/#{page}/?" do
+        @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
+        @analytic_data = @analytic.get_collection.find()
+        partial(:"shared/analytic_table", :object => @analytic_data)
+      end
     end
     
     error do
