@@ -70,9 +70,14 @@ end
 
 GEM_ROOT = File.dirname(__FILE__).freeze
 LOCAL_GEM_ROOT = File.join(GEM_ROOT, 'tmp', 'local_gems').freeze
-RAILS_VERSIONS = IO.read('SUPPORTED_RAILS_VERSIONS').strip.split("\n")
-# for ci testing only major rails versions
-RAILS_VERSIONS = ['3.0.11', '3.1.3'] if ENV['CI']
+
+if ENV['CI']
+  # for ci testing only major rails versions
+  RAILS_VERSIONS = ['3.0.11', '3.1.3'] 
+else
+  RAILS_VERSIONS = IO.read('SUPPORTED_RAILS_VERSIONS').strip.split("\n")
+end
+
 
 LOCAL_GEMS = [['sqlite3', nil], ['shoulda', nil], ["rspec", nil], ["mocha", nil], ["cucumber", nil], ["bundler", "1.0.21"]] +
   RAILS_VERSIONS.collect { |version| ['rails', version] }
