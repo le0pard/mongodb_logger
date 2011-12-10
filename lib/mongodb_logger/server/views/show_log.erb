@@ -92,4 +92,14 @@
   <% if @log['messages'] && !@log['messages'].blank? && @log['messages'].is_a?(Hash) %>
     <%= partial(:"shared/message_tabs", :object => @log['messages']) %>
   <% end %>
+  <% unless meta_informations(@log).blank? %>
+    <li class="outer pvs phm">
+      <div class="unit size1of5">
+        <span class="pale">Meta informations:</span>
+      </div> <!-- unit -->
+      <div class="unit size4of5">
+        <pre><code><%= pretty_hash(meta_informations(@log)) %></code></pre>
+      </div> <!-- unit -->
+    </li>
+  <% end %>
 </ul>

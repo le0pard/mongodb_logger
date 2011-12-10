@@ -11,6 +11,16 @@ module Sinatra::ViewHelpers
     end
   end
   
+  def meta_informations(log)
+    meta_data = Hash.new
+    log.each do |key, val|
+      # predefined fields
+      next if [:_id, :messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :method, :controller, :action, :path, :url].include?(key.to_sym)
+      meta_data[key] = val
+    end
+    meta_data
+  end
+  
   # TODO: improve this
   def number_to_human_size(number, precision = 2)
     number = begin
