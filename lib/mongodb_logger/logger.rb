@@ -154,7 +154,7 @@ module MongodbLogger
 
       def create_collection
         @mongo_connection.create_collection(@mongo_collection_name,
-                                            {:capped => true, :size => @db_configuration['capsize']})
+                                            {:capped => true, :size => @db_configuration['capsize'].to_i})
       end
 
       def check_for_collection
