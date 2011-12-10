@@ -249,4 +249,25 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
     end
   end
   
+  context "A MongodbLogger::Logger with custom collection" do
+    setup do
+      FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, DEFAULT_CONFIG_WITH_COLLECTION),  File.join(CONFIG_DIR, DEFAULT_CONFIG))
+      config = File.new(File.join(CONFIG_DIR, DEFAULT_CONFIG))
+      @file_config = YAML.load(ERB.new(config.read).result)[Rails.env]['mongodb_logger']
+      @mongodb_logger = MongodbLogger::Logger.new
+      common_setup
+      @mongodb_logger.reset_collection
+    end
+
+    should "changed collection name" do
+      assert_equal @file_config['collection'], @mongodb_logger.mongo_collection_name
+      assert_equal "#{@file_config['database']}.#{@file_config['collection']}", @collection.stats()['ns']
+    end 
+    
+    teardown do
+      file = File.join(CONFIG_DIR, DEFAULT_CONFIG)
+      File.delete(file) if File.exist?(file)
+    end
+  end
+  
 end
