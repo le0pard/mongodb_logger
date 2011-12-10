@@ -71,6 +71,7 @@ module MongodbLogger
       runtime = Benchmark.measure{ yield }.real if block_given?
     rescue Exception => e
       add(3, e.message + "\n" + e.backtrace.join("\n"))
+      # log exceptions
       @mongo_record[:is_exception] = true
       # Reraise the exception for anyone else who cares
       raise e
@@ -109,7 +110,7 @@ module MongodbLogger
           'host' => 'localhost',
           'port' => 27017,
           'capsize' => default_capsize}.merge(resolve_config)
-        @mongo_collection_name = @db_configuration[:collection] || "#{Rails.env}_log"
+        @mongo_collection_name = @db_configuration['collection'] || "#{Rails.env}_log"
         @application_name = resolve_application_name
         @safe_insert = @db_configuration['safe_insert'] || false
 
