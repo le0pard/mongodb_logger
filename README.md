@@ -72,7 +72,8 @@ It:
         'request_time'     : date_of_request,
         'runtime'          : elapsed_execution_time_in_milliseconds,
         'url'              : full_url,
-        'method'           : request method (GET, POST, PUT, DELETE, OPTIONS)
+        'method'           : request method (GET, POST, OPTIONS),
+        'is_exception'     : true only for exceptions (in other cases this field miss)
       }
 
   Beyond that, if you want to add extra information to the base of the document (let's say something like user\_id on every request that it's available),
