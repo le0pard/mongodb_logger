@@ -11,8 +11,8 @@ module Sinatra::ViewHelpers
     end
   end
   
-  def get_string_from_log_messages(message)
-    message.is_a?(Array) ? message.join("\n") : message
+  def string_from_log_message(message)
+    message.is_a?(Array) ? message.join("\n") : message.to_s
   end
   
   def meta_informations(log)

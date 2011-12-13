@@ -9,7 +9,7 @@
     <% end %>
     </ul>
     <% message_tabs.each do |key, val| %>
-      <pre class="tab_<%=key %> tab_content <%='hidden' unless key == message_tabs.keys.first %>"><code><%=h (val.is_a?(Array) ? val.join("\n") : val) %></code></pre>
+      <pre class="tab_<%=key %> tab_content <%='hidden' unless key == message_tabs.keys.first %>"><code><%=h string_from_log_message(val) %></code></pre>
     <% end %>
   </div> <!-- unit -->
 </li>
