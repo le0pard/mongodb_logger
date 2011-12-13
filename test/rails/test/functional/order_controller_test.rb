@@ -57,6 +57,15 @@ class OrderControllerTest < ActionController::TestCase
     post :create, :activity => {:name =>  some_name}
     assert_equal 1, @collection.find({"params.activity.name" => some_name}).count
   end
+  
+  test "should log attachments in forms" do
+    file = Tempfile.new('hello')
+    content_type = "text/html"
+    post :test_post, :data => {
+      :file => Rack::Test::UploadedFile.new(file, )
+    }
+    assert_equal 1, @collection.find({"params.data.file.content_type" => content_type}).count
+  end
 
   test "should not log passwords" do
     post :create, :order => {:password => OrderController::LOG_MESSAGE }

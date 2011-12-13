@@ -62,7 +62,14 @@ module RailsHelpers
   def add_routes
     content = File.read(routes_path)
     flag = Regexp.escape("Application.routes.draw do\n")
-    content.gsub!(/#{flag}/m, '\0 resources :order')
+    order_routes = <<STR
+resources :order do
+  collection do
+    post :test_post
+  end
+end
+STR
+    content.gsub!(/#{flag}/m, '\0 ' + order_routes)
     File.open(routes_path, 'wb') { |file| file.write(content) }
   end
   

@@ -204,11 +204,16 @@ module MongodbLogger
           when Array
             data.map{|v| nice_serialize_object(v) }
           when ActionDispatch::Http::UploadedFile
-            {
+            hvalues = {
               :original_filename => data.original_filename,
               :content_type => data.content_type,
               :headers => data.headers
             }
+            hvalues.merge({
+              :path => data.path,
+              :size => data.size
+            }) if data.path && data.size
+            hvalues
           else
             data.inspect
         end
