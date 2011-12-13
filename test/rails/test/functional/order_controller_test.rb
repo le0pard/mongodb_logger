@@ -59,12 +59,22 @@ class OrderControllerTest < ActionController::TestCase
   end
   
   test "should log attachments in forms" do
-    file = Tempfile.new('hello')
+    filepath = "mltest_file.html"
     content_type = "text/html"
+    tmpfile = File.open("#{ActionController::TestCase.fixture_path}#{filepath}", 'w') {|f| f.write("<html></html>") }
+    
+    content_type = "text/html"
+    uploaded_file = fixture_file_upload(filepath, content_type, :binary)
     post :test_post, :data => {
-      :file => Rack::Test::UploadedFile.new(file, )
+      :some_key => [
+        {:file => uploaded_file}
+      ]
     }
-    assert_equal 1, @collection.find({"params.data.file.content_type" => content_type}).count
+    
+    assert_equal 1, @collection.find({"params.data.some_key.file.content_type" => content_type}).count
+    assert_equal 1, @collection.find({"params.data.some_key.file.original_filename" => filepath}).count
+    
+    File.delete(filepath) if File.exist?(filepath)
   end
 
   test "should not log passwords" do

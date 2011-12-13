@@ -2,6 +2,7 @@ require 'erb'
 require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
+require 'action_dispatch'
 require 'mongodb_logger/replica_set_helper'
 
 module MongodbLogger
@@ -203,17 +204,11 @@ module MongodbLogger
             hvalues
           when Array
             data.map{|v| nice_serialize_object(v) }
-          when ActionDispatch::Http::UploadedFile
+          when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
             hvalues = {
               :original_filename => data.original_filename,
-              :content_type => data.content_type,
-              :headers => data.headers
+              :content_type => data.content_type
             }
-            hvalues.merge({
-              :path => data.path,
-              :size => data.size
-            }) if data.path && data.size
-            hvalues
           else
             data.inspect
         end
