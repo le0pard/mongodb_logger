@@ -5,9 +5,9 @@
   <h2 class="phs mvs"><span class="<%= log_info['is_exception'] ? 'failure' : 'success' %>">Message</span></h2>
   <div class="phs wrap_text">
     <% if log_info['is_exception'] && log_info['messages'] && log_info['messages']['error'] %>
-      Error: <%= log_info['messages']['error'].join("\n").truncate(300, :separator => ' ') %>
+      Error: <%=h get_string_from_log_messages(log_info['messages']['error']).truncate(300, :separator => ' ') %>
     <% elsif log_info['messages'] && log_info['messages']['info'] %>
-      Info: <%= log_info['messages']['info'].join("\n").truncate(300, :separator => ' ') %>
+      Info: <%=h get_string_from_log_messages(log_info['messages']['info']).truncate(300, :separator => ' ') %>
     <% end %>
   </div> <!-- phs -->
   <h2 class="phs mtm mbs">URL (method: <%=h log_info['method'] %>)</h2>

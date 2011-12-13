@@ -81,9 +81,15 @@ module MongodbLogger
       begin
         @insert_block.call
       rescue
-        # do extra work to inpect (and flatten)
-        force_serialize @mongo_record
-        @insert_block.call rescue nil
+        begin
+          # try to nice serialize record
+          nice_serialize @mongo_record
+          @insert_block.call
+        rescue
+          # do extra work to inpect (and flatten)
+          force_serialize @mongo_record
+          @insert_block.call rescue nil
+        end
       end
     end
 
@@ -172,14 +178,47 @@ module MongodbLogger
         # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
         @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
       end
+      
+      # try to serialyze data by each key and found invalid object
+      def nice_serialize(rec)
+        if msgs = rec[:messages]
+          msgs.each do |i, j|
+            msgs[i] = nice_serialize_object(j)
+          end
+        end
+        if pms = rec[:params]
+          pms.each do |i, j|
+            pms[i] = nice_serialize_object(j)
+          end
+        end
+      end
+      
+      def nice_serialize_object(data)
+        case data
+          when NilClass, String, Fixnum, Bignum, Float
+            data
+          when Hash
+            hvalues = Hash.new
+            data.each{|k,v| hvalues[k] = nice_serialize_object(v) }
+            hvalues
+          when Array
+            data.map{|v| nice_serialize_object(v) }
+          when ActionDispatch::Http::UploadedFile
+            {
+              :original_filename => data.original_filename,
+              :content_type => data.content_type,
+              :headers => data.headers
+            }
+          else
+            data.inspect
+        end
+      end
 
       # force the data in the db by inspecting each top level array and hash element
       # this will flatten other hashes and arrays
       def force_serialize(rec)
         if msgs = rec[:messages]
-          LOG_LEVEL_SYM.each do |i|
-            msgs[i].collect! { |j| j.inspect } if msgs[i]
-          end
+          msgs.each { |i, j| msgs[i] = j.inspect }
         end
         if pms = rec[:params]
           pms.each { |i, j| pms[i] = j.inspect }
