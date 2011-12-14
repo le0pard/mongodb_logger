@@ -50,6 +50,7 @@ Then /^the tests should have run successfully$/ do
   # show errors
   output_log = @terminal.output
   is_pass = false
+  # TODO: fix regexp later, because can PASS in 10 or 100 failures
   is_pass = true if ((1 == output_log.scan(/([.*]?)fail: 0(\D+)error: 0([\D+]?)/i).size) || (1 == output_log.scan(/(.*)0 failures(.*)0 errors(.*)/i).size))
   puts @terminal.output unless is_pass
   # check if have errors
