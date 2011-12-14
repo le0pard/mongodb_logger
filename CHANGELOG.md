@@ -1,3 +1,8 @@
+## dev
+
+* Fix storage log with attachments (save it for search by "original\_filename" and "content\_type")
+* Fix tests for CI
+
 ## v0.2.2
 
 * Fix set custom collection in config and add tests on it 
