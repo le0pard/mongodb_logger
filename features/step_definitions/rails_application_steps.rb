@@ -39,13 +39,13 @@ When /^I setup all gems for rails$/ do
 end
 
 When /^I prepare rails environment for testing$/ do
-  step %{I run "rake db:create db:migrate RAILS_ENV=test"}
+  step %{I run "rake db:create db:migrate RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
 end
 
 
 Then /^the tests should have run successfully$/ do
-  step %{I run "rake test RAILS_ENV=test"}
+  step %{I run "rake test RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
   # show errors
   is_pass = false
