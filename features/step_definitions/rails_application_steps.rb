@@ -48,9 +48,11 @@ Then /^the tests should have run successfully$/ do
   step %{I run "rake test RAILS_ENV=test"}
   @terminal.status.exitstatus.should == 0
   # show errors
-  puts @terminal.output if 1 != @terminal.output.scan(/fail: 0,  error: 0/).size
+  is_pass = false
+  is_pass = true if (1 == @terminal.output.scan(/fail: 0,  error: 0/).size) || (1 == @terminal.output.scan(/0 failures, 0 errors/).size)
+  puts @terminal.output unless is_pass
   # check if have errors
-  @terminal.output.scan(/fail: 0,  error: 0/).size.should == 1
+  is_pass.should == true
 end
 
 When /^I run "([^\"]*)"$/ do |command|
