@@ -2,7 +2,7 @@ require 'erb'
 require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
-require 'action_dispatch'
+require 'action_dispatch/http/upload'
 require 'mongodb_logger/replica_set_helper'
 
 module MongodbLogger
