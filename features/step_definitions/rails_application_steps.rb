@@ -48,8 +48,9 @@ Then /^the tests should have run successfully$/ do
   step %{I run "rake test RAILS_ENV=test --trace"}
   @terminal.status.exitstatus.should == 0
   # show errors
+  output_log = @terminal.output
   is_pass = false
-  is_pass = true if (1 == @terminal.output.scan(/fail: 0,  error: 0/).size) || (1 == @terminal.output.scan(/0 failures, 0 errors/).size)
+  is_pass = true if ((1 == output_log.scan(/fail: 0,  error: 0/).size) || (1 == output_log.scan(/0 failures, 0 errors/).size))
   puts @terminal.output unless is_pass
   # check if have errors
   is_pass.should == true
