@@ -23,7 +23,8 @@ class Terminal
     @environment_variables = {
       "GEM_HOME" => LOCAL_GEM_ROOT,
       "GEM_PATH" => "#{LOCAL_GEM_ROOT}:#{BUILT_GEM_ROOT}",
-      "PATH" => "#{gem_bin_path}:#{ENV['PATH']}"
+      "PATH" => "#{gem_bin_path}:#{ENV['PATH']}",
+      "BUNDLE_GEMFILE" => File.join(LOCAL_RAILS_ROOT, 'Gemfile')
     }
   end
 
