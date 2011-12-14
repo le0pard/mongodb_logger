@@ -58,19 +58,55 @@ class OrderControllerTest < ActionController::TestCase
     assert_equal 1, @collection.find({"params.activity.name" => some_name}).count
   end
   
-  test "should log attachments in forms" do
+  test "should search any values by params keys" do
+    post :test_post, :data => {
+      :int => 1,
+      :is_true => true,
+      :is_false => false,
+      :string => "string",
+      :push_hash => { :yes => 1 },
+      :float => 1.22
+    }
+    
+    # data types
+    assert_equal 1, @collection.find({"params.data.int" => 1}).count
+    assert_equal 1, @collection.find({"params.data.is_true" => true}).count
+    assert_equal 1, @collection.find({"params.data.is_false" => false}).count
+    assert_equal 1, @collection.find({"params.data.string" => "string"}).count
+    assert_equal 1, @collection.find({"params.data.push_hash.yes" => 1}).count
+    assert_equal 1, @collection.find({"params.data.float" => 1.22}).count
+    # not found by invalid type comparison
+    assert_equal 0, @collection.find({"params.data.push_hash.yes" => "1"}).count
+  end
+  
+  test "should search any values by params keys with attachments" do
     filepath = "mltest_file.html"
     content_type = "text/html"
     tmpfile = File.open("#{ActionController::TestCase.fixture_path}#{filepath}", 'w') {|f| f.write("<html></html>") }
     
-    content_type = "text/html"
     uploaded_file = fixture_file_upload(filepath, content_type, :binary)
     post :test_post, :data => {
       :some_key => [
         {:file => uploaded_file}
-      ]
+      ],
+      :int => 1,
+      :is_true => true,
+      :is_false => false,
+      :string => "string",
+      :push_hash => { :yes => 1 },
+      :float => 1.22
     }
     
+    # data types
+    assert_equal 1, @collection.find({"params.data.int" => 1}).count
+    assert_equal 1, @collection.find({"params.data.is_true" => true}).count
+    assert_equal 1, @collection.find({"params.data.is_false" => false}).count
+    assert_equal 1, @collection.find({"params.data.string" => "string"}).count
+    assert_equal 1, @collection.find({"params.data.push_hash.yes" => 1}).count
+    assert_equal 1, @collection.find({"params.data.float" => 1.22}).count
+    # not found by invalid type comparison
+    assert_equal 0, @collection.find({"params.data.push_hash.yes" => "1"}).count
+    # attachment
     assert_equal 1, @collection.find({"params.data.some_key.file.content_type" => content_type}).count
     assert_equal 1, @collection.find({"params.data.some_key.file.original_filename" => filepath}).count
     

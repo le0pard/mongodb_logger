@@ -196,7 +196,7 @@ module MongodbLogger
       
       def nice_serialize_object(data)
         case data
-          when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Date, DateTime, Regexp, Symbol
+          when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
             data
           when Hash
             hvalues = Hash.new
