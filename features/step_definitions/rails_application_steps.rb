@@ -39,14 +39,18 @@ When /^I setup all gems for rails$/ do
 end
 
 When /^I prepare rails environment for testing$/ do
-  step %{I run "rake db:create db:migrate RAILS_ENV=test --trace"}
+  step %{I run "rake db:create db:migrate RAILS_ENV=test"}
   @terminal.status.exitstatus.should == 0
 end
 
 
 Then /^the tests should have run successfully$/ do
-  step %{I run "rake test RAILS_ENV=test --trace"}
+  step %{I run "rake test RAILS_ENV=test"}
   @terminal.status.exitstatus.should == 0
+  # show errors
+  puts @terminal.output if 1 != @terminal.output.scan(/fail: 0,  error: 0/).size
+  # check if have errors
+  @terminal.output.scan(/fail: 0,  error: 0/).size.should == 1
 end
 
 When /^I run "([^\"]*)"$/ do |command|
