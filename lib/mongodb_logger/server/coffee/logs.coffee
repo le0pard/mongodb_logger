@@ -25,11 +25,11 @@ MongodbLoggerJS =
     
     $(document).on 'click', '.log_info', (event) =>
       elm_obj = $(event.target)
-      url = elm_obj.attr('data-url')
-      url = elm_obj.parents('tr').attr('data-url') if !url?
+      url = elm_obj.data('url')
+      url = elm_obj.parent('tr').data('url') if !url?
       if url?
         elm_obj.parents('table').find('tr').removeClass('current')
-        elm_obj.parents('tr').addClass('current')
+        elm_obj.parent('tr').addClass('current')
         $('#log_info').load(url)
       return false
     # filter tougle
@@ -99,15 +99,16 @@ MongodbLoggerJS =
       
     # keydown log  
     $(document).on 'keydown', '*', (event) =>
+      console.log event.keyCode
       switch event.keyCode
-        when 40
-          if $('#logs_list').find('tr.current').length > 0
-            $('#logs_list').find('tr.current').next("tr").find('td:first').trigger('click')
-          return false
-        when 38
-          if $('#logs_list').find('tr.current').length > 0
-            $('#logs_list').find('tr.current').prev("tr").find('td:first').trigger('click')
-          return false
+        when 37 # left
+          MongodbLoggerJS.move_by_logs('begin')
+        when 38 # up
+          MongodbLoggerJS.move_by_logs('up')
+        when 39 # right
+          MongodbLoggerJS.move_by_logs('end')
+        when 40 # down
+          MongodbLoggerJS.move_by_logs('down')
           
     # init pjax
     this.init_pjax()
@@ -174,3 +175,45 @@ MongodbLoggerJS =
           if MongodbLoggerJS.tail_log_started
             fcallback = -> MongodbLoggerJS.tail_logs(log_last_id)
             setTimeout fcallback, 2000
+  
+  move_by_logs: (direction) ->
+    if $('#logs_list').length > 0 && $('#logs_list').find('tr.current').length > 0
+      current_element = $('#logs_list').find('tr.current')
+      switch direction
+        when 'begin'
+          element = $('#logs_list tr:first').next("tr")
+          if element.length > 0
+            element.find('td:first').trigger('click')
+            $(window).scrollTop(element.height() + element.offset().top - 100)
+            return false
+        when 'end'
+          element = $('#logs_list tr:last')
+          if element.length > 0
+            element.find('td:first').trigger('click')
+            $(window).scrollTop(element.height() + element.offset().top - 100)
+            return false
+        when 'down'
+          element = current_element.next("tr")
+          if element.length > 0
+            element.find('td:first').trigger('click')
+            if MongodbLoggerJS.is_scrolled_into_view(element)
+              $(window).scrollTop($(window).scrollTop() + element.height())
+            else
+              $(window).scrollTop(element.height() + element.offset().top - 100)
+            return false
+        when 'up'
+          element = current_element.prev("tr")
+          if element.length > 0
+            element.find('td:first').trigger('click')
+            if MongodbLoggerJS.is_scrolled_into_view(element)
+              $(window).scrollTop($(window).scrollTop() - element.height())
+            else
+              $(window).scrollTop(element.height() + element.offset().top - 100)
+            return false
+            
+  is_scrolled_into_view: (elem) ->
+    docViewTop = $(window).scrollTop()
+    docViewBottom = docViewTop + $(window).height()
+    elemTop = $(elem).offset().top
+    elemBottom = elemTop + $(elem).height()
+    return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
