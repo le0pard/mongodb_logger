@@ -11,9 +11,9 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
   gem.rdoc_options      = ["--charset=UTF-8"]
 
-  gem.add_development_dependency "rspec",           "~> 2.7.0"
+  gem.add_development_dependency "rspec",           ">= 2.7.0"
   gem.add_development_dependency "shoulda",         ">= 2.0.0"
-  gem.add_development_dependency "mocha",           "~> 0.10.0"
+  gem.add_development_dependency "mocha",           ">= 0.10.0"
   gem.add_development_dependency "cucumber",        "~> 1.1.2"
   gem.add_development_dependency "coffee-script",   "~> 2.2.0"
   gem.add_development_dependency "uglifier",        ">= 1.2.0"
