@@ -89,12 +89,25 @@ MongodbLoggerJS =
         elm_obj.addClass('active')
         $('.' + tab).removeClass('hidden')
     
+    # analytic form
     $(document).on 'submit', '#analyticForm', (event) =>
       element = $('#analyticForm')
       url = element.attr('action')
       data = element.serializeArray()
       $('#analyticData').load url, data
       return false
+      
+    # keydown log  
+    $(document).on 'keydown', '*', (event) =>
+      switch event.keyCode
+        when 40
+          if $('#logs_list').find('tr.current').length > 0
+            $('#logs_list').find('tr.current').next("tr").find('td:first').trigger('click')
+          return false
+        when 38
+          if $('#logs_list').find('tr.current').length > 0
+            $('#logs_list').find('tr.current').prev("tr").find('td:first').trigger('click')
+          return false
           
     # init pjax
     this.init_pjax()
