@@ -143,7 +143,7 @@ It:
 
 ##  Demo Application with MongodbLogger
   
-  Demo: [http://mongodb-logger.heroku.com/](http://mongodb-logger.heroku.com/)
+  Demo: [http://demo-mongodb-logger.catware.org/](http://demo-mongodb-logger.catware.org/)
   
   Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https://github.com/le0pard/mongodb_logger_example_heroku)
   
