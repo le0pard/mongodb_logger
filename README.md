@@ -17,6 +17,11 @@ It:
 1. Add the following line to your ApplicationController:
 
         include MongodbLogger::Base
+        
+1. For use with Heroku you need to prevent the rails\_log\_stdout plugin from being added by Heroku:
+
+        mkdir vendor/plugins/rails_log_stdout
+        touch vendor/plugins/rails_log_stdout/.gitkeep
 
 1. Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
