@@ -141,6 +141,12 @@ It:
   
       MONGODBLOGGERCONFIG=examples/server_config.yml unicorn
 
+###  Demo Application
+  
+  Demo: [http://mongodb-logger.heroku.com/](http://mongodb-logger.heroku.com/)
+  Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https://github.com/le0pard/mongodb_logger_example_heroku)
+  
+
 ## Querying via the Rails console
 
   And now, for a couple quick examples on getting ahold of this log data...
