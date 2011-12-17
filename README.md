@@ -141,9 +141,10 @@ It:
   
       MONGODBLOGGERCONFIG=examples/server_config.yml unicorn
 
-###  Demo Application
+##  Demo Application with MongodbLogger
   
   Demo: [http://mongodb-logger.heroku.com/](http://mongodb-logger.heroku.com/)
+  
   Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https://github.com/le0pard/mongodb_logger_example_heroku)
   
 
