@@ -9,6 +9,11 @@
 :: Page Name 2
 */
 
+.button.green {
+  background: #68B902; 
+  border: 1px solid #5E8C22;
+}
+
 
 /* -----------------------------------------
    Shared Styles
@@ -59,6 +64,14 @@
 
 #featuresBlock .columns p {
   font-size: 1.6rem;
+}
+
+#demoApp p {
+  font-size: 1.6rem;
+}
+
+#demoApp p.center-text {
+  text-align: center;
 }
 
 #gettingStarted li {
