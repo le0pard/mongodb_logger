@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "shoulda",         ">= 2.0.0"
   gem.add_development_dependency "mocha",           ">= 0.10.0"
   gem.add_development_dependency "cucumber",        "~> 1.1.2"
+  gem.add_development_dependency "capybara",        "~> 1.1.2"
   gem.add_development_dependency "coffee-script",   "~> 2.2.0"
   gem.add_development_dependency "uglifier",        ">= 1.2.0"
   gem.add_development_dependency "therubyracer",    ">= 0.9.9"

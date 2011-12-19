@@ -143,8 +143,19 @@ def define_rails_cucumber_tasks(additional_cucumber_args = '')
   end
 end
 
+def define_web_cucumber_tasks(additional_cucumber_args = '')
+  namespace :web do
+    desc "Test web of the gem"
+    task :all do
+      puts "Testing Web"
+      system("cucumber --format #{ENV['CUCUMBER_FORMAT'] || 'progress'} #{additional_cucumber_args} features/mongodb_logger_web.feature")
+    end
+  end
+end
+
 namespace :cucumber do
   define_rails_cucumber_tasks
+  define_web_cucumber_tasks
 end
 
 begin
