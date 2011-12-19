@@ -53,7 +53,7 @@ end
 desc 'Test unit.'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.test_files = ['test/unit/mongodb_logger_test.rb', 'test/unit/mongodblogger_web_test.rb']
+  test.test_files = ['test/unit/mongodb_logger_test.rb']
   test.verbose = true
 end
 
