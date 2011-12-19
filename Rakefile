@@ -25,7 +25,8 @@ namespace :js do
     
     Dir.foreach(source) do |cf|
       unless cf == '.' || cf == '..' 
-        js = Uglifier.compile(CoffeeScript.compile File.read("#{source}#{cf}")) 
+        js_compiled = CoffeeScript.compile File.read("#{source}#{cf}")
+        js = Uglifier.compile js_compiled
         open "#{javascripts}#{cf.gsub('.coffee', '.js')}", 'w' do |f|
           f.puts js
         end 
@@ -49,10 +50,10 @@ task :clean do
   exec "rm -rf tmp"
 end
 
-desc 'Test the airbrake gem.'
+desc 'Test unit.'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/unit/mongodb_logger_test.rb'
+  test.test_files = ['test/unit/mongodb_logger_test.rb', 'test/unit/mongodblogger_web_test.rb']
   test.verbose = true
 end
 
@@ -144,4 +145,13 @@ end
 
 namespace :cucumber do
   define_rails_cucumber_tasks
+end
+
+begin
+  require 'jasmine'
+  load 'jasmine/tasks/jasmine.rake'
+rescue LoadError
+  task :jasmine do
+    abort "Jasmine is not available. In order to run jasmine, you must: (sudo) gem install jasmine"
+  end
 end

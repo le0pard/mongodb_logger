@@ -1,7 +1,7 @@
 $ ->
-  MongodbLoggerJS.init()
+  MongodbLoggerMain.init()
 
-MongodbLoggerJS = 
+window.MongodbLoggerMain = 
   tail_logs_url: null
   tail_log_started: false
   log_info_offset: null
@@ -14,12 +14,12 @@ MongodbLoggerJS =
       $('#ajax_loader').hide()
     
     $(document).on 'click', '#tail_logs_link', (event) =>
-      MongodbLoggerJS.tail_logs_url = $(event.target).attr('data-url')
+      MongodbLoggerMain.tail_logs_url = $(event.target).attr('data-url')
       $('#tail_logs_block').addClass('started')
-      MongodbLoggerJS.tail_logs(null)
+      MongodbLoggerMain.tail_logs(null)
       return false
     $(document).on 'click', '#tail_logs_stop_link', (event) =>
-      MongodbLoggerJS.tail_log_started = false
+      MongodbLoggerMain.tail_log_started = false
       $('#tail_logs_block').removeClass('started')
       return false
     
@@ -102,13 +102,13 @@ MongodbLoggerJS =
       console.log event.keyCode
       switch event.keyCode
         when 37 # left
-          MongodbLoggerJS.move_by_logs('begin')
+          MongodbLoggerMain.move_by_logs('begin')
         when 38 # up
-          MongodbLoggerJS.move_by_logs('up')
+          MongodbLoggerMain.move_by_logs('up')
         when 39 # right
-          MongodbLoggerJS.move_by_logs('end')
+          MongodbLoggerMain.move_by_logs('end')
         when 40 # down
-          MongodbLoggerJS.move_by_logs('down')
+          MongodbLoggerMain.move_by_logs('down')
           
     # init pjax
     this.init_pjax()
@@ -121,12 +121,12 @@ MongodbLoggerJS =
     $('body').bind 'pjax:end', () => 
       $('#ajax_loader').hide()
       # stop tailing
-      MongodbLoggerJS.tail_log_started = false
+      MongodbLoggerMain.tail_log_started = false
       # scroll on top
       if ($(window).scrollTop() > 100)
         $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
       # init pages
-      MongodbLoggerJS.init_on_pages()
+      MongodbLoggerMain.init_on_pages()
   
   init_on_pages: ->
     # code highlight
@@ -141,23 +141,23 @@ MongodbLoggerJS =
     
     # log info window
     if $("#log_info").length > 0
-      MongodbLoggerJS.log_info_offset = $("#log_info").offset()
+      MongodbLoggerMain.log_info_offset = $("#log_info").offset()
       $(window).scroll =>
-        if $(window).scrollTop() > MongodbLoggerJS.log_info_offset.top
+        if $(window).scrollTop() > MongodbLoggerMain.log_info_offset.top
           $("#log_info").stop().animate
-            marginTop: $(window).scrollTop() - MongodbLoggerJS.log_info_offset.top + MongodbLoggerJS.log_info_padding
+            marginTop: $(window).scrollTop() - MongodbLoggerMain.log_info_offset.top + MongodbLoggerMain.log_info_padding
         else
           $("#log_info").stop().animate
             marginTop: 0
   
   tail_logs: (log_last_id) ->
-    url = MongodbLoggerJS.tail_logs_url
+    url = MongodbLoggerMain.tail_logs_url
     if log_last_id? && log_last_id.length > 0
-      url = MongodbLoggerJS.tail_logs_url + "/" + log_last_id 
+      url = MongodbLoggerMain.tail_logs_url + "/" + log_last_id 
     else
-      MongodbLoggerJS.tail_log_started = true
+      MongodbLoggerMain.tail_log_started = true
       log_last_id = ""
-    if MongodbLoggerJS.tail_log_started
+    if MongodbLoggerMain.tail_log_started
       $.ajax
         url: url
         dataType: "json"
@@ -172,8 +172,8 @@ MongodbLoggerJS =
               $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
             if data.collection_stats && $("#collection_stats").length > 0
               $("#collection_stats").html(data.collection_stats)
-          if MongodbLoggerJS.tail_log_started
-            fcallback = -> MongodbLoggerJS.tail_logs(log_last_id)
+          if MongodbLoggerMain.tail_log_started
+            fcallback = -> MongodbLoggerMain.tail_logs(log_last_id)
             setTimeout fcallback, 2000
   
   move_by_logs: (direction) ->
@@ -196,7 +196,7 @@ MongodbLoggerJS =
           element = current_element.next("tr")
           if element.length > 0
             element.find('td:first').trigger('click')
-            if MongodbLoggerJS.is_scrolled_into_view(element)
+            if MongodbLoggerMain.is_scrolled_into_view(element)
               $(window).scrollTop($(window).scrollTop() + element.height())
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
@@ -205,7 +205,7 @@ MongodbLoggerJS =
           element = current_element.prev("tr")
           if element.length > 0
             element.find('td:first').trigger('click')
-            if MongodbLoggerJS.is_scrolled_into_view(element)
+            if MongodbLoggerMain.is_scrolled_into_view(element)
               $(window).scrollTop($(window).scrollTop() - element.height())
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
