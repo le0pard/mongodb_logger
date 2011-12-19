@@ -16,9 +16,9 @@ Then, to start the suite, run
 
 Note: do NOT use 'bundle exec rake cucumber:rails:all'.
 
-For help created file test/test\_all.sh, which run all this testing steps + unit tests. Run this file from root of gem:
+For help created file test/test.sh, which run all this testing steps + unit tests. Run this file from root of gem:
 
-    ./test/test_all.sh
+    ./test/test.sh
     
 Versions of testing Rails you can see in file "SUPPORTED_RAILS_VERSIONS". If some tests is faild, you can see 
 more information about fallen tests in file "tmp/terminal.log".

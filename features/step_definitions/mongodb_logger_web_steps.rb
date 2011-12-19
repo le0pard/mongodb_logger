@@ -5,6 +5,7 @@ require 'capybara/cucumber'
 include Capybara::DSL
 
 Before do
+  MongodbLogger::ServerConfig.set_config_for_testing(File.join(PROJECT_ROOT, 'test/config/samples/server_config.yml'))
   Capybara.app = MongodbLogger::Server
 end
 
@@ -12,6 +13,6 @@ Given /^homepage$/ do
   visit "/"
 end
 
-Then /^I should see list of logs$/ do
-  page.should have_selector('table', :id => 'logs_list')
+Then /^I should see text that no logs in system$/ do
+  page.has_content?('No logs found, try to filter out the other parameters')
 end

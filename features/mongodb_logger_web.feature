@@ -2,4 +2,4 @@ Feature: Install MongodbLogger Web and test it
   
   Scenario: Main page
     Given homepage
-    Then I should see list of logs
+    Then I should see text that no logs in system

@@ -1,0 +1,3 @@
+database: test_database
+host: localhost
+port: 27017
