@@ -9,6 +9,10 @@ Before do
   Capybara.app = MongodbLogger::Server
 end
 
+After do
+  MongodbLogger::ServerConfig.collection.drop
+end
+
 Given /^homepage$/ do
   visit "/"
 end
