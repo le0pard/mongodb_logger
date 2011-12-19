@@ -18,6 +18,5 @@ Given /^homepage$/ do
 end
 
 Then /^I should see text that no logs in system$/ do
-  page.has_content?('No logs found, try to filter out the other parameters')
-  raise "asdasd"
+  page.has_selector?('div', :text => 'No logs found, try to filter out the other parameters', :visible => true)
 end
