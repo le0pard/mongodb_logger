@@ -19,5 +19,5 @@ end
 
 Then /^I should see text that no logs in system$/ do
   page.has_content?('No logs found, try to filter out the other parameters')
-  page.has_content?('Blabla')
+  raise "asdasd"
 end
