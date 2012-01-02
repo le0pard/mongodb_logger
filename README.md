@@ -189,4 +189,4 @@ It:
 
       
       
-Copyright (c) 2009-2011 Phil Burrows, CustomInk (based on https://github.com/customink/central_logger) and Leopard released under the MIT license
+Copyright (c) 2009-2012 Phil Burrows, CustomInk (based on https://github.com/customink/central_logger) and Leopard released under the MIT license
