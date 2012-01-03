@@ -45,7 +45,7 @@ module MongodbLogger
       
       def count_of_requests(conditions, is_errors = false)
         collection_name = "mongodb_logger_count_of_requests"
-        map = "function() { var key = {year: this.request_time.getFullYear(), month: this.request_time.getMonth(), day: this.request_time.getDate()}; emit(key, {count: 1});}"
+        map = "function() { var key = {year: this.request_time.getFullYear(), month: this.request_time.getMonth() + 1, day: this.request_time.getDate()}; emit(key, {count: 1});}"
         reduce_count = "function(key, values) { var sum = 0; values.forEach(function(f) { sum += f.count; }); return {count: sum};}"
         if is_errors
           collection_name = "mongodb_logger_count_of_errors"
