@@ -236,7 +236,10 @@ root.MongodbLoggerMain =
           data_table.setValue(i, 0, new Date(row['_id'].year, row['_id'].month, row['_id'].day))
           data_table.setValue(i, 1, row.value.count)
           i += 1
-        chart = new google.visualization.AnnotatedTimeLine(document.getElementById('analyticData'))
+          
+        chart_element = $("<div></div>").attr('id', 'google-chart').css({width: 800, height: 500})
+        $('#analyticData').empty().html(chart_element)
+        chart = new google.visualization.AnnotatedTimeLine(document.getElementById('google-chart'))
         options = 
           title: $('#analytic_type option:selected').text()
           vAxis:
