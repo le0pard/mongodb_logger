@@ -161,7 +161,8 @@ module MongodbLogger
       post "/#{page}/?" do
         @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
         @analytic_data = @analytic.get_data
-        partial(:"shared/analytic_table", :object => @analytic_data)
+        content_type :json
+        @analytic_data.to_json
       end
     end
     

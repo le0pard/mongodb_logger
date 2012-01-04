@@ -98,8 +98,9 @@ window.MongodbLoggerMain =
         url: url
         dataType: 'json' 
         data: data
+        type: "POST"
         success: (data, textStatus, jqXHR) =>
-          MongodbLoggerMain.init_analytic_charts()
+          MongodbLoggerMain.build_analytic_charts(data)
       return false
       
     # keydown log  
@@ -156,11 +157,10 @@ window.MongodbLoggerMain =
             marginTop: 0
             
   init_analytic_charts: ->
-    google.load('visualization', '1.0', {'packages':['corechart']})
-    google.setOnLoadCallback(MongodbLoggerMain.build_analytic_charts)
+    console.log "Ready"
     
-  build_analytic_charts: ->
-    console.log "In progress"
+  build_analytic_charts: (data) ->
+    console.log data
   
   tail_logs: (log_last_id) ->
     url = MongodbLoggerMain.tail_logs_url
