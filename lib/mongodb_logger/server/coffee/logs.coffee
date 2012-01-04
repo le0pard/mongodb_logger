@@ -1,11 +1,11 @@
-$ ->
-  MongodbLoggerMain.init()
+root = global ? window
 
-window.MongodbLoggerMain = 
+root.MongodbLoggerMain = 
   tail_logs_url: null
   tail_log_started: false
   log_info_offset: null
   log_info_padding: 15
+  is_charts_ready: false
   
   init: ->
     # spinner
@@ -222,7 +222,26 @@ window.MongodbLoggerMain =
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
   # charts ready for usage
   init_analytic_charts: ->
-    console.log "Ready"
+    MongodbLoggerMain.is_charts_ready = true
   # build charts
   build_analytic_charts: (data) ->
-    console.log data
+    if MongodbLoggerMain.is_charts_ready is true
+      if data.data?
+        data_table = new google.visualization.DataTable()
+        data_table.addColumn('date', 'Date')
+        data_table.addColumn('number', 'Requests')
+        data_table.addRows(data.data.length)
+        i = 0
+        for row in data.data
+          data_table.setValue(i, 0, new Date(row['_id'].year, row['_id'].month, row['_id'].day))
+          data_table.setValue(i, 1, row.value.count)
+          i += 1
+        chart = new google.visualization.AnnotatedTimeLine(document.getElementById('analyticData'))
+        options = 
+          title: $('#analytic_type option:selected').text()
+          vAxis:
+            title: 'Requests'
+        chart.draw(data_table, options)
+
+$ ->
+  MongodbLoggerMain.init()

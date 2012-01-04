@@ -325,3 +325,8 @@ a.more {
     font-weight: bold;
 }
 
+#analyticData {
+  text-align: center;
+  width: 800px; 
+  height: 500px;
+}
