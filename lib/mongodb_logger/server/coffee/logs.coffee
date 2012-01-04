@@ -8,11 +8,12 @@ window.MongodbLoggerMain =
   log_info_padding: 15
   
   init: ->
+    # spinner
     $(document).ajaxStart =>
       $('#ajax_loader').show()
     $(document).ajaxStop =>
       $('#ajax_loader').hide()
-    
+    # tail logs buttons
     $(document).on 'click', '#tail_logs_link', (event) =>
       MongodbLoggerMain.tail_logs_url = $(event.target).attr('data-url')
       $('#tail_logs_block').addClass('started')
@@ -22,7 +23,7 @@ window.MongodbLoggerMain =
       MongodbLoggerMain.tail_log_started = false
       $('#tail_logs_block').removeClass('started')
       return false
-    
+    # log info click
     $(document).on 'click', '.log_info', (event) =>
       elm_obj = $(event.target)
       url = elm_obj.data('url')
@@ -36,7 +37,6 @@ window.MongodbLoggerMain =
     $(document).on 'click', 'div.filter-toggle', (event) =>
       $('div.filter').slideToggle()
       $('div.filter-toggle span.arrow-down').toggleClass('rotate')
-      
     # additional filters
     $(document).on 'click', '#add_more_filter', (event) =>
       url = $(event.target).attr('href')
@@ -46,7 +46,7 @@ window.MongodbLoggerMain =
           content = $('<li></li>').html(data)
           $('#more_filter_list').append(content)
       return false
-    
+    # select filter types (integer, string, date)
     $(document).on 'change', 'select.filter_type', (event) =>
       elm_object = $(event.target)
       url = elm_object.attr('rel') + "/" + elm_object.val()
@@ -74,11 +74,10 @@ window.MongodbLoggerMain =
               changeYear: true
               yearRange: 'c-50:c+10'
       return false
-    
+    # delete one filter
     $(document).on 'click', '.close_more_filter', (event) =>
       $(event.target).parents('li').remove()
       return false
-      
     # message tabs
     $(document).on 'click', 'li.message_tab', (event) =>
       elm_obj = $(event.target)
@@ -88,7 +87,6 @@ window.MongodbLoggerMain =
         $('pre.tab_content').addClass('hidden')
         elm_obj.addClass('active')
         $('.' + tab).removeClass('hidden')
-    
     # analytic form
     $(document).on 'submit', '#analyticForm', (event) =>
       element = $('#analyticForm')
@@ -102,8 +100,7 @@ window.MongodbLoggerMain =
         success: (data, textStatus, jqXHR) =>
           MongodbLoggerMain.build_analytic_charts(data)
       return false
-      
-    # keydown log  
+    # keydown by logs  
     $(document).on 'keydown', '*', (event) =>
       console.log event.keyCode
       switch event.keyCode
@@ -121,6 +118,7 @@ window.MongodbLoggerMain =
     this.init_on_pages()
     
   init_pjax: ->
+    # pjax
     $('a[data-pjax]').pjax()
     $('body').bind 'pjax:start', () => 
       $('#ajax_loader').show()
@@ -133,18 +131,17 @@ window.MongodbLoggerMain =
         $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
       # init pages
       MongodbLoggerMain.init_on_pages()
-  
+  # init this on pjax
   init_on_pages: ->
     # code highlight
     $('pre code').each (i, e) ->
       hljs.highlightBlock(e, '  ')
-      
+    # callendars  
     $( ".datepicker, .filter_values input.date" ).datepicker
       dateFormat: "yy-mm-dd"
       changeMonth: true
       changeYear: true
       yearRange: 'c-50:c+10'
-    
     # log info window
     if $("#log_info").length > 0
       MongodbLoggerMain.log_info_offset = $("#log_info").offset()
@@ -155,13 +152,7 @@ window.MongodbLoggerMain =
         else
           $("#log_info").stop().animate
             marginTop: 0
-            
-  init_analytic_charts: ->
-    console.log "Ready"
-    
-  build_analytic_charts: (data) ->
-    console.log data
-  
+  # tail logs function
   tail_logs: (log_last_id) ->
     url = MongodbLoggerMain.tail_logs_url
     if log_last_id? && log_last_id.length > 0
@@ -187,7 +178,7 @@ window.MongodbLoggerMain =
           if MongodbLoggerMain.tail_log_started
             fcallback = -> MongodbLoggerMain.tail_logs(log_last_id)
             setTimeout fcallback, 2000
-  
+  # move using keys by logs
   move_by_logs: (direction) ->
     if $('#logs_list').length > 0 && $('#logs_list').find('tr.current').length > 0
       current_element = $('#logs_list').find('tr.current')
@@ -222,10 +213,16 @@ window.MongodbLoggerMain =
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
-            
+  # check in selected element is visible for user          
   is_scrolled_into_view: (elem) ->
     docViewTop = $(window).scrollTop()
     docViewBottom = docViewTop + $(window).height()
     elemTop = $(elem).offset().top
     elemBottom = elemTop + $(elem).height()
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
+  # charts ready for usage
+  init_analytic_charts: ->
+    console.log "Ready"
+  # build charts
+  build_analytic_charts: (data) ->
+    console.log data
