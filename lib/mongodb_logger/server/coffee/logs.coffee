@@ -94,7 +94,12 @@ window.MongodbLoggerMain =
       element = $('#analyticForm')
       url = element.attr('action')
       data = element.serializeArray()
-      $('#analyticData').load url, data
+      $.ajax 
+        url: url
+        dataType: 'json' 
+        data: data
+        success: (data, textStatus, jqXHR) =>
+          MongodbLoggerMain.init_analytic_charts()
       return false
       
     # keydown log  
@@ -149,6 +154,13 @@ window.MongodbLoggerMain =
         else
           $("#log_info").stop().animate
             marginTop: 0
+            
+  init_analytic_charts: ->
+    google.load('visualization', '1.0', {'packages':['corechart']})
+    google.setOnLoadCallback(MongodbLoggerMain.build_analytic_charts)
+    
+  build_analytic_charts: ->
+    console.log "In progress"
   
   tail_logs: (log_last_id) ->
     url = MongodbLoggerMain.tail_logs_url
