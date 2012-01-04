@@ -233,7 +233,7 @@ root.MongodbLoggerMain =
         data_table.addRows(data.data.length)
         i = 0
         for row in data.data
-          data_table.setValue(i, 0, new Date(row['_id'].year, row['_id'].month, row['_id'].day))
+          data_table.setValue(i, 0, new Date(row['_id'].year, row['_id'].month - 1, row['_id'].day))
           data_table.setValue(i, 1, row.value.count)
           i += 1
           
