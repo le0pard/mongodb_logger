@@ -1,3 +1,8 @@
+## v0.2.5
+
+* Build graphs for analytics page
+* Fix month for analytics
+
 ## v0.2.4
 
 * Move on logs list by using arrows on keybords
