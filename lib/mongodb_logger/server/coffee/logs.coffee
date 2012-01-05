@@ -238,11 +238,13 @@ root.MongodbLoggerMain =
         chart = new google.visualization.LineChart(document.getElementById('analyticData'))
         options = 
           title: $('#analytic_type option:selected').text()
-          width: 800 
-          height: 500
+          width: '100%'
+          height: 600
           vAxis:
             title: $('#analytic_type option:selected').text()
         chart.draw(data_table, options)
+    else
+      alert "Error of loading Google Charts. Sorry :("
 
 $ ->
   MongodbLoggerMain.init()
