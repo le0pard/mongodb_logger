@@ -230,20 +230,18 @@ root.MongodbLoggerMain =
         data_table = new google.visualization.DataTable()
         data_table.addColumn('date', 'Date')
         data_table.addColumn('number', 'Requests')
-        data_table.addRows(data.data.length)
-        i = 0
+        temp_data = []
         for row in data.data
-          data_table.setValue(i, 0, new Date(row['_id'].year, row['_id'].month - 1, row['_id'].day))
-          data_table.setValue(i, 1, row.value.count)
-          i += 1
-          
-        chart_element = $("<div></div>").attr('id', 'google-chart').css({width: 800, height: 500})
-        $('#analyticData').empty().html(chart_element)
-        chart = new google.visualization.AnnotatedTimeLine(document.getElementById('google-chart'))
+          temp_data.push([new Date(row['_id'].year, row['_id'].month - 1, row['_id'].day), row.value.count])
+
+        data_table.addRows(temp_data)
+        chart = new google.visualization.LineChart(document.getElementById('analyticData'))
         options = 
           title: $('#analytic_type option:selected').text()
+          width: 800 
+          height: 500
           vAxis:
-            title: 'Requests'
+            title: $('#analytic_type option:selected').text()
         chart.draw(data_table, options)
 
 $ ->
