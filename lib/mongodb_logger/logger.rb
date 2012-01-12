@@ -14,7 +14,7 @@ module MongodbLogger
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
 
-    attr_reader :db_configuration, :mongo_connection, :mongo_collection_name, :mongo_collection
+    attr_reader :db_configuration, :mongo_connection, :mongo_collection_name, :mongo_collection, :mongo_connection_type
 
     def initialize(options={})
       path = options[:path] || File.join(Rails.root, "log/#{Rails.env}.log")
@@ -147,12 +147,24 @@ module MongodbLogger
         config
       end
 
-      def connect
-        @mongo_connection ||= Mongo::Connection.new(@db_configuration['host'],
-                                                    @db_configuration['port'],
-                                                    :auto_reconnect => true,
-                                                    :pool_timeout => 6).db(@db_configuration['database'])
+      def mongo_connection_object
+        if @db_configuration['hosts']
+          conn = Mongo::ReplSetConnection.new(*@db_configuration['hosts'],
+                                       :auto_reconnect => true,
+                                       :pool_timeout => 6)
+          @db_configuration['replica_set'] = true
+        else
+          conn = Mongo::Connection.new(@db_configuration['host'],
+                                       @db_configuration['port'],
+                                       :auto_reconnect => true,
+                                       :pool_timeout => 6)
+        end
+        @mongo_connection_type = conn.class
+        conn
+      end
 
+      def connect
+        @mongo_connection ||= mongo_connection_object.db(@db_configuration['database'])
         if @db_configuration['username'] && @db_configuration['password']
           # the driver stores credentials in case reconnection is required
           @authenticated = @mongo_connection.authenticate(@db_configuration['username'],
