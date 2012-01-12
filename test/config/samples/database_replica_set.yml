@@ -1,8 +1,10 @@
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
+  adapter: mysql
+  username: user
+  database: database
   mongodb_logger:
     database: system_log
     replica_set: true
+    hosts:
+      - - 127.0.0.1
+        - 27018
