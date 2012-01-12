@@ -5,13 +5,16 @@ require 'mongodb_logger/logger'
 # before start this test, do this in console:
 # mkdir -p /tmp/data1
 # mkdir -p /tmp/data2
+# mkdir -p /tmp/data3
 # mongod --replSet foo --port 27018 --dbpath /tmp/data1
 # mongod --replSet foo --port 27019 --dbpath /tmp/data2
+# mongod --replSet foo --port 27020 --dbpath /tmp/data3
 # mongo localhost:27018
 # In mongo console:
 # config = {_id: 'foo', members: [
 # {_id: 0, host: 'localhost:27018'},
-# {_id: 1, host: 'localhost:27019'}]
+# {_id: 1, host: 'localhost:27019'},
+# {_id: 2, host: 'localhost:27020', arbiterOnly: true}]
 # }
 # 
 # rs.initiate(config);
