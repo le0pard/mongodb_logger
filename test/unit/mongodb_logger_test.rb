@@ -275,31 +275,4 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
     end
   end
 
-  context "A MongodbLogger::MongoLogger connecting to a replica set" do
-    setup do
-      FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, REPLICA_SET_CONFIG),  File.join(CONFIG_DIR, DEFAULT_CONFIG))
-      MongodbLogger::Logger.any_instance.stubs(:internal_initialize).returns(nil)
-      MongodbLogger::Logger.any_instance.stubs(:disable_file_logging?).returns(false)
-      @mongodb_logger = MongodbLogger::Logger.new
-      @mongodb_logger.send(:configure)
-      @mongodb_logger.send(:connect)
-      common_setup
-      @collection.drop
-    end
-
-    should "derive from Mongo::ReplSetConnection" do
-      assert_equal Mongo::ReplSetConnection, @mongodb_logger.mongo_connection_type
-    end
-
-    should "force replica_set parameter to be true" do
-      assert @mongodb_logger.db_configuration['replica_set']
-    end
-
-    teardown do
-      file = File.join(CONFIG_DIR, REPLICA_SET_CONFIG)
-      File.delete(file) if File.exist?(file)
-    end
-  end
-
-
 end

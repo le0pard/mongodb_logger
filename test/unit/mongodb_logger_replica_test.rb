@@ -1,40 +1,48 @@
 require 'test_helper'
 require 'mongodb_logger/logger'
 
-# test the basic stuff
+# HOWTO run this test:
+# before start this test, do this in console:
+# mkdir -p /tmp/data1
+# mkdir -p /tmp/data2
+# mongod --replSet foo --port 27018 --dbpath /tmp/data1
+# mongod --replSet foo --port 27019 --dbpath /tmp/data2
+# mongo localhost:27018
+# In mongo console:
+# config = {_id: 'foo', members: [
+# {_id: 0, host: 'localhost:27018'},
+# {_id: 1, host: 'localhost:27019'}]
+# }
+# 
+# rs.initiate(config);
+# You should see such output:
+# {
+#         "info" : "Config now saved locally.  Should come online in about a minute.",
+#         "ok" : 1
+# }
+
+
 class MongodbLogger::MongodbLoggerReplicaTest < Test::Unit::TestCase
   extend LogMacros
 
-  context "A MongodbLogger::MongoLogger" do
+  context "A MongodbLogger::MongoLogger connecting to a replica set" do
     setup do
-      # Can use different configs, but most tests use database.yml
-      cp_config(REPLICA_SET_CONFIG, DEFAULT_CONFIG)
+      FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, REPLICA_SET_CONFIG),  File.join(CONFIG_DIR, DEFAULT_CONFIG))
+      MongodbLogger::Logger.any_instance.stubs(:internal_initialize).returns(nil)
+      MongodbLogger::Logger.any_instance.stubs(:disable_file_logging?).returns(false)
       @mongodb_logger = MongodbLogger::Logger.new
-      @mongodb_logger.reset_collection
+      @mongodb_logger.send(:configure)
+      @mongodb_logger.send(:connect)
+      common_setup
+      @collection.drop
     end
 
-    context "upon trying to insert into a replica set voting on a new master" do
-      setup do
-        puts "Please disconnect the current master and hit ENTER"
-        STDIN.gets
-      end
-
-      should "insert a record successfully" do
-        assert_nothing_raised{ log("Test") }
-        @mongodb_logger.rescue_connection_failure do
-          assert_equal 1, @mongodb_logger.mongo_collection.count
-        end
-      end
-
-      teardown do
-        puts "Please reconnect the current master, wait for the vote to complete, then hit ENTER"
-        STDIN.gets
-      end
+    should "derive from Mongo::ReplSetConnection" do
+      assert_equal Mongo::ReplSetConnection, @mongodb_logger.mongo_connection_type
     end
 
-    should "insert a record successfully" do
-      assert_nothing_raised{ log("Test") }
-      assert_equal 1, @mongodb_logger.mongo_collection.count
+    should "force replica_set parameter to be true" do
+      assert @mongodb_logger.db_configuration['replica_set']
     end
 
     teardown do
