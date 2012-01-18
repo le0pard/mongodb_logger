@@ -53,6 +53,8 @@ It:
        port: 27017
        replica_set: true
        
+
+
 1. For using with MongoDB Replica Set (more info you can read by this link [http://www.mongodb.org/display/DOCS/Replica+Sets](http://www.mongodb.org/display/DOCS/Replica+Sets)). In config set list of [host, port] in key "hosts":
    
          development:
