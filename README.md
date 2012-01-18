@@ -27,31 +27,46 @@ It:
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
    In the mongodb\_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb\_logger' subkey.
 
-   File: database.yml:
+   database.yml:
 
-     development:
-       adapter: postgresql
-       database: my_app_development
-       username: postgres
-       mongodb_logger:
-         database: my_app               # required (the only required setting)
-         capsize: <%= 10.megabytes %>   # default: 250MB
-         host: localhost                # default: localhost
-         port: 27017                    # default: 27017
-         replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
-         safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
-         application_name: my_app       # default: Rails.application
-         disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
-         collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
+        development:
+         adapter: postgresql
+         database: my_app_development
+         username: postgres
+         mongodb_logger:
+           database: my_app               # required (the only required setting)
+           capsize: <%= 10.megabytes %>   # default: 250MB
+           host: localhost                # default: localhost
+           port: 27017                    # default: 27017
+           replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
+           safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
+           application_name: my_app       # default: Rails.application
+           disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
+           collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
-   File: mongodb\_logger.yml:
+   mongodb\_logger.yml:
 
-     development:
-       database: my_app
-       capsize: <%= 10.megabytes %>
-       host: localhost
-       port: 27017
-       replica_set: true
+        development:
+          database: my_app
+          capsize: <%= 10.megabytes %>
+          host: localhost
+          port: 27017
+          replica_set: true
+       
+
+
+1. For using with MongoDB Replica Set (more info you can read by this link [http://www.mongodb.org/display/DOCS/Replica+Sets](http://www.mongodb.org/display/DOCS/Replica+Sets)). In config set list of [host, port] in key "hosts":
+   
+        development:
+          database: my_app
+          capsize: <%= 10.megabytes %>
+          host: localhost
+          port: 27017
+          hosts:
+            - - 127.0.0.1
+              - 27018
+            - - 127.0.0.1
+              - 27019    
   
   
 ## Usage
