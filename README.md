@@ -29,29 +29,29 @@ It:
 
    database.yml:
 
-     development:
-       adapter: postgresql
-       database: my_app_development
-       username: postgres
-       mongodb_logger:
-         database: my_app               # required (the only required setting)
-         capsize: <%= 10.megabytes %>   # default: 250MB
-         host: localhost                # default: localhost
-         port: 27017                    # default: 27017
-         replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
-         safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
-         application_name: my_app       # default: Rails.application
-         disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
-         collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
+        development:
+         adapter: postgresql
+         database: my_app_development
+         username: postgres
+         mongodb_logger:
+           database: my_app               # required (the only required setting)
+           capsize: <%= 10.megabytes %>   # default: 250MB
+           host: localhost                # default: localhost
+           port: 27017                    # default: 27017
+           replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
+           safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
+           application_name: my_app       # default: Rails.application
+           disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
+           collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
    mongodb\_logger.yml:
 
-     development:
-       database: my_app
-       capsize: <%= 10.megabytes %>
-       host: localhost
-       port: 27017
-       replica_set: true
+        development:
+          database: my_app
+          capsize: <%= 10.megabytes %>
+          host: localhost
+          port: 27017
+          replica_set: true
        
 
 
