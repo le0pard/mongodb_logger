@@ -27,7 +27,7 @@ It:
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
    In the mongodb\_logger.yml and mongoid.yml case, the settings should be defined without the 'mongodb\_logger' subkey.
 
-   File: database.yml:
+   database.yml:
 
      development:
        adapter: postgresql
@@ -44,7 +44,7 @@ It:
          disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
          collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection
 
-   File: mongodb\_logger.yml:
+   mongodb\_logger.yml:
 
      development:
        database: my_app
