@@ -53,19 +53,18 @@ It:
        port: 27017
        replica_set: true
        
-1. For using with MongoDB Replica Set (more info you can read by this link [http://www.mongodb.org/display/DOCS/Replica+Sets](http://www.mongodb.org/display/DOCS/Replica+Sets)).
-   In config set list of [host, port] in key "hosts":
+1. For using with MongoDB Replica Set (more info you can read by this link [http://www.mongodb.org/display/DOCS/Replica+Sets](http://www.mongodb.org/display/DOCS/Replica+Sets)). In config set list of [host, port] in key "hosts":
    
-     development:
-       database: my_app
-       capsize: <%= 10.megabytes %>
-       host: localhost
-       port: 27017
-       hosts:
-         - - 127.0.0.1
-           - 27018
-         - - 127.0.0.1
-           - 27019    
+         development:
+           database: my_app
+           capsize: <%= 10.megabytes %>
+           host: localhost
+           port: 27017
+           hosts:
+             - - 127.0.0.1
+               - 27018
+             - - 127.0.0.1
+               - 27019    
   
   
 ## Usage
