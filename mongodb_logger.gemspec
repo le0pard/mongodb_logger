@@ -40,9 +40,4 @@ Gem::Specification.new do |gem|
   gem.name          = "mongodb_logger"
   gem.require_paths = ["lib"]
   gem.version       = MongodbLogger::VERSION
-  if gem.platform.to_s == 'java'
-    gem.platform      = 'jruby'
-  else
-    gem.platform      = Gem::Platform::RUBY
-  end
 end
