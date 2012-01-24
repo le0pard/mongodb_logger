@@ -8,7 +8,10 @@ rescue LoadError
   exit 1
 end
 
-require "bundler/gem_tasks"
+#require "bundler/gem_tasks"
+require 'bundler/gem_helper'
+Bundler::GemHelper.install_tasks(:name => 'mongodb_logger.java')
+Bundler::GemHelper.install_tasks(:name => 'mongodb_logger')
 
 
 #########################################
