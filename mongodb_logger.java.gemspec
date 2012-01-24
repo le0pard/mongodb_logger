@@ -17,6 +17,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "mocha",           ">= 0.10.0"
   gem.add_development_dependency "cucumber",        "~> 1.1.2"
   gem.add_development_dependency "capybara",        "~> 1.1.2"
+  gem.add_development_dependency "coffee-script",   "~> 2.2.0"
+  gem.add_development_dependency "uglifier",        ">= 1.2.0"
   
   gem.add_runtime_dependency "rake",            "~> 0.9.0"
   gem.add_runtime_dependency "mongo",           "~> 1.5.2"
