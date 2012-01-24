@@ -217,16 +217,8 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         MongodbLogger::Logger.new
       end
 
-      should "set level" do
-        level = stub('level')
-        logger = MongodbLogger::Logger.new(:level => level)
-        assert_equal level, logger.level
-      end
       should "set buffer" do
         assert_equal({}, MongodbLogger::Logger.new.instance_variable_get(:@buffer))
-      end
-      should "set auto flushing" do
-        assert_equal 1, MongodbLogger::Logger.new.instance_variable_get(:@auto_flushing)
       end
       should "set guard" do
         assert MongodbLogger::Logger.new.instance_variable_get(:@guard).is_a?(Mutex)
