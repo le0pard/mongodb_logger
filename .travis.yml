@@ -4,7 +4,7 @@ script: "sh -c 'export DISPLAY=:99.0 && test/test.sh'"
 language: ruby
 rvm:
   - 1.8.7
-  - ree
+#  - ree
   - 1.9.2
   - 1.9.3
   - ruby-head
