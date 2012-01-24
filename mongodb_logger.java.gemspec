@@ -23,7 +23,6 @@ Gem::Specification.new do |gem|
   
   gem.add_runtime_dependency "rake",            "~> 0.9.0"
   gem.add_runtime_dependency "mongo",           "~> 1.5.2"
-  gem.add_runtime_dependency "bson_ext",        "~> 1.5.2"
   gem.add_runtime_dependency "i18n",            ">= 0.4.1"
   gem.add_runtime_dependency "json",            "~> 1.6.1"
   gem.add_runtime_dependency "activesupport",   ">= 3.0.0"
@@ -40,5 +39,5 @@ Gem::Specification.new do |gem|
   gem.name          = "mongodb_logger"
   gem.require_paths = ["lib"]
   gem.version       = MongodbLogger::VERSION
-  gem.platform      = Gem::Platform::RUBY
+  gem.platform      = "jruby"
 end
