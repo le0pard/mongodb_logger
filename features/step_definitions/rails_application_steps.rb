@@ -8,10 +8,12 @@ When /^I generate a new Rails application$/ do
   @terminal.cd(TEMP_DIR)
   version_string = ENV['RAILS_VERSION']
   rails_create_command = 'new'
-
+  
+  rails_dir_search = (version_string =~ /^3.(0|1)/) ? "rails" : "railties"
+  
   load_rails = <<-RUBY
     gem "rails", "#{version_string}"; \
-    load Gem.bin_path("rails", "rails", "#{version_string}")
+    load Gem.bin_path("#{rails_dir_search}", "rails", "#{version_string}")
   RUBY
 
   @terminal.run(%{ruby -rrubygems -rthread -e "#{load_rails.gsub("\"", "\\\"").strip!}" #{rails_create_command} rails_root})

@@ -11,10 +11,6 @@ class OrderControllerTest < ActionController::TestCase
     assert_equal ActiveSupport::BufferedLogger.const_get(Rails.configuration.log_level.to_s.upcase), Rails.logger.level
   end
 
-  test "should have auto flushing set in development" do
-    assert @mongodb_logger.auto_flushing
-  end
-
   test "should log a single record" do
     get :index
     assert_response :success
