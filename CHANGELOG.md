@@ -1,3 +1,8 @@
+## v0.2.6
+
+* Replica Set set in config by key 'hosts'
+* Adding jruby support
+
 ## v0.2.5
 
 * Build graphs for analytics page
