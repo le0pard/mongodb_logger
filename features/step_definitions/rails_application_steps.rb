@@ -42,6 +42,7 @@ When /^I setup all gems for rails$/ do
   if !rails30?
     if 'java' == RUBY_PLATFORM
       bundle_gem("therubyrhino", nil)
+      bundle_gem("jruby-openssl", nil)
     else
       bundle_gem("therubyracer", nil)
     end
