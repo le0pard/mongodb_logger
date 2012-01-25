@@ -76,7 +76,11 @@ LOCAL_GEM_ROOT = File.join(GEM_ROOT, 'tmp', 'local_gems').freeze
 
 if ENV['CI']
   # for ci testing only major rails versions
-  RAILS_VERSIONS = ['3.0.11', '3.1.3', '3.2.0'] 
+  if 'java' == RUBY_PLATFORM
+    RAILS_VERSIONS = ['3.0.11', '3.1.3']
+  else
+    RAILS_VERSIONS = ['3.0.11', '3.1.3', '3.2.0']
+  end     
 else
   RAILS_VERSIONS = IO.read('SUPPORTED_RAILS_VERSIONS').strip.split("\n")
 end
