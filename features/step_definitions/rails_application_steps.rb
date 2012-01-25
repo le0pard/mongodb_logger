@@ -1,7 +1,11 @@
 require 'active_support/core_ext/string/inflections'
 
 Given /^I have built and installed the "([^\"]*)" gem$/ do |gem_name|
-  @terminal.build_and_install_gem(File.join(PROJECT_ROOT, "#{gem_name}.gemspec"))
+  if 'java' == RUBY_PLATFORM
+    @terminal.build_and_install_gem(File.join(PROJECT_ROOT, "#{gem_name}.java.gemspec"))
+  else
+    @terminal.build_and_install_gem(File.join(PROJECT_ROOT, "#{gem_name}.gemspec"))
+  end
 end
 
 When /^I generate a new Rails application$/ do
@@ -35,7 +39,13 @@ When /^I setup mongodb_logger tests$/ do
 end
 
 When /^I setup all gems for rails$/ do
-  bundle_gem("therubyracer", nil) if rails31?
+  if !rails30?
+    if 'java' == RUBY_PLATFORM
+      bundle_gem("therubyrhino", nil)
+    else
+      bundle_gem("therubyracer", nil)
+    end
+  end
   step %{I run "bundle install"}
   @terminal.status.exitstatus.should == 0
 end
