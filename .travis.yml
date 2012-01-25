@@ -8,8 +8,8 @@ rvm:
   - 1.9.2
   - 1.9.3
   - ruby-head
-#  - jruby-18mode
-#  - jruby-19mode
+  - jruby
+  - jruby-head
 notifications:
   email: false
 branches:

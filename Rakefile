@@ -11,10 +11,7 @@ end
 #require "bundler/gem_tasks"
 require 'bundler/gem_helper'
 Bundler::GemHelper.install_tasks(:name => 'mongodb_logger')
-namespace :jruby do
-  Bundler::GemHelper.install_tasks(:name => 'mongodb_logger.java')
-end
-
+Bundler::GemHelper.install_tasks(:name => 'mongodb_logger.java')
 
 #########################################
 ### Help tasks

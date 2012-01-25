@@ -233,7 +233,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         end
 
         should "not log the record to a file" do
-          assert_equal '', open(@log_file).read
+          assert_equal '', open(@log_file.to_s).read
         end
       end
     end
