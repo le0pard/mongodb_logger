@@ -41,7 +41,7 @@ module MongodbLogger
         else
           raise ArgumentError, ":#{key} is a reserved key for the mongodb logger. Please choose a different key"
         end
-      end
+      end if @mongo_record
     end
 
     def add(severity, message = nil, progname = nil, &block)
@@ -105,7 +105,7 @@ module MongodbLogger
         connect
         check_for_collection
       end
-      
+
       def disable_file_logging?
         @db_configuration.fetch('disable_file_logging', false)
       end
@@ -149,7 +149,7 @@ module MongodbLogger
 
       def mongo_connection_object
         if @db_configuration['hosts']
-          conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] << 
+          conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] <<
             {:auto_reconnect => true, :pool_timeout => 6}))
           @db_configuration['replica_set'] = true
         else
@@ -190,7 +190,7 @@ module MongodbLogger
         # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
         @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
       end
-      
+
       # try to serialyze data by each key and found invalid object
       def nice_serialize(rec)
         if msgs = rec[:messages]
@@ -204,7 +204,7 @@ module MongodbLogger
           end
         end
       end
-      
+
       def nice_serialize_object(data)
         case data
           when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
