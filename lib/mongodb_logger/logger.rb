@@ -45,6 +45,7 @@ module MongodbLogger
     end
 
     def add(severity, message = nil, progname = nil, &block)
+      $stdout.puts(message) if ENV['HEROKU_RACK'] # log in stdout on Heroku
       if @level && @level <= severity && message.present? && @mongo_record.present?
         # do not modify the original message used by the buffered logger
         msg = logging_colorized? ? message.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : message
