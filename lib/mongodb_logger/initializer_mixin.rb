@@ -9,9 +9,7 @@ module MongodbLogger
       path = rails3(0) ? config.paths.log.to_a.first : config.paths['log'].first
       level = ActiveSupport::BufferedLogger.const_get(config.log_level.to_s.upcase)
       logger = MongodbLogger::Logger.new(:path => path, :level => level)
-      if Rails.env.production?
-        (rails3(0) || rails3(1)) ? logger.auto_flushing = false : logger.sync = true
-      end
+      logger.auto_flushing = false if Rails.env.production? && (rails3(0) || rails3(1))
       logger
     rescue StandardError => e
       logger = ActiveSupport::BufferedLogger.new(STDERR)
