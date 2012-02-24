@@ -72,7 +72,7 @@ module MongodbLogger
 
       runtime = Benchmark.measure{ yield }.real if block_given?
     rescue Exception => e
-      add(3, e.message + "\n" + e.backtrace.join("\n"))
+      add(3, e.message.to_s + "\n" + e.backtrace.join("\n"))
       # log exceptions
       @mongo_record[:is_exception] = true
       # Reraise the exception for anyone else who cares
