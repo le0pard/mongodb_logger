@@ -1,3 +1,8 @@
+## v0.2.7
+
+* Fixed error trace for ruby 1.9.2
+* Update gems dependency
+
 ## v0.2.6
 
 * Replica Set set in config by key 'hosts'
