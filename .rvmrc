@@ -1,1 +1,1 @@
-rvm ruby-1.9.3-p0@mongodb_logger_gems --create
+rvm ruby-1.9.3-p125@mongodb_logger_gems --create
