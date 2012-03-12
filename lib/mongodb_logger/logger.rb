@@ -151,12 +151,12 @@ module MongodbLogger
       def mongo_connection_object
         if @db_configuration['hosts']
           conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] <<
-            {:auto_reconnect => true, :pool_timeout => 6}))
+            {:connect => true, :pool_timeout => 6}))
           @db_configuration['replica_set'] = true
         else
           conn = Mongo::Connection.new(@db_configuration['host'],
                                        @db_configuration['port'],
-                                       :auto_reconnect => true,
+                                       :connect => true,
                                        :pool_timeout => 6)
         end
         @mongo_connection_type = conn.class
