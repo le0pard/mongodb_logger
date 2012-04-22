@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'mongodb_logger'
 require 'mongodb_logger/logger'
 require 'tempfile'
 require 'pathname'
@@ -180,6 +181,31 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
           assert_raise(RuntimeError, EXCEPTION_MSG) {log_exception(EXCEPTION_MSG)}
           assert_equal 1, @collection.find_one({"messages.error" => /^#{EXCEPTION_MSG}/})["messages"]["error"].count
           assert_equal 1, @collection.find_one({"is_exception" => true})["messages"]["error"].count
+        end
+      end
+    end
+    
+    context "after configure" do
+      setup do
+        MongodbLogger::Base.configure do |config|
+          config.on_log_exception do |mongo_record|
+            # do something
+          end
+        end
+        @mongodb_logger = MongodbLogger::Logger.new
+        common_setup
+        @mongodb_logger.reset_collection
+      end
+      
+      should "should not call callback function on log" do
+        MongodbLogger::Base.expects(:on_log_exception).times(0)
+        log("Test")
+      end
+      
+      context "when an exception is raised" do
+        should "should call callback function" do
+          MongodbLogger::Base.expects(:on_log_exception).times(1)
+          assert_raise(RuntimeError, EXCEPTION_MSG) {log_exception(EXCEPTION_MSG)}
         end
       end
     end
