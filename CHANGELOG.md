@@ -1,3 +1,8 @@
+## v0.2.8
+
+* Added callback on exception
+* Delete deprecate warnings
+
 ## v0.2.7
 
 * Fixed error trace for ruby 1.9.2

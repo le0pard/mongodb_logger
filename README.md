@@ -104,6 +104,17 @@ It:
        Rails.logger.add_metadata(:user_id => @current_user.id)
       end
 
+## Callback on exceptions
+
+  For send email or do something on exception you can add callback:
+  
+    MongodbLogger::Base.configure do |config|
+      config.on_log_exception do |mongo_record|
+        # do something with this data, for example - send email (better - by background job)
+      end
+    end
+    
+  In this callback send record without "\_id", because logger not wait for insert response from MongoDB.
 
 ## The Front End
   To setup web interface in you Rails application, first of all create autoload file in you Rails application 
