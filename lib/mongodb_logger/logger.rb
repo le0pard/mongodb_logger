@@ -80,6 +80,8 @@ module MongodbLogger
     ensure
       # In case of exception, make sure runtime is set
       @mongo_record[:runtime] = ((runtime ||= 0) * 1000).ceil
+      # error callback
+      Base.on_log_exception(@mongo_record) if @mongo_record[:is_exception]
       begin
         @insert_block.call
       rescue
