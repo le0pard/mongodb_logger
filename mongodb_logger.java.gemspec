@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "rake",            "~> 0.9.0"
   gem.add_runtime_dependency "mongo",           "~> 1.6.1"
   gem.add_runtime_dependency "i18n",            ">= 0.4.1"
-  gem.add_runtime_dependency "json",            "~> 1.6.1"
+  gem.add_runtime_dependency "json",            ">= 1.6.1"
   gem.add_runtime_dependency "activesupport",   ">= 3.0.0"
   gem.add_runtime_dependency "actionpack",      ">= 3.0.0"
   gem.add_runtime_dependency "sinatra",         ">= 1.2.0"
