@@ -18,3 +18,4 @@ test/version_tmp
 test/log/*.log
 tmp
 .DS_Store
+test/Gemfile_tests.lock
