@@ -1,0 +1,31 @@
+require 'sprockets'
+
+module MongodbLogger
+  
+  module AssetHelpers
+    def asset_path(source)
+      "/assets/#{Assets.instance.find_asset(source).digest_path}" unless Assets.instance.find_asset(source).nil?
+    end
+  end
+  
+  class Assets < Sprockets::Environment
+    class << self
+      def instance(root = nil)
+        assets_path = File.expand_path('../../../../app/assets', __FILE__)
+        @instance ||= new(assets_path)
+      end
+    end
+
+    def initialize(assets_path)
+      super
+      append_path(File.join(assets_path, 'stylesheets'))
+      append_path(File.join(assets_path, 'javascripts'))
+      append_path(File.join(assets_path, 'images'))
+
+      context_class.instance_eval do
+        include AssetHelpers
+      end
+    end
+  end
+  
+end

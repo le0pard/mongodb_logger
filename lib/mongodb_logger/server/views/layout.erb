@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>MongoDB Logger</title>
-  <link href="<%=u 'stylesheets/all.css' %>" media="screen" rel="stylesheet" type="text/css">
+  <link href="<%= asset_path('mongodb_logger.css') %>" media="screen" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="page">          
@@ -17,7 +17,7 @@
           <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
         </div>
       </div>
-      <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#main_pjax'><img src="<%=u 'images/logo.png'%>" alt="MongoDB Logger"></a>
+      <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#main_pjax'><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>
     </div> <!-- wrapper -->
   </div> <!-- header -->            
   <div class="content">
@@ -30,11 +30,7 @@
 </div>
 
 <!-- scripts -->
-<script src="<%=u 'javascripts/vendors/jquery-1.7.1.min.js' %>" type="text/javascript"></script>
-<script src="<%=u 'javascripts/vendors/jquery-ui-1.8.16.min.js' %>" type="text/javascript"></script>
-<script src="<%=u 'javascripts/vendors/jquery.pjax.min.js' %>" type="text/javascript"></script>
-<script src="<%=u 'javascripts/vendors/highlight.pack.js' %>" type="text/javascript"></script>
-<script src="<%=u 'javascripts/logs.js' %>" type="text/javascript"></script>
+<script src="<%= asset_path('mongodb_logger.js') %>" type="text/javascript"></script>
 
 <!-- charts -->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>

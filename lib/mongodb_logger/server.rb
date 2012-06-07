@@ -6,6 +6,7 @@ require 'active_support'
 require 'mongodb_logger/server/view_helpers'
 require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/content_for'
+require 'mongodb_logger/server/sprokets'
 
 require 'mongodb_logger/server/model/additional_filter'
 require 'mongodb_logger/server/model/filter'
@@ -26,18 +27,14 @@ module MongodbLogger
     dir = File.dirname(File.expand_path(__FILE__))
 
     set :views,         "#{dir}/server/views"
-    
-    if respond_to? :public_folder
-      set :public_folder, "#{dir}/server/public"
-    else
-      set :public, "#{dir}/server/public"
-    end
     #set :environment, :production
     set :static, true
 
     helpers do
       include Rack::Utils
       alias_method :h, :escape_html
+      # pipeline
+      include AssetHelpers
       
       def current_page
         url_path request.path_info.sub('/','')
@@ -167,7 +164,7 @@ module MongodbLogger
     end
     
     error do
-      erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect
+      erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
     end
     
   end

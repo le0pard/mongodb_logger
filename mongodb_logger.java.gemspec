@@ -26,6 +26,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "json",            ">= 1.6.1"
   gem.add_runtime_dependency "activesupport",   ">= 3.0.0"
   gem.add_runtime_dependency "actionpack",      ">= 3.0.0"
+  gem.add_runtime_dependency "sprockets",       ">= 2.0.0"
   gem.add_runtime_dependency "sinatra",         ">= 1.2.0"
   gem.add_runtime_dependency "erubis",          ">= 2.6.6"
   gem.add_runtime_dependency "vegas",           "~> 0.1.2"

@@ -46,12 +46,12 @@ a:hover, a:active {
 
 .success {
     padding-right: 15px;
-    background: url(../images/success.png) no-repeat 100% 50%;
+    background: url(<%= asset_path('success.png') %>) no-repeat 100% 50%;
 }
 
 .failure {
     padding-right: 15px;
-    background: url(../images/failure.png) no-repeat 100% 50%;
+    background: url(<%= asset_path('failure.png') %>) no-repeat 100% 50%;
 }
 
 .notice {
@@ -62,7 +62,7 @@ a:hover, a:active {
     display: inline-block;
     margin-right: 5px;
     margin-left: -17px;
-/*     background: url(../images/success.png) no-repeat 0 0; */
+/*     background: url(<%= asset_path('success.png') %>) no-repeat 0 0; */
 }
 
 .error {
@@ -73,16 +73,16 @@ a:hover, a:active {
     display: inline-block;
     margin-right: 5px;
     margin-left: -17px;
-    background: url(../images/failure.png) no-repeat 0 0;
+    background: url(<%= asset_path('failure.png') %>) no-repeat 0 0;
 }
 
 .arrow-down {
     padding-right: 15px;
-    background: url(../images/arrow-down.png) no-repeat 100% 50%;
+    background: url(<%= asset_path('arrow-down.png') %>) no-repeat 100% 50%;
 }
 
 .arrow-down.rotate {
-    background: url(../images/arrow-up.png) no-repeat 100% 50%;
+    background: url(<%= asset_path('arrow-up.png') %>) no-repeat 100% 50%;
 }
 
 code {
@@ -156,7 +156,7 @@ code {
     font: 12px arial, sans-serif;
     vertical-align: middle;
     border: 1px solid #bbb;
-    background: #fff url(../images/date.png) no-repeat 9px 50%;
+    background: #fff url(<%= asset_path('date.png') %>) no-repeat 9px 50%;
     border-radius: 3px;
     box-shadow: 0 1px 2px #e6e6e6 inset, 0 1px 0 #fff;
 }
@@ -230,7 +230,7 @@ li.message_tab {
 
 a[target="_blank"] {
     display: inline-block;
-    background: url(../images/external.png) no-repeat 0 3px;
+    background: url(<%= asset_path('external.png') %>) no-repeat 0 3px;
     padding-left: 17px;
 }
 
