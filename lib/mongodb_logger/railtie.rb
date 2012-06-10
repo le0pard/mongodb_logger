@@ -8,5 +8,9 @@ module MongodbLogger
       Rails.logger = config.logger = create_logger(app_config)
     end
     
+    rake_tasks do
+      load "tasks/mongodb_logger.rake"
+    end
+    
   end
 end
