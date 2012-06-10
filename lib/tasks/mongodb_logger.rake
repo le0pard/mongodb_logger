@@ -29,9 +29,11 @@ namespace :mongodb_logger do
     task :compile_imgs, [:output_dir] => :environment do |t, args|
       return (raise "Specify output dir for assets") if args.output_dir.nil?
       sprockets   = MongodbLogger::Assets.instance
-      asset_name  = 'logo.png'
-      asset       = sprockets[asset_name]
-      asset.write_to(File.join(args.output_dir, sprockets.find_asset(asset_name).digest_path))
+      asset_names  = ['logo.png', 'spinner.gif']
+      asset_names.each do |asset_name|
+        asset       = sprockets[asset_name]
+        asset.write_to(File.join(args.output_dir, sprockets.find_asset(asset_name).digest_path))
+      end
       puts "successfully compiled images assets"
     end
   end
