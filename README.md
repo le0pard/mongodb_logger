@@ -71,6 +71,10 @@ It:
 1. For assets pipeline you can generate all js/css file into folder by rake task:
 
         rake mongodb_logger:assets:compile[public/assets]
+        
+For capistrano possible compile assets by receipt. Add this to config/deploy.rb:
+
+        require 'mongodb_logger/capistrano' 
   
   
 ## Usage
