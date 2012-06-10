@@ -1,3 +1,5 @@
+require 'base64'
+require 'rack/utils'
 require 'sprockets'
 
 module MongodbLogger
@@ -5,6 +7,13 @@ module MongodbLogger
   module AssetHelpers
     def asset_path(source)
       "/assets/#{Assets.instance.find_asset(source).digest_path}" unless Assets.instance.find_asset(source).nil?
+    end
+    def asset_data_uri(source)
+      unless Assets.instance.find_asset(source).nil?
+        asset  = Assets.instance.find_asset(source)
+        base64 = Base64.encode64(asset.to_s).gsub(/\s+/, "")
+        "data:#{asset.content_type};base64,#{Rack::Utils.escape(base64)}"
+      end
     end
   end
   
