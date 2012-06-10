@@ -8,6 +8,12 @@ It:
 * flexible schema of MongoDB allow to store and search any information from logs;
 * web panel allow filter logs, build graphs using MapReduce by information from logs;
 
+## Rails 3 support
+
+Please note the latest version is compatible with rails 3.1.x or newer. 
+
+For rails 3.0.x latest version 0.2.8.
+
 ## Installation
 
 1. Add the following to your Gemfile then refresh your dependencies by executing "bundle install" (or just simple "bundle"):
