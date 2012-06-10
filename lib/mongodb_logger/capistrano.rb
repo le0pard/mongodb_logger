@@ -1,5 +1,5 @@
 Capistrano::Configuration.instance.load do
-  after 'deploy:update_code', 'deploy:assets:precompile'
+  after 'deploy:update_code', 'mongodb_logger:precompile'
   _cset :mongodb_logger_asset_env, "RAILS_GROUPS=assets"
   _cset :mongodb_logger_assets_role, [:web]
   _cset :mongodb_logger_assets_dir, "public/assets"
