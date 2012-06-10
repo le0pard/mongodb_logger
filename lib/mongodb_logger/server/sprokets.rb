@@ -4,7 +4,7 @@ module MongodbLogger
   
   module AssetHelpers
     def asset_path(source)
-      "/mongodb_logger/#{Assets.instance.find_asset(source).digest_path}" unless Assets.instance.find_asset(source).nil?
+      "/assets/#{Assets.instance.find_asset(source).digest_path}" unless Assets.instance.find_asset(source).nil?
     end
   end
   
