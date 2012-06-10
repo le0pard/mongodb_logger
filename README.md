@@ -70,7 +70,7 @@ It:
 
 1. For assets pipeline you can generate all js/css file into folder by rake task:
 
-    rake mongodb_logger:assets:compile[public/assets]
+        rake mongodb_logger:assets:compile[public/assets]
   
   
 ## Usage
