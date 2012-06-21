@@ -243,11 +243,8 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         MongodbLogger::Logger.new
       end
 
-      should "set buffer" do
-        assert_equal({}, MongodbLogger::Logger.new.instance_variable_get(:@buffer))
-      end
-      should "set guard" do
-        assert MongodbLogger::Logger.new.instance_variable_get(:@guard).is_a?(Mutex)
+      should "set log" do
+        assert MongodbLogger::Logger.new.instance_variable_get(:@log).is_a?(Logger)
       end
     end
 

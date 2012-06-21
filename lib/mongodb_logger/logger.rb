@@ -2,6 +2,7 @@ require 'erb'
 require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
+require 'active_support/core_ext/logger'
 require 'action_dispatch/http/upload'
 require 'mongodb_logger/replica_set_helper'
 
@@ -25,9 +26,8 @@ module MongodbLogger
       Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
     ensure
       if disable_file_logging?
-        @buffer         = {}
-        @auto_flushing  = 1
-        @guard          = Mutex.new
+        @log            = ::Logger.new(STDOUT)
+        @log.level      = @level
       else
         super(path, @level)
       end
