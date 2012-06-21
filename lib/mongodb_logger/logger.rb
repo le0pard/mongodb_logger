@@ -18,20 +18,13 @@ module MongodbLogger
 
     def initialize(options={})
       path = options[:path] || File.join(Rails.root, "log/#{Rails.env}.log")
-      level = options[:level] || DEBUG
+      @level = options[:level] || DEBUG
       internal_initialize
     rescue => e
       # should use a config block for this
       Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
     ensure
-      if disable_file_logging?
-        @level          = level
-        @buffer         = {}
-        @auto_flushing  = 1
-        @guard          = Mutex.new
-      else
-        super(path, level)
-      end
+      super(path, @level)
     end
 
     def add_metadata(options={})
