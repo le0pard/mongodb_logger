@@ -24,7 +24,13 @@ module MongodbLogger
       # should use a config block for this
       Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
     ensure
-      super(path, @level)
+      if disable_file_logging?
+        @buffer         = {}
+        @auto_flushing  = 1
+        @guard          = Mutex.new
+      else
+        super(path, @level)
+      end
     end
 
     def add_metadata(options={})
