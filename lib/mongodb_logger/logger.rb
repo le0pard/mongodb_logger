@@ -156,7 +156,7 @@ module MongodbLogger
             {:connect => true, :pool_timeout => 6}))
           @db_configuration['replica_set'] = true
         elsif @db_configuration['url']
-          conn = Mongo::Connection.from_uri(@db_configuration['url'])
+          conn = Mongo::Connection.from_uri(@db_configuration['url'], {:connect => true, :pool_timeout => 6})
         else
           conn = Mongo::Connection.new(@db_configuration['host'],
                                        @db_configuration['port'],
