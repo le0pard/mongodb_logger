@@ -46,6 +46,19 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
           teardown_for_config(MONGOID_CONFIG)
         end
       end
+      
+      context "upon connecting with url settings" do
+        setup do
+          setup_for_config(DEFAULT_CONFIG_WITH_URL, DEFAULT_CONFIG)
+        end
+
+        should "connect with the url" do
+          @mongodb_logger.send(:connect)
+          assert @mongodb_logger.authenticated?
+          assert_equal "system_log", @mongodb_logger.mongo_connection.name
+          assert_equal ["localhost", 27017], @mongodb_logger.mongo_connection.connection.primary
+        end
+      end
 
       # this test will work without the --auth mongod arg
       context "upon connecting with authentication settings" do

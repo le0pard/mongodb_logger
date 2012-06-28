@@ -23,6 +23,7 @@ class Test::Unit::TestCase
   SAMPLE_CONFIG_DIR = File.join(CONFIG_DIR, "samples")
   DEFAULT_CONFIG = "database.yml"
   DEFAULT_CONFIG_WITH_AUTH = "database_with_auth.yml"
+  DEFAULT_CONFIG_WITH_URL = "database_with_url.yml"
   DEFAULT_CONFIG_WITH_COLLECTION = "database_with_collection.yml"
   DEFAULT_CONFIG_WITH_NO_FILE_LOGGING = "database_no_file_logging.yml"
   MONGOID_CONFIG = "mongoid.yml"
