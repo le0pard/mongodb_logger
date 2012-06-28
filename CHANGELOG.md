@@ -1,3 +1,15 @@
+## v0.3.x
+
+* Initialize a connection to MongoDB using the MongoDB URI spec
+
+## v0.3.1
+
+* Fix broken images in if using assets pipeline
+
+## v0.3.0
+
+* Added assets pipeline support
+
 ## v0.2.8
 
 * Added callback on exception
