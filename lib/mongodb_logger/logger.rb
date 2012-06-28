@@ -1,4 +1,5 @@
 require 'erb'
+require 'uri'
 require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
@@ -154,6 +155,8 @@ module MongodbLogger
           conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] <<
             {:connect => true, :pool_timeout => 6}))
           @db_configuration['replica_set'] = true
+        elsif @db_configuration['url']
+          conn = Mongo::Connection.from_uri(@db_configuration['url'])
         else
           conn = Mongo::Connection.new(@db_configuration['host'],
                                        @db_configuration['port'],
@@ -165,11 +168,17 @@ module MongodbLogger
       end
 
       def connect
-        @mongo_connection ||= mongo_connection_object.db(@db_configuration['database'])
-        if @db_configuration['username'] && @db_configuration['password']
-          # the driver stores credentials in case reconnection is required
-          @authenticated = @mongo_connection.authenticate(@db_configuration['username'],
+        if @db_configuration['url']
+          uri = URI.parse(@db_configuration['url'])
+          @mongo_connection ||= mongo_connection_object.db(uri.path.gsub(/^\//, ''))
+          @authenticated = true
+        else
+          @mongo_connection ||= mongo_connection_object.db(@db_configuration['database'])
+          if @db_configuration['username'] && @db_configuration['password']
+            # the driver stores credentials in case reconnection is required
+            @authenticated = @mongo_connection.authenticate(@db_configuration['username'],
                                                           @db_configuration['password'])
+          end
         end
       end
 
