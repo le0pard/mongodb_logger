@@ -1,6 +1,7 @@
-## v0.3.x
+## v0.3.2
 
 * Initialize a connection to MongoDB using the MongoDB URI spec
+* Fix logger.info/warn/error for Rails 3.2.x
 
 ## v0.3.1
 
