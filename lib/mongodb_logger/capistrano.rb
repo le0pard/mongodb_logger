@@ -1,6 +1,6 @@
 Capistrano::Configuration.instance.load do
   _cset :mongodb_logger_asset_env, "RAILS_GROUPS=assets"
-  _cset :mongodb_logger_assets_role, [:web]
+  _cset :mongodb_logger_assets_role, [:app]
   _cset :mongodb_logger_assets_dir, "public/assets"
 
   namespace :mongodb_logger do
