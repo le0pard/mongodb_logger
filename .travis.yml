@@ -2,6 +2,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 script: "sh -c 'export DISPLAY=:99.0 && test/test.sh'"
 language: ruby
+services:
+  - mongodb
 rvm:
   - 1.9.2
   - 1.9.3
