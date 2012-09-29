@@ -88,6 +88,11 @@ For capistrano possible compile assets by receipt. Add this to config/deploy.rb:
         require 'mongodb_logger/capistrano'
         set :mongodb_logger_assets_dir, "public/assets" # where to put mongodb assets
         after 'deploy:update_code', 'mongodb_logger:precompile'
+        
+Also you can serve assets from rails app. You need just mount it separately:
+        
+        mount MongodbLogger::Server.new, :at => "/mongodb", :as => :mongodb
+        mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets
   
   
 ## Usage
