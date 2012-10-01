@@ -1,3 +1,8 @@
+## v0.3.3
+
+* Mount assets separately or compile it by rake task 
+* Capistrano recipe for compiling assets
+
 ## v0.3.2
 
 * Initialize a connection to MongoDB using the MongoDB URI spec
