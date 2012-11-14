@@ -21,6 +21,10 @@ module MongodbLogger
                    when request.respond_to?(:filtered_parameters) then request.filtered_parameters
                    else params
                  end
+      f_session = case
+                   when request.respond_to?(:session) then request.session
+                   else session
+                 end
       Rails.logger.mongoize({
         :method         => request.method,
         :action         => action_name,
@@ -28,6 +32,7 @@ module MongodbLogger
         :path           => request.path,
         :url            => request.url,
         :params         => f_params,
+        :session        => f_session,
         :ip             => request.remote_ip
       }) { yield }
     end
