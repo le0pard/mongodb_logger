@@ -102,4 +102,14 @@
       </div> <!-- unit -->
     </li>
   <% end %>
+  <% unless @log['session'].blank? %>
+    <li class="outer pvs phm">
+      <div class="unit size1of5">
+        <span class="pale">Session:</span>
+      </div> <!-- unit -->
+      <div class="unit size4of5">
+        <pre><code><%= pretty_hash(@log['session']) %></code></pre>
+      </div> <!-- unit -->
+    </li>
+  <% end %>
 </ul>
