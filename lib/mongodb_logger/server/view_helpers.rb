@@ -19,7 +19,7 @@ module Sinatra::ViewHelpers
     meta_data = Hash.new
     log.each do |key, val|
       # predefined fields
-      next if [:_id, :messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :method, :controller, :action, :path, :url].include?(key.to_sym)
+      next if [:_id, :messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :method, :controller, :action, :session, :path, :url].include?(key.to_sym)
       meta_data[key] = val
     end
     meta_data
