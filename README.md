@@ -119,6 +119,7 @@ Also you can serve assets from rails app. You need just mount it separately:
         'runtime'          : elapsed_execution_time_in_milliseconds,
         'url'              : full_url,
         'method'           : request method (GET, POST, OPTIONS),
+        'session'          : information from session,
         'is_exception'     : true only for exceptions (in other cases this field miss)
       }
 
