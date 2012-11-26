@@ -1,4 +1,4 @@
-# MongodbLogger [![Build Status](https://secure.travis-ci.org/le0pard/mongodb_logger.png)](http://travis-ci.org/le0pard/mongodb_logger) [![Dependency Status](https://gemnasium.com/le0pard/mongodb_logger.png)](https://gemnasium.com/le0pard/mongodb_logger)
+# MongodbLogger [![Build Status](https://secure.travis-ci.org/le0pard/mongodb_logger.png)](http://travis-ci.org/le0pard/mongodb_logger)
 
 MongodbLogger is a alternative logger for Rails 3, which log all requests of you application into MongoDB database. 
 It:

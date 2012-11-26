@@ -1,10 +1,11 @@
 require 'erb'
 require 'uri'
-require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
 require 'active_support/core_ext/logger'
 require 'action_dispatch/http/upload'
+require 'mongodb_logger/adapters/mongo'
+require 'mongodb_logger/adapters/moped'
 require 'mongodb_logger/replica_set_helper'
 
 module MongodbLogger
@@ -15,10 +16,15 @@ module MongodbLogger
     # Looks for configuration files in this order
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
+    
+    ADAPTERS = [
+      ["mongo", Adapers::Mongo],
+      ["moped", Adapers::Moped]
+    ]
 
-    attr_reader :db_configuration, :mongo_connection, :mongo_collection_name, :mongo_collection, :mongo_connection_type
+    attr_reader :db_configuration, :mongo_adapter
 
-    def initialize(options={})
+    def initialize(options = {})
       path = options[:path] || File.join(Rails.root, "log/#{Rails.env}.log")
       @level = options[:level] || DEBUG
       internal_initialize
@@ -34,7 +40,7 @@ module MongodbLogger
       end
     end
 
-    def add_metadata(options={})
+    def add_metadata(options = {})
       options.each do |key, value|
         unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :session, :method].include?(key.to_sym)
           @mongo_record[key] = value
@@ -55,19 +61,11 @@ module MongodbLogger
       disable_file_logging? ? message : (@level ? super : message)
     end
 
-    # Drop the capped_collection and recreate it
-    def reset_collection
-      if @mongo_connection && @mongo_collection
-        @mongo_collection.drop
-        create_collection
-      end
-    end
-
-    def mongoize(options={})
+    def mongoize(options = {})
       @mongo_record = options.merge({
         :messages => Hash.new { |hash, key| hash[key] = Array.new },
         :request_time => Time.now.getutc,
-        :application_name => @application_name
+        :application_name => @db_configuration['application_name']
       })
 
       runtime = Benchmark.measure{ yield }.real if block_given?
@@ -97,10 +95,6 @@ module MongodbLogger
       end
     end
 
-    def authenticated?
-      @authenticated
-    end
-
     private
       # facilitate testing
       def internal_initialize
@@ -115,26 +109,21 @@ module MongodbLogger
 
       def configure
         default_capsize = DEFAULT_COLLECTION_SIZE
-        @authenticated = false
         @db_configuration = {
           'host' => 'localhost',
           'port' => 27017,
           'capsize' => default_capsize}.merge(resolve_config)
-        @mongo_collection_name = @db_configuration['collection'] || "#{Rails.env}_log"
-        @application_name = resolve_application_name
-        @safe_insert = @db_configuration['safe_insert'] || false
+        @db_configuration['collection'] ||= "#{Rails.env}_log"
+        @db_configuration['application_name'] ||= resolve_application_name
+        @db_configuration['safe_insert'] ||= false
 
         @insert_block = @db_configuration.has_key?('replica_set') && @db_configuration['replica_set'] ?
-          lambda { rescue_connection_failure{ insert_log_record(@safe_insert) } } :
+          lambda { rescue_connection_failure{ insert_log_record(@db_configuration['safe_insert']) } } :
           lambda { insert_log_record }
       end
 
       def resolve_application_name
-        if @db_configuration.has_key?('application_name')
-          @db_configuration['application_name']
-        else
-          Rails.application.class.to_s.split("::").first
-        end
+        Rails.application.class.to_s.split("::").first
       end
 
       def resolve_config
@@ -149,52 +138,31 @@ module MongodbLogger
         end
         config
       end
-
-      def mongo_connection_object
-        if @db_configuration['hosts']
-          conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] <<
-            {:connect => true, :pool_timeout => 6}))
-          @db_configuration['replica_set'] = true
-        elsif @db_configuration['url']
-          conn = Mongo::Connection.from_uri(@db_configuration['url'])
-        else
-          conn = Mongo::Connection.new(@db_configuration['host'],
-                                       @db_configuration['port'],
-                                       :connect => true,
-                                       :pool_timeout => 6)
+      
+      def find_adapter
+        ADAPTERS.each do |(library, adapter)|
+          begin
+            require library
+            return adapter
+          rescue LoadError
+            next
+          end
         end
-        @mongo_connection_type = conn.class
-        conn
+        return nil
       end
 
       def connect
-        if @db_configuration['url']
-          uri = URI.parse(@db_configuration['url'])
-          @mongo_connection ||= mongo_connection_object.db(uri.path.gsub(/^\//, ''))
-          @authenticated = true
-        else
-          @mongo_connection ||= mongo_connection_object.db(@db_configuration['database'])
-          if @db_configuration['username'] && @db_configuration['password']
-            # the driver stores credentials in case reconnection is required
-            @authenticated = @mongo_connection.authenticate(@db_configuration['username'],
-                                                          @db_configuration['password'])
-          end
-        end
-      end
-
-      def create_collection
-        @mongo_connection.create_collection(@mongo_collection_name,
-                                            {:capped => true, :size => @db_configuration['capsize'].to_i})
+        adapter = find_adapter
+        raise "MongodbLogger not found adapter. Please, add bson, bson_ext or moped gem into Gemfile" if adapter.nil?
+        @mongo_adapter ||= adapter.new(@db_configuration)
       end
 
       def check_for_collection
-        # setup the capped collection if it doesn't already exist
-        create_collection unless @mongo_connection.collection_names.include?(@mongo_collection_name)
-        @mongo_collection = @mongo_connection[@mongo_collection_name]
+        @mongo_adapter.check_for_collection
       end
 
       def insert_log_record(safe = false)
-        @mongo_collection.insert(@mongo_record, :safe => safe)
+        @mongo_adapter.insert_log_record(@mongo_record, :safe => safe)
       end
 
       def logging_colorized?

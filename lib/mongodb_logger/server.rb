@@ -62,9 +62,9 @@ module MongodbLogger
           @collection = ServerConfig.collection
         else
           @db = Rails.logger.mongo_connection
-          @collection = @db[Rails.logger.mongo_collection_name]
+          @collection = Rails.logger.mongo_collection
         end
-        @collection_stats = @collection.stats
+        @collection_stats = Rails.logger.mongo_collection_stats
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
@@ -74,11 +74,11 @@ module MongodbLogger
     end
 
     def show(page, layout = true)
-      begin
+      #begin
         erb page.to_sym, {:layout => layout}
-      rescue => e
-        erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
-      end
+      #rescue => e
+        #erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
+      #end
     end
 
 
@@ -89,7 +89,7 @@ module MongodbLogger
     %w( overview ).each do |page|
       get "/#{page}/?" do
         @filter = ServerModel::Filter.new(params[:filter])
-        @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural', -1).limit(@filter.get_mongo_limit)
+        @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural' => -1).limit(@filter.get_mongo_limit)
         show page, !request.xhr?
       end
     end
@@ -133,13 +133,15 @@ module MongodbLogger
     
     # log info
     get "/log/:id" do
-      @log = @collection.find_one(BSON::ObjectId(params[:id]))
+      #@log = @collection.find_one(BSON::ObjectId(params[:id]))
+      @log = @collection.find("_id" => Moped::BSON::ObjectId.from_string(params[:id])).first
       show :show_log, !request.xhr?
     end
     
     # log info right
     get "/log_info/:id" do
-      @log = @collection.find_one(BSON::ObjectId(params[:id]))
+      #@log = @collection.find_one(BSON::ObjectId(params[:id]))
+      @log = @collection.find("_id" => Moped::BSON::ObjectId.from_string(params[:id])).first
       partial(:"shared/log_info", :object => @log)
     end
     

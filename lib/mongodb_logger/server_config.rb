@@ -1,4 +1,3 @@
-require 'mongo'
 require 'erb'
 require 'active_support'
 require 'active_support/core_ext'
@@ -8,9 +7,9 @@ module MongodbLogger
   class ServerConfig
     
     DEFAULT_COLLECTION_SIZE = 250.megabytes
-    
+   
     class << self
-      
+=begin       
       def set_config(config_path)
         if File.file?(config_path)
           config_file = File.new(config_path)
@@ -64,7 +63,7 @@ module MongodbLogger
       def collection_name
         @db_configuration["collection"]
       end
-      
+=end      
       def db
         @db
       end
