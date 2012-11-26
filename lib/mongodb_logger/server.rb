@@ -57,14 +57,15 @@ module MongodbLogger
     
     before do
       begin
-        if ServerConfig.db && ServerConfig.collection
-          @db = ServerConfig.db
-          @collection = ServerConfig.collection
-        else
-          @db = Rails.logger.mongo_connection
-          @collection = Rails.logger.mongo_collection
-        end
-        @collection_stats = Rails.logger.mongo_collection_stats
+        #if ServerConfig.db && ServerConfig.collection
+        #  @db = ServerConfig.db
+        #  @collection = ServerConfig.collection
+        #else
+        #  @db = Rails.logger.mongo_connection
+        #  @collection = Rails.logger.mongo_collection
+        #end
+        @mongo_adapter = Rails.logger.mongo_adapter
+        @collection_stats = @mongo_adapter.collection_stats
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
@@ -89,33 +90,19 @@ module MongodbLogger
     %w( overview ).each do |page|
       get "/#{page}/?" do
         @filter = ServerModel::Filter.new(params[:filter])
-        @logs = @collection.find(@filter.get_mongo_conditions).sort('$natural' => -1).limit(@filter.get_mongo_limit)
+        @logs = @mongo_adapter.filter_by_conditions(@filter)
         show page, !request.xhr?
       end
     end
     
     get "/tail_logs/?:log_last_id?" do
-      buffer = []
-      last_id = nil
-      if params[:log_last_id] && !params[:log_last_id].blank?
-        log_last_id = params[:log_last_id]
-        tail = Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]], 
-          :selector => {'_id' => { '$gt' => BSON::ObjectId(log_last_id) }})
-        while log = tail.next
-          buffer << partial(:"shared/log", :object => log)
-          log_last_id = log["_id"].to_s
-        end
-        buffer.reverse!
-      else
-        @log = @collection.find_one({}, {:sort => ['$natural', -1]})
-        log_last_id = @log["_id"].to_s unless @log.blank?
-      end
-      
-      content_type :json
-      { :log_last_id => log_last_id, 
-        :time => Time.now.strftime("%F %T"), 
-        :content => buffer.join("\n"), 
-        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats) }.to_json
+      @info = @mongo_adapter.tail_log_from_params(params)
+      @info.merge!(
+        :content => @info[:logs].map{|log| partial(:"shared/log", :object => log) }.join("\n"),
+        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats)
+      )
+      content_type :json 
+      @info.to_json
     end
     
     get "/changed_filter/:type" do
@@ -133,15 +120,13 @@ module MongodbLogger
     
     # log info
     get "/log/:id" do
-      #@log = @collection.find_one(BSON::ObjectId(params[:id]))
-      @log = @collection.find("_id" => Moped::BSON::ObjectId.from_string(params[:id])).first
+      @log = @mongo_adapter.find_by_id(params[:id])
       show :show_log, !request.xhr?
     end
     
     # log info right
     get "/log_info/:id" do
-      #@log = @collection.find_one(BSON::ObjectId(params[:id]))
-      @log = @collection.find("_id" => Moped::BSON::ObjectId.from_string(params[:id])).first
+      @log = @mongo_adapter.find_by_id(params[:id])
       partial(:"shared/log_info", :object => @log)
     end
     
@@ -154,11 +139,11 @@ module MongodbLogger
     # analytics
     %w( analytics ).each do |page|
       get "/#{page}/?" do
-        @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
+        @analytic = ServerModel::Analytic.new(@mongo_adapter, params[:analytic])
         show page, !request.xhr?
       end
       post "/#{page}/?" do
-        @analytic = ServerModel::Analytic.new(@collection, params[:analytic])
+        @analytic = ServerModel::Analytic.new(@mongo_adapter, params[:analytic])
         @analytic_data = @analytic.get_data
         content_type :json
         @analytic_data.to_json

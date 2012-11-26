@@ -1,4 +1,4 @@
-<% if @collection_stats["capped"] && (1 == @collection_stats["capped"] || true == @collection_stats["capped"]) %>
+<% if @collection_stats[:is_capped] %>
   <% content_for :right_top_panel do %>
     <%= partial(:"shared/tail_panel") %>
   <% end %>

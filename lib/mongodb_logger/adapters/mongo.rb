@@ -7,7 +7,8 @@ module MongodbLogger
         @configuration = options
         if @configuration['url']
           uri = URI.parse(@configuration['url'])
-          @connection ||= mongo_connection_object.db(uri.path.gsub(/^\//, ''))
+          @configuration['database'] = uri.path.gsub(/^\//, '')
+          @connection ||= mongo_connection_object.db(@configuration['database'])
           @authenticated = true
         else
           @connection ||= mongo_connection_object.db(@configuration['database'])
@@ -21,7 +22,7 @@ module MongodbLogger
       
       def create_collection
         @connection.create_collection(collection_name,
-                                            {:capped => true, :size => @configuration['capsize'].to_i})
+          {:capped => true, :size => @configuration['capsize'].to_i})
       end
       
       def insert_log_record(record, options = {})
@@ -29,7 +30,47 @@ module MongodbLogger
       end
       
       def collection_stats
-        @collection.stats 
+        stats = @collection.stats
+        {
+          :is_capped => (stats["capped"] && ([1, true].include?(stats["capped"]))),
+          :count => stats["count"],
+          :size => stats["size"],
+          :storageSize => stats["storageSize"],
+          :db_name => @configuration["database"],
+          :collection => collection_name
+        } 
+      end
+      
+      # filter
+      def filter_by_conditions(filter)
+        @collection.find(filter.get_mongo_conditions).sort('$natural', -1).limit(filter.get_mongo_limit)
+      end
+      
+      def find_by_id(id)
+        @collection.find_one(BSON::ObjectId(id))
+      end
+      
+      def tail_log_from_params(params = {})
+        logs = []
+        last_id = nil
+        if params[:log_last_id] && !params[:log_last_id].blank?
+          log_last_id = params[:log_last_id]
+          tail = ::Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]], 
+            :selector => {'_id' => { '$gt' => BSON::ObjectId(log_last_id) }})
+          while log = tail.next
+            logs << log
+            log_last_id = log["_id"].to_s
+          end
+          logs.reverse!
+        else
+          log = @collection.find_one({}, {:sort => ['$natural', -1]})
+          log_last_id = log["_id"].to_s unless log.blank?
+        end
+        { 
+          :log_last_id => log_last_id, 
+          :time => Time.now.strftime("%F %T"),
+          :logs => logs
+        }
       end
       
       private

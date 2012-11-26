@@ -118,7 +118,7 @@ module MongodbLogger
 
         @insert_block = @db_configuration.has_key?('replica_set') && @db_configuration['replica_set'] ?
           lambda { rescue_connection_failure{ insert_log_record(@db_configuration['safe_insert']) } } :
-          lambda { insert_log_record }
+          lambda { insert_log_record(@db_configuration['safe_insert']) }
       end
 
       def resolve_application_name
@@ -154,6 +154,7 @@ module MongodbLogger
         adapter = find_adapter
         raise "MongodbLogger not found adapter. Please, add bson, bson_ext or moped gem into Gemfile" if adapter.nil?
         @mongo_adapter ||= adapter.new(@db_configuration)
+        @db_configuration = @mongo_adapter.configuration
       end
 
       def check_for_collection
