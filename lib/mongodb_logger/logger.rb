@@ -4,8 +4,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'active_support/core_ext/logger'
 require 'action_dispatch/http/upload'
-require 'mongodb_logger/adapters/mongo'
-require 'mongodb_logger/adapters/moped'
+require 'mongodb_logger/adapters'
 require 'mongodb_logger/replica_set_helper'
 
 module MongodbLogger

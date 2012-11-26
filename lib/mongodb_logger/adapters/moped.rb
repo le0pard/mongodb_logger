@@ -1,44 +1,44 @@
 module MongodbLogger
   module Adapers
-    class Moped
+    class Moped < Base
       
-      attr_reader :db_configuration, :mongo_connection, :mongo_collection, :insert_log_record
+      attr_reader :configuration, :connection, :connection_type, :collection
       
       def initialize(options = {})
-        @db_configuration = options
-        if @db_configuration['url']
-          uri = URI.parse(@db_configuration['url'])
-          @mongo_connection ||= mongo_connection_object
-          @mongo_connection.use uri.path.gsub(/^\//, '')
+        @configuration = options
+        if @configuration['url']
+          uri = URI.parse(@configuration['url'])
+          @connection ||= mongo_connection_object
+          @connection.use uri.path.gsub(/^\//, '')
           @authenticated = true
         else
-          @mongo_connection ||= mongo_connection_object
-          @mongo_connection.use @db_configuration['database']
-          if @db_configuration['username'] && @db_configuration['password']
+          @connection ||= mongo_connection_object
+          @connection.use @configuration['database']
+          if @configuration['username'] && @configuration['password']
             # the driver stores credentials in case reconnection is required
-            @authenticated = @mongo_connection.login(@db_configuration['username'],
-                                                          @db_configuration['password'])
+            @authenticated = @connection.login(@configuration['username'],
+                                                          @configuration['password'])
           end
         end
       end
       
       def collection_name
-        @db_configuration['collection']
+        @configuration['collection']
       end
       
       def check_for_collection
         # setup the capped collection if it doesn't already exist
-        create_collection unless @mongo_connection.collection_names.include?(@db_configuration['collection'])
-        @mongo_collection = @mongo_connection[@db_configuration['collection']]
+        create_collection unless @connection.collection_names.include?(@configuration['collection'])
+        @collection = @connection[@configuration['collection']]
       end
       
       def insert_log_record(record, options = {})
-        @mongo_collection.with(options).insert(record)
+        @collection.with(options).insert(record)
       end
       
       def reset_collection
-        if @mongo_connection && @mongo_collection
-          @mongo_collection.drop
+        if @connection && @collection
+          @collection.drop
           create_collection
         end 
       end
@@ -47,27 +47,27 @@ module MongodbLogger
         @authenticated
       end
       
-      def mongo_collection_stats
-        {}#@mongo_collection.stats 
+      def collection_stats
+        {}#@collection.stats 
       end
       
       private
       
       def mongo_connection_object
-        if @db_configuration['hosts']
-          conn = ::Moped::Session.new(@db_configuration['hosts'], :timeout => 6)
-          @db_configuration['replica_set'] = true
-        elsif @db_configuration['url']
-          conn = ::Moped::Session.connect(@db_configuration['url'])
+        if @configuration['hosts']
+          conn = ::Moped::Session.new(@configuration['hosts'], :timeout => 6)
+          @configuration['replica_set'] = true
+        elsif @configuration['url']
+          conn = ::Moped::Session.connect(@configuration['url'])
         else
-          conn = ::Moped::Session.new(["#{@db_configuration['host']}:#{@db_configuration['port']}"], :timeout => 6)
+          conn = ::Moped::Session.new(["#{@configuration['host']}:#{@configuration['port']}"], :timeout => 6)
         end
         @mongo_connection_type = conn.class
         conn
       end
       
       def create_collection
-        @mongo_connection.command(create: mongo_collection_name, capped: true, size:  @db_configuration['capsize'].to_i)
+        @connection.command(create: collection_name, capped: true, size:  @configuration['capsize'].to_i)
       end
       
     end
