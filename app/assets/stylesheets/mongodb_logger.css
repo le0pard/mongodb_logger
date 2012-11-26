@@ -11,6 +11,6 @@
  *= require "group-buttons.css.erb"
  *= require "group-forms.css" 
  *= require "group-tables.css"
- *= require "humanity/jquery-ui-1.8.16.custom.css" 
+ *= require "humanity/jquery-ui-1.9.2.custom.css" 
  *= require "highlight/zenburn.css"
 */
