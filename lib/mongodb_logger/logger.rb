@@ -152,7 +152,7 @@ module MongodbLogger
 
       def connect
         adapter = find_adapter
-        raise "MongodbLogger not found adapter. Please, add bson, bson_ext or moped gem into Gemfile" if adapter.nil?
+        raise "!!! MongodbLogger not found supported adapter. Please, add mongo with bson_ext gems or moped gem into Gemfile !!!" if adapter.nil?
         @mongo_adapter ||= adapter.new(@db_configuration)
         @db_configuration = @mongo_adapter.configuration
       end

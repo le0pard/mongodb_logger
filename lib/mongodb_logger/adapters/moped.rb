@@ -31,15 +31,7 @@ module MongodbLogger
       end
 
       def collection_stats
-        stats = @connection.command(collStats: collection_name)
-        {
-          :is_capped => (stats["capped"] && ([1, true].include?(stats["capped"]))),
-          :count => stats["count"],
-          :size => stats["size"],
-          :storageSize => stats["storageSize"],
-          :db_name => @configuration["database"],
-          :collection => collection_name
-        } 
+        collection_stats_hash(@connection.command(collStats: collection_name))
       end
       
       # filter
@@ -56,15 +48,13 @@ module MongodbLogger
         last_id = nil
         if params[:log_last_id] && !params[:log_last_id].blank?
           log_last_id = params[:log_last_id]
-          tail = ::Mongo::Cursor.new(@collection, :tailable => true, :order => [['$natural', 1]], 
-            :selector => {'_id' => { '$gt' => BSON::ObjectId(log_last_id) }})
-          while log = tail.next
+          @collection.find({'_id' => { '$gt' => ::Moped::BSON::ObjectId.from_string(log_last_id) }}).sort('$natural' => -1).each do |log|
             logs << log
             log_last_id = log["_id"].to_s
           end
           logs.reverse!
         else
-          log = @collection.find_one({}, {:sort => ['$natural', -1]})
+          log = @collection.find.sort('$natural' => -1).first
           log_last_id = log["_id"].to_s unless log.blank?
         end
         { 

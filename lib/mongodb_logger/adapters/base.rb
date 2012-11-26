@@ -24,6 +24,17 @@ module MongodbLogger
           create_collection
         end
       end
+      
+      def collection_stats_hash(stats)
+        {
+          :is_capped => (stats["capped"] && ([1, true].include?(stats["capped"]))),
+          :count => stats["count"],
+          :size => stats["size"],
+          :storageSize => stats["storageSize"],
+          :db_name => @configuration["database"],
+          :collection => collection_name
+        }
+      end
 
       def create_collection
         raise "Not implemented"
