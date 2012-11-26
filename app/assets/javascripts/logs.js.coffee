@@ -1,11 +1,11 @@
 root = global ? window
 
 root.MongodbLoggerMain = 
-  tail_logs_url: null
-  tail_log_started: false
-  log_info_offset: null
-  log_info_padding: 15
-  is_charts_ready: false
+  tailLogsUrl: null
+  tailLogStarted: false
+  logInfoOffset: null
+  logInfoPadding: 15
+  isChartsReady: false
   
   init: ->
     # spinner
@@ -15,12 +15,12 @@ root.MongodbLoggerMain =
       $('#ajax_loader').hide()
     # tail logs buttons
     $(document).on 'click', '#tail_logs_link', (event) =>
-      MongodbLoggerMain.tail_logs_url = $(event.target).attr('data-url')
+      MongodbLoggerMain.tailLogsUrl = $(event.currentTarget).attr('data-url')
       $('#tail_logs_block').addClass('started')
       MongodbLoggerMain.tail_logs(null)
       return false
     $(document).on 'click', '#tail_logs_stop_link', (event) =>
-      MongodbLoggerMain.tail_log_started = false
+      MongodbLoggerMain.tailLogStarted = false
       $('#tail_logs_block').removeClass('started')
       return false
     # log info click
@@ -125,7 +125,7 @@ root.MongodbLoggerMain =
     $('body').bind 'pjax:end', () => 
       $('#ajax_loader').hide()
       # stop tailing
-      MongodbLoggerMain.tail_log_started = false
+      MongodbLoggerMain.tailLogStarted = false
       # scroll on top
       if ($(window).scrollTop() > 100)
         $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
@@ -144,23 +144,23 @@ root.MongodbLoggerMain =
       yearRange: 'c-50:c+10'
     # log info window
     if $("#log_info").length > 0
-      MongodbLoggerMain.log_info_offset = $("#log_info").offset()
+      MongodbLoggerMain.logInfoOffset = $("#log_info").offset()
       $(window).scroll =>
-        if $(window).scrollTop() > MongodbLoggerMain.log_info_offset.top
+        if $(window).scrollTop() > MongodbLoggerMain.logInfoOffset.top
           $("#log_info").stop().animate
-            marginTop: $(window).scrollTop() - MongodbLoggerMain.log_info_offset.top + MongodbLoggerMain.log_info_padding
+            marginTop: $(window).scrollTop() - MongodbLoggerMain.logInfoOffset.top + MongodbLoggerMain.logInfoPadding
         else
           $("#log_info").stop().animate
             marginTop: 0
   # tail logs function
   tail_logs: (log_last_id) ->
-    url = MongodbLoggerMain.tail_logs_url
+    url = MongodbLoggerMain.tailLogsUrl
     if log_last_id? && log_last_id.length > 0
-      url = MongodbLoggerMain.tail_logs_url + "/" + log_last_id 
+      url = MongodbLoggerMain.tailLogsUrl + "/" + log_last_id 
     else
-      MongodbLoggerMain.tail_log_started = true
+      MongodbLoggerMain.tailLogStarted = true
       log_last_id = ""
-    if MongodbLoggerMain.tail_log_started
+    if MongodbLoggerMain.tailLogStarted
       $.ajax
         url: url
         dataType: "json"
@@ -175,7 +175,7 @@ root.MongodbLoggerMain =
               $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
             if data.collection_stats && $("#collection_stats").length > 0
               $("#collection_stats").html(data.collection_stats)
-          if MongodbLoggerMain.tail_log_started
+          if MongodbLoggerMain.tailLogStarted
             fcallback = -> MongodbLoggerMain.tail_logs(log_last_id)
             setTimeout fcallback, 2000
   # move using keys by logs
@@ -222,10 +222,10 @@ root.MongodbLoggerMain =
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
   # charts ready for usage
   init_analytic_charts: ->
-    MongodbLoggerMain.is_charts_ready = true
+    MongodbLoggerMain.isChartsReady = true
   # build charts
   build_analytic_charts: (data) ->
-    if MongodbLoggerMain.is_charts_ready is true
+    if MongodbLoggerMain.isChartsReady is true
       if data.data?
         data_table = new google.visualization.DataTable()
         data_table.addColumn('date', 'Date')
