@@ -20,6 +20,15 @@ For rails 3.0.x latest version 0.2.8.
 
         gem "mongodb_logger"
 
+1. Add adapter in Gemfile. Supported mongo and moped (mongoid). For example:
+
+        gem "mongo"
+        gem "bson_ext"
+        
+or 
+
+        gem "moped"
+
 1. Add the following line to your ApplicationController:
 
         include MongodbLogger::Base
@@ -206,10 +215,7 @@ Also you can serve assets from rails app. You need just mount it separately:
   And now, for a couple quick examples on getting ahold of this log data...
   First, here's how to get a handle on the MongoDB from within a Rails console:
 
-      >> db = Rails.logger.mongo_connection
-      => #<Mongo::DB:0x007fdc7c65adc8 @name="monkey_logs_dev" ... >
-
-      >> collection = db[Rails.logger.mongo_collection_name]
+      >> collection = Rails.logger.mongo_adapter.collection
       => #<Mongo::Collection:0x007fdc7a4d12b0 @name="development_log" .. >
 
   Once you've got the collection, you can find all requests for a specific user (with id):
