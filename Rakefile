@@ -8,10 +8,9 @@ require 'rake/testtask'
 require 'cucumber'
 require 'cucumber/rake/task'
 
-#require "bundler/gem_tasks"
+require "bundler/gem_tasks"
 require 'bundler/gem_helper'
-Bundler::GemHelper.install_tasks(:name => 'mongodb_logger')
-Bundler::GemHelper.install_tasks(:name => 'mongodb_logger.java')
+Bundler::GemHelper.install_tasks
 
 #########################################
 ### Help tasks

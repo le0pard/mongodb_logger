@@ -7,7 +7,7 @@ rescue LoadError
   require 'shoulda'
 end
 
-require 'mocha'
+require 'mocha/setup'
 # mock rails class
 require 'pathname'
 require 'rails'
