@@ -9,8 +9,6 @@ require 'cucumber'
 require 'cucumber/rake/task'
 
 require "bundler/gem_tasks"
-require 'bundler/gem_helper'
-Bundler::GemHelper.install_tasks
 
 #########################################
 ### Help tasks
@@ -159,13 +157,4 @@ end
 namespace :cucumber do
   define_rails_cucumber_tasks
   define_web_cucumber_tasks
-end
-
-begin
-  require 'jasmine'
-  load 'jasmine/tasks/jasmine.rake'
-rescue LoadError
-  task :jasmine do
-    abort "Jasmine is not available. In order to run jasmine, you must: (sudo) gem install jasmine"
-  end
 end
