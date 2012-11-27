@@ -15,7 +15,7 @@ branches:
   only:
     - master
     - development
-    - gem
+    - adapters
 #bundler_args: --path vendor/bundle
 matrix:
   allow_failures:

@@ -71,8 +71,9 @@ class Test::Unit::TestCase
   end
 
   def common_setup
-    @con = @mongodb_logger.mongo_connection
-    @collection = @con[@mongodb_logger.mongo_collection_name]
+    @mongo_adapter = @mongodb_logger.mongo_adapter
+    @con = @mongo_adapter.connection
+    @collection = @mongo_adapter.collection
   end
 
   def create_user

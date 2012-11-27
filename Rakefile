@@ -1,12 +1,12 @@
 #!/usr/bin/env rake
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
 require 'rake'
 require 'rake/testtask'
-begin
-  require 'cucumber/rake/task'
-rescue LoadError
-  $stderr.puts "Please install cucumber: `gem install cucumber`"
-  exit 1
-end
+require 'cucumber'
+require 'cucumber/rake/task'
 
 #require "bundler/gem_tasks"
 require 'bundler/gem_helper'

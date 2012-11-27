@@ -5,7 +5,7 @@
 <% if collection_stats[:is_capped] %>
   <div class="progress">
     <span class="size"><%=h number_to_human_size(collection_stats[:size]) %> of <%=h number_to_human_size(collection_stats[:storageSize]) %></span>
-    <div class="used" style="width: <%=((collection_stats[:size].to_f / collection_stats[:storageSize].to_f) * 100).round%>%"></div>
+    <div class="used" style="width: <%= percent_of_userd_memory(collection_stats) %>%"></div>
   </div> <!-- progress -->
 <% else %>
   <div class="warning"><p>You do not use capped collection for logs. 

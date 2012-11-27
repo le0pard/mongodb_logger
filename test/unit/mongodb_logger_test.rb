@@ -21,6 +21,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         MongodbLogger::Logger.any_instance.stubs(:internal_initialize).returns(nil)
         MongodbLogger::Logger.any_instance.stubs(:disable_file_logging?).returns(false)
         @mongodb_logger = MongodbLogger::Logger.new
+        @mongo_adapter = @mongodb_logger.mongo_adapter
       end
 
       context "during configuration when using a separate " + LOGGER_CONFIG do
@@ -54,9 +55,8 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
         should "connect with the url" do
           @mongodb_logger.send(:connect)
-          assert @mongodb_logger.authenticated?
-          assert_equal "system_log", @mongodb_logger.mongo_connection.name
-          assert_equal ["localhost", 27017], @mongodb_logger.mongo_connection.connection.primary
+          assert @mongo_adapter.authenticated?
+          assert_equal "system_log", @mongo_adapter.configuration['database']
         end
       end
 
@@ -69,7 +69,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
         should "authenticate with the credentials in the configuration" do
           @mongodb_logger.send(:connect)
-          assert @mongodb_logger.authenticated?
+          assert @mongo_adapter.authenticated?
         end
 
         teardown do
@@ -84,25 +84,25 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         end
 
         should "set the default host, port, and capsize if not configured" do
-          assert_equal 'localhost', @mongodb_logger.db_configuration['host']
-          assert_equal 27017, @mongodb_logger.db_configuration['port']
-          assert_equal MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE, @mongodb_logger.db_configuration['capsize']
+          assert_equal 'localhost', @mongo_adapter.configuration['host']
+          assert_equal 27017, @mongo_adapter.configuration['port']
+          assert_equal MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE, @mongo_adapter.configuration['capsize']
         end
 
         should "set the mongo collection name depending on the Rails environment" do
-          assert_equal "#{Rails.env}_log", @mongodb_logger.mongo_collection_name
+          assert_equal "#{Rails.env}_log", @mongo_adapter.collection_name
         end
 
         should "set the application name when specified in the config file" do
-          assert_equal "mongo_foo", @mongodb_logger.instance_variable_get(:@application_name)
+          assert_equal "mongo_foo", @mongo_adapter.configuration['application_name']
         end
 
         should "set safe insert when specified in the config file" do
-          assert @mongodb_logger.instance_variable_get(:@safe_insert)
+          assert @mongo_adapter.configuration['safe_insert']
         end
 
         should "use the database name in the config file" do
-          assert_equal "system_log", @mongodb_logger.db_configuration['database']
+          assert_equal "system_log", @mongo_adapter.configuration['database']
         end
 
         context "upon connecting to an empty database" do

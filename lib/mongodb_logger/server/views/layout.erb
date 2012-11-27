@@ -32,12 +32,5 @@
 <!-- scripts -->
 <script src="<%= asset_path('mongodb_logger.js') %>" type="text/javascript"></script>
 
-<!-- charts -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  google.load('visualization', '1', {'packages':['corechart']});
-  google.setOnLoadCallback(MongodbLoggerMain.init_analytic_charts);
-</script>
-
 </body>
 </html>

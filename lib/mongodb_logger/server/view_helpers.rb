@@ -11,6 +11,10 @@ module Sinatra::ViewHelpers
     end
   end
   
+  def percent_of_userd_memory(collection_stats)
+    ((collection_stats[:size] / collection_stats[:storageSize]) * 100).round
+  end
+  
   def string_from_log_message(message)
     message.is_a?(Array) ? message.join("\n") : message.to_s
   end
