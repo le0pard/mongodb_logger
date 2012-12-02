@@ -57,8 +57,8 @@ else
 end
 
 
-LOCAL_GEMS = [['sqlite3', nil], ['shoulda', nil], ["rspec", nil], ["mocha", nil], ["cucumber", nil], ["bundler", "1.0.21"]] +
-  RAILS_VERSIONS.collect { |version| ['rails', version] }
+LOCAL_GEMS = [['sqlite3', nil], ['shoulda', nil], ["rspec", nil], ["mocha", nil], ["cucumber", nil], ["bundler", "1.0.21"]] + 
+RAILS_VERSIONS.collect { |version| ['rails', version] }
 
 desc "Vendor test gems: Run this once to prepare your test environment"
 task :vendor_test_gems do

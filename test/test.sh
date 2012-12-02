@@ -1,7 +1,7 @@
 #!/bin/bash
-BUNDLE_GEMFILE=test/Gemfile_tests bundle
-BUNDLE_GEMFILE=test/Gemfile_tests rake vendor_test_gems && \
-rake test && \
-rake cucumber:web && \
+bundle exec rake test && \
+bundle exec rake cucumber:web
+#bundle exec rake vendor_test_gems && \
+# && \
 #rake jasmine:ci && \
-rake cucumber:rails:all
+#rake cucumber:rails:all
