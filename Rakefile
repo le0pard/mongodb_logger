@@ -132,3 +132,12 @@ namespace :cucumber do
   define_rails_cucumber_tasks
   define_web_cucumber_tasks
 end
+
+begin
+  require 'jasmine'
+  load 'jasmine/tasks/jasmine.rake'
+rescue LoadError
+  task :jasmine do
+    abort "Jasmine is not available. In order to run jasmine, you must: (sudo) gem install jasmine"
+  end
+end

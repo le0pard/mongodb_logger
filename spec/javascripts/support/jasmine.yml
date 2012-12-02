@@ -11,11 +11,11 @@
 #   - dist/**/*.js
 #
 src_files:
-    - lib/mongodb_logger/server/public/javascripts/vendors/jquery-1.7.1.min.js
-    - lib/mongodb_logger/server/public/javascripts/vendors/jquery-ui-1.8.16.min.js
-    - lib/mongodb_logger/server/public/javascripts/vendors/jquery.pjax.min.js
-    - lib/mongodb_logger/server/public/javascripts/vendors/highlight.pack.js
-    - lib/mongodb_logger/server/public/javascripts/logs.js
+    - app/assets/javascripts/vendors/jquery-1.8.3.min.js
+    - app/assets/javascripts/vendors/jquery-ui-1.9.2.min.js
+    - app/assets/javascripts/vendors/jquery.pjax.min.js
+    - app/assets/javascripts/vendors/highlight.pack.js
+    - app/assets/javascripts/logs.js
 
 # stylesheets
 #
