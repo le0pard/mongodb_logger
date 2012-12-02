@@ -164,7 +164,7 @@ body {
     color: #666;
 }
 
-#ajax_loader {
+#ajaxLoader {
     display: none;
     position: absolute;
     top: 15px;

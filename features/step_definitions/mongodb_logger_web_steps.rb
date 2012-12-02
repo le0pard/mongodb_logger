@@ -28,17 +28,17 @@ Then /^I should see text that no logs in system$/ do
 end
 
 Given /^I should see start tail button$/ do
-  page.has_link?('tail_logs_link', :visible => true)
-  page.has_link?('tail_logs_stop_link', :visible => false)
+  page.has_link?('tailLogsLink', :visible => true)
+  page.has_link?('tailLogsStopLink', :visible => false)
 end
 
 When /^I click on start tail button$/ do
-  click_link('tail_logs_link')
+  click_link('tailLogsLink')
 end
 
 Then /^I should see stop tails button$/ do
-  page.has_link?('tail_logs_link', :visible => false)
-  page.has_link?('tail_logs_stop_link', :visible => true)
+  page.has_link?('tailLogsLink', :visible => false)
+  page.has_link?('tailLogsStopLink', :visible => true)
 end
 
 Then /^box with time of last log tail$/ do
@@ -46,6 +46,6 @@ Then /^box with time of last log tail$/ do
 end
 
 When /^I click on stop tail button$/ do
-  click_link('tail_logs_stop_link')
+  click_link('tailLogsStopLink')
 end
 

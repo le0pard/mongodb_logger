@@ -9,29 +9,24 @@ root.MongodbLoggerMain =
   
   init: ->
     # spinner
-    $(document).ajaxStart =>
-      $('#ajax_loader').show()
-    $(document).ajaxStop =>
-      $('#ajax_loader').hide()
+    $(document).ajaxStart => $('#ajaxLoader').show()
+    $(document).ajaxStop => $('#ajaxLoader').hide()
     # tail logs buttons
-    $(document).on 'click', '#tail_logs_link', (event) =>
+    $(document).on 'click', '#tailLogsLink', (event) =>
       MongodbLoggerMain.tailLogsUrl = $(event.currentTarget).attr('data-url')
-      $('#tail_logs_block').addClass('started')
-      MongodbLoggerMain.tail_logs(null)
+      $('#tailLogsBlock').addClass('started')
+      MongodbLoggerMain.tailLogs(null)
       return false
-    $(document).on 'click', '#tail_logs_stop_link', (event) =>
+    $(document).on 'click', '#tailLogsStopLink', (event) =>
       MongodbLoggerMain.tailLogStarted = false
-      $('#tail_logs_block').removeClass('started')
+      $('#tailLogsBlock').removeClass('started')
       return false
     # log info click
     $(document).on 'click', '.log_info', (event) =>
-      elm_obj = $(event.target)
-      url = elm_obj.data('url')
-      url = elm_obj.parent('tr').data('url') if !url?
-      if url?
-        elm_obj.parents('table').find('tr').removeClass('current')
-        elm_obj.parent('tr').addClass('current')
-        $('#log_info').load(url)
+      element = $(event.currentTarget)
+      element.parents('table').find('tr').removeClass('current')
+      element.addClass('current')
+      $('#logInfo').load(element.data('url'))
       return false
     # filter tougle
     $(document).on 'click', 'div.filter-toggle', (event) =>
@@ -114,28 +109,25 @@ root.MongodbLoggerMain =
           MongodbLoggerMain.move_by_logs('down')
           
     # init pjax
-    this.init_pjax()
-    this.init_on_pages()
+    this.initPjax()
+    this.initOnPages()
     
-  init_pjax: ->
+  initPjax: ->
     # pjax
     $('a[data-pjax]').pjax()
-    $('body').bind 'pjax:start', () => 
-      $('#ajax_loader').show()
+    $('body').bind 'pjax:start', () => $('#ajaxLoader').show()
     $('body').bind 'pjax:end', () => 
-      $('#ajax_loader').hide()
+      $('#ajaxLoader').hide()
       # stop tailing
       MongodbLoggerMain.tailLogStarted = false
       # scroll on top
-      if ($(window).scrollTop() > 100)
-        $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
+      $('html, body').stop().animate({ scrollTop: 0 }, 'slow') if ($(window).scrollTop() > 100)
       # init pages
-      MongodbLoggerMain.init_on_pages()
+      MongodbLoggerMain.initOnPages()
   # init this on pjax
-  init_on_pages: ->
+  initOnPages: ->
     # code highlight
-    $('pre code').each (i, e) ->
-      hljs.highlightBlock(e, '  ')
+    $('pre code').each (i, e) -> hljs.highlightBlock(e, '  ')
     # callendars  
     $( ".datepicker, .filter_values input.date" ).datepicker
       dateFormat: "yy-mm-dd"
@@ -143,23 +135,23 @@ root.MongodbLoggerMain =
       changeYear: true
       yearRange: 'c-50:c+10'
     # log info window
-    if $("#log_info").length > 0
-      MongodbLoggerMain.logInfoOffset = $("#log_info").offset()
+    if $("#logInfo").length > 0
+      MongodbLoggerMain.logInfoOffset = $("#logInfo").offset()
       $(window).scroll =>
         if $(window).scrollTop() > MongodbLoggerMain.logInfoOffset.top
-          $("#log_info").stop().animate
+          $("#logInfo").stop().animate
             marginTop: $(window).scrollTop() - MongodbLoggerMain.logInfoOffset.top + MongodbLoggerMain.logInfoPadding
         else
-          $("#log_info").stop().animate
+          $("#logInfo").stop().animate
             marginTop: 0
   # tail logs function
-  tail_logs: (log_last_id) ->
+  tailLogs: (logLastId = null) ->
     url = MongodbLoggerMain.tailLogsUrl
-    if log_last_id? && log_last_id.length > 0
-      url = MongodbLoggerMain.tailLogsUrl + "/" + log_last_id 
+    if logLastId? && logLastId.length > 0
+      url = "#{MongodbLoggerMain.tailLogsUrl}/#{logLastId}" 
     else
       MongodbLoggerMain.tailLogStarted = true
-      log_last_id = ""
+      logLastId = ""
     if MongodbLoggerMain.tailLogStarted
       $.ajax
         url: url
@@ -168,16 +160,14 @@ root.MongodbLoggerMain =
           if data.time
             $('#tailLogsTime').text(data.time)
             if data.log_last_id?
-              log_last_id = data.log_last_id
+              logLastId = data.log_last_id
             if data.content? && data.content.length > 0
               elements = $(data.content)
               elements.addClass('newlog')
               $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
             if data.collection_stats && $("#collection_stats").length > 0
               $("#collection_stats").html(data.collection_stats)
-          if MongodbLoggerMain.tailLogStarted
-            fcallback = -> MongodbLoggerMain.tail_logs(log_last_id)
-            setTimeout fcallback, 2000
+          setTimeout((-> MongodbLoggerMain.tailLogs(logLastId)), 2000) if MongodbLoggerMain.tailLogStarted
   # move using keys by logs
   move_by_logs: (direction) ->
     if $('#logs_list').length > 0 && $('#logs_list').find('tr.current').length > 0
@@ -220,31 +210,6 @@ root.MongodbLoggerMain =
     elemTop = $(elem).offset().top
     elemBottom = elemTop + $(elem).height()
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
-  # charts ready for usage
-  init_analytic_charts: ->
-    MongodbLoggerMain.isChartsReady = true
-  # build charts
-  build_analytic_charts: (data) ->
-    if MongodbLoggerMain.isChartsReady is true
-      if data.data?
-        data_table = new google.visualization.DataTable()
-        data_table.addColumn('date', 'Date')
-        data_table.addColumn('number', 'Requests')
-        temp_data = []
-        for row in data.data
-          temp_data.push([new Date(row['_id'].year, row['_id'].month - 1, row['_id'].day), row.value.count])
-
-        data_table.addRows(temp_data)
-        chart = new google.visualization.LineChart(document.getElementById('analyticData'))
-        options = 
-          title: $('#analytic_type option:selected').text()
-          width: '100%'
-          height: 600
-          vAxis:
-            title: $('#analytic_type option:selected').text()
-        chart.draw(data_table, options)
-    else
-      alert "Error of loading Google Charts. Sorry :("
 
 $ ->
   MongodbLoggerMain.init()

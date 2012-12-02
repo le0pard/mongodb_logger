@@ -4,7 +4,7 @@ Feature: Install MongodbLogger Web and test it
     Given homepage
     Then I should see text that no logs in system
     
-  Scenario: Tail logs buttons
+  Scenario: Tail logs button
     Given homepage
     And I should see start tail button
     When I click on start tail button

@@ -17,12 +17,12 @@
           <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
         </div>
       </div>
-      <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#main_pjax'><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>
+      <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#mainPjax'><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>
     </div> <!-- wrapper -->
   </div> <!-- header -->            
   <div class="content">
     <div class="wrapper">
-      <div id="main_pjax" class="mainbox">
+      <div id="mainPjax" class="mainbox">
         <%= yield %>
       </div> <!-- mainbox -->
     </div> <!-- wrapper -->
