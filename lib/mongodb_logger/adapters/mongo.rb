@@ -26,7 +26,7 @@ module MongodbLogger
       end
       
       def insert_log_record(record, options = {})
-        @collection.insert(record, options)
+        @collection.insert(record, options[:write_options])
       end
       
       def collection_stats

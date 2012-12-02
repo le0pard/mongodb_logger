@@ -54,7 +54,9 @@ or
            host: localhost                # default: localhost
            port: 27017                    # default: 27017
            replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
-           safe_insert: false             # default: false - Enable/Disable safe inserts (wait for insert to propagate to all nodes)
+           write_options:                 # default: {w: 0, wtimeout: 200} - write options for inserts (w - wait for insert to propagate to "w" numbers of nodes)
+             w: 0
+             wtimeout: 200
            application_name: my_app       # default: Rails.application
            disable_file_logging: false    # default: false - disable logging into filesystem (only in MongoDB)
            collection: some_name          # default: Rails.env + "_log" - name of MongoDB collection

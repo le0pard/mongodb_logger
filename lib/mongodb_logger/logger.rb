@@ -114,11 +114,11 @@ module MongodbLogger
           'capsize' => default_capsize}.merge(resolve_config)
         @db_configuration['collection'] ||= "#{Rails.env}_log"
         @db_configuration['application_name'] ||= resolve_application_name
-        @db_configuration['safe_insert'] ||= false
+        @db_configuration['write_options'] ||= { w: 0, wtimeout: 200 }
 
         @insert_block = @db_configuration.has_key?('replica_set') && @db_configuration['replica_set'] ?
-          lambda { rescue_connection_failure{ insert_log_record(@db_configuration['safe_insert']) } } :
-          lambda { insert_log_record(@db_configuration['safe_insert']) }
+          lambda { rescue_connection_failure{ insert_log_record(@db_configuration['write_options']) } } :
+          lambda { insert_log_record(@db_configuration['write_options']) }
       end
 
       def resolve_application_name
@@ -161,8 +161,8 @@ module MongodbLogger
         @mongo_adapter.check_for_collection
       end
 
-      def insert_log_record(safe = false)
-        @mongo_adapter.insert_log_record(@mongo_record, :safe => safe)
+      def insert_log_record(write_options)
+        @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
       end
 
       def logging_colorized?
@@ -196,8 +196,8 @@ module MongodbLogger
             data.map{|v| nice_serialize_object(v) }
           when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
             hvalues = {
-              :original_filename => data.original_filename,
-              :content_type => data.content_type
+              original_filename: data.original_filename,
+              content_type: data.content_type
             }
           else
             data.inspect

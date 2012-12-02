@@ -6,5 +6,7 @@ test:
   mongodb_logger:
     database: system_log
     application_name: mongo_foo
-    safe_insert: true
+    write_options: 
+      w: 1
+      wtimeout: 200
     disable_file_logging: true
