@@ -1,14 +1,17 @@
-before_script:
-  - "sh -e /etc/init.d/xvfb start"
-before_install:
-  - gem install bundler
-script: "sh -c 'export DISPLAY=:99.0 && test/test.sh'"
 language: ruby
+before_install:
+  - gem install bundler --pre
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+script: "sh -c 'test/test.sh'"
 services:
   - mongodb
 rvm:
   - 1.9.2
   - 1.9.3
+  - jruby-19mode
+  - ruby-head
+  - jruby-head
 notifications:
   email: false
 branches:
@@ -16,7 +19,6 @@ branches:
     - master
     - development
     - adapters
-#bundler_args: --path vendor/bundle
 matrix:
   allow_failures:
     - rvm: ruby-head
