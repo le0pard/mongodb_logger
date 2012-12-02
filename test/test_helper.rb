@@ -46,18 +46,18 @@ class Test::Unit::TestCase
     end
   end
 
-  def setup_for_config(source, dest=source)
+  def setup_for_config(source, dest = source)
     File.delete(File.join(CONFIG_DIR, DEFAULT_CONFIG))
     cp_config(source, dest)
     @mongodb_logger.send(:configure)
   end
 
-  def cp_config(source, dest=source)
+  def cp_config(source, dest = source)
     FileUtils.cp(File.join(SAMPLE_CONFIG_DIR, source),  File.join(CONFIG_DIR, dest))
   end
 
   def teardown_for_config(file)
-    File.delete(File.join(CONFIG_DIR, file))
+    File.delete(File.join(CONFIG_DIR, file)) if File.exists?(File.join(CONFIG_DIR, file))
   end
 
   def log_metadata(options)
@@ -75,17 +75,24 @@ class Test::Unit::TestCase
     @con = @mongo_adapter.connection
     @collection = @mongo_adapter.collection
   end
-
-  def create_user
-    db_conf = @mongodb_logger.db_configuration
-    @user = db_conf['username']
-    mongo_connection = Mongo::Connection.new(db_conf['host'],
-                                             db_conf['port']).db(db_conf['database'])
-    mongo_connection.add_user(@user, db_conf['password'])
+  
+  def reset_collection
+    if @mongo_adapter && @collection
+      @collection.drop
+      @mongo_adapter.create_collection
+    end
   end
 
-  def remove_user
-    @mongodb_logger.mongo_connection.remove_user(@user)
+  def create_mongo_user
+    db_conf = @mongodb_logger.db_configuration
+    @user = db_conf['username']
+    @mongo_connection = ::Mongo::Connection.new(db_conf['host'],
+                                             db_conf['port']).db(db_conf['database'])
+    @mongo_connection.add_user(@user, db_conf['password'])
+  end
+
+  def remove_mongo_user
+    @mongo_connection.remove_user(@user)
   end
 
 end

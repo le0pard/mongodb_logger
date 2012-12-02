@@ -21,7 +21,6 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         MongodbLogger::Logger.any_instance.stubs(:internal_initialize).returns(nil)
         MongodbLogger::Logger.any_instance.stubs(:disable_file_logging?).returns(false)
         @mongodb_logger = MongodbLogger::Logger.new
-        @mongo_adapter = @mongodb_logger.mongo_adapter
       end
 
       context "during configuration when using a separate " + LOGGER_CONFIG do
@@ -55,8 +54,8 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
 
         should "connect with the url" do
           @mongodb_logger.send(:connect)
-          assert @mongo_adapter.authenticated?
-          assert_equal "system_log", @mongo_adapter.configuration['database']
+          assert @mongodb_logger.mongo_adapter.authenticated?
+          assert_equal "system_log", @mongodb_logger.mongo_adapter.configuration['database']
         end
       end
 
@@ -64,23 +63,24 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
       context "upon connecting with authentication settings" do
         setup do
           setup_for_config(DEFAULT_CONFIG_WITH_AUTH, DEFAULT_CONFIG)
-          create_user
+          create_mongo_user
         end
 
         should "authenticate with the credentials in the configuration" do
           @mongodb_logger.send(:connect)
-          assert @mongo_adapter.authenticated?
+          assert @mongodb_logger.mongo_adapter.authenticated?
         end
 
         teardown do
           # config will be deleted by outer teardown
-          remove_user
+          remove_mongo_user
         end
       end
-
+=begin
       context "after configuration" do
         setup do
           @mongodb_logger.send(:configure)
+          @mongo_adapter = @mongodb_logger.mongo_adapter
         end
 
         should "set the default host, port, and capsize if not configured" do
@@ -132,13 +132,14 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
           end
         end
       end
+=end
     end
 
     context "after instantiation" do
       setup do
         @mongodb_logger = MongodbLogger::Logger.new
         common_setup
-        @mongodb_logger.reset_collection
+        reset_collection
       end
 
       context "upon insertion of a log record when active record is not used" do
@@ -150,7 +151,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         should_contain_one_log_record
 
         should "allow recreation of the capped collection to remove all records" do
-          @mongodb_logger.reset_collection
+          reset_collection
           assert_equal 0, @collection.count
         end
       end
@@ -207,7 +208,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
         end
         @mongodb_logger = MongodbLogger::Logger.new
         common_setup
-        @mongodb_logger.reset_collection
+        reset_collection
       end
       
       should "should not call callback function on log" do
@@ -227,7 +228,7 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
       setup do
         @mongodb_logger = MongodbLogger::Logger.new(:level => MongodbLogger::Logger::INFO)
         common_setup
-        @mongodb_logger.reset_collection
+        reset_collection
         log("INFO")
       end
 
@@ -287,13 +288,13 @@ class MongodbLogger::LoggerTest < Test::Unit::TestCase
       FileUtils.cp(file_path,  File.join(CONFIG_DIR, DEFAULT_CONFIG))
       @mongodb_logger = MongodbLogger::Logger.new
       common_setup
-      @mongodb_logger.reset_collection
+      reset_collection
 
       @file_config = YAML.load(ERB.new(File.new(file_path).read).result)[Rails.env]['mongodb_logger']
     end
 
     should "changed collection name" do
-      assert_equal @file_config['collection'], @mongodb_logger.mongo_collection_name
+      assert_equal @file_config['collection'], @collection.name
       assert_equal "#{@file_config['database']}.#{@file_config['collection']}", @collection.stats()['ns']
     end 
     
