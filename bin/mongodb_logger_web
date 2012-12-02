@@ -19,5 +19,5 @@ Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
     end
   }
 }) do |runner, opts, app|
-  
+
 end

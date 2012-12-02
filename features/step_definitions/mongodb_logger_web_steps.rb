@@ -1,16 +1,22 @@
 require 'active_support/core_ext/string/inflections'
 require 'mongodb_logger/server'
+require 'capybara'
 require 'capybara/cucumber'
-
-include Capybara::DSL
+require 'capybara/dsl'
 
 Before do
-  MongodbLogger::ServerConfig.set_config_for_testing(File.join(PROJECT_ROOT, 'test/config/samples/server_config.yml'))
-  Capybara.app = MongodbLogger::Server
+  @mongo_adapter = MongodbLogger::ServerConfig.set_config(File.join(PROJECT_ROOT, 'test/config/samples/server_config.yml'))
+  @mongo_adapter.collection.drop
+  @mongo_adapter.create_collection
+  Capybara.default_selector = :css
+  Capybara.app = Rack::Builder.new do
+    map('/assets')  { run MongodbLogger::Assets.instance }
+    map('/')        { run MongodbLogger::Server.new }
+  end
 end
 
 After do
-  MongodbLogger::ServerConfig.collection.drop
+  @mongo_adapter.collection.drop
 end
 
 Given /^homepage$/ do
@@ -36,7 +42,7 @@ Then /^I should see stop tails button$/ do
 end
 
 Then /^box with time of last log tail$/ do
-  page.has_selector?('span', :id => 'tail_logs_time', :visible => true)
+  page.has_selector?('span#tailLogsTime', :visible => true)
 end
 
 When /^I click on stop tail button$/ do

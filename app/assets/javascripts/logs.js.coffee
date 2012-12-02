@@ -166,7 +166,7 @@ root.MongodbLoggerMain =
         dataType: "json"
         success: (data) ->
           if data.time
-            $('#tail_logs_time').text(data.time)
+            $('#tailLogsTime').text(data.time)
             if data.log_last_id?
               log_last_id = data.log_last_id
             if data.content? && data.content.length > 0
