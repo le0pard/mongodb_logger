@@ -1,13 +1,13 @@
+require 'rubygems'
+require 'bundler'
+
+Bundler.require
+
 require 'test/unit'
+require "mocha"
+require 'mocha/api'
+require 'shoulda'
 
-begin
-  require 'shoulda'
-rescue LoadError
-  require 'rubygems'
-  require 'shoulda'
-end
-
-require 'mocha/setup'
 # mock rails class
 require 'pathname'
 require 'rails'

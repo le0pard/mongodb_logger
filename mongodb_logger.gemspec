@@ -18,9 +18,10 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "capybara"
   gem.add_development_dependency "coffee-script"
   gem.add_development_dependency "uglifier"
+  gem.add_development_dependency "jasmine"
+  # adapters
   gem.add_development_dependency "mongo"
   gem.add_development_dependency "moped"
-  gem.add_development_dependency "jasmine"
   
   gem.add_dependency "rake",            ">= 0.9.0"
   gem.add_dependency "json",            "~> 1.7.0"
