@@ -49,7 +49,7 @@
         </div> <!-- outer -->
         
         <div class="outer">
-              <ul id="more_filter_list">
+              <ul id="moreFilterList">
                 <% @filter.more_filters.each_with_index do |f_filter, index| %>
                   <li>
                     <%= partial(:"shared/dynamic_filter", :object => f_filter) %>
@@ -57,7 +57,7 @@
                 <% end %>
               </ul>
               <div class="mbs">
-                <a id="add_more_filter" href="<%=h url_path("add_filter") %>" class="add">+ Add Filter</a>
+                <a id="addMoreFilter" href="<%=h url_path("add_filter") %>" class="add">+ Add Filter</a>
               </div>
               
         </div> <!-- outer -->
@@ -84,10 +84,10 @@
       </form>
       </div> <!-- filter -->
 
-      <div class="filter-toggle"><span class="arrow-down <%= 'rotate' unless @filter.get_mongo_conditions.blank? %>">Filter</span></div>
+      <div class="filter_toggle filter-toggle"><span class="arrow-down <%= 'rotate' unless @filter.get_mongo_conditions.blank? %>">Filter</span></div>
       
       <% if @logs.count > 0 %>
-        <table id="logs_list">
+        <table id="logsList">
           <tr>          
             <th>Received</th>
             <th>Controller</th>
