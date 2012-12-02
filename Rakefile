@@ -11,32 +11,6 @@ require 'cucumber/rake/task'
 require "bundler/gem_tasks"
 
 #########################################
-### Help tasks
-#########################################
-
-require 'coffee-script'
-require 'uglifier'
-namespace :js do
-  desc "compile coffee-scripts from ./lib/mongodb_logger/server/coffee to ./lib/mongodb_logger/server/public/javascripts"
-  task :compile do
-    source = "#{File.dirname(__FILE__)}/lib/mongodb_logger/server/coffee/"
-    javascripts = "#{File.dirname(__FILE__)}/lib/mongodb_logger/server/public/javascripts/"
-    
-    Dir.foreach(source) do |cf|
-      unless cf == '.' || cf == '..' 
-        js_compiled = CoffeeScript.compile File.read("#{source}#{cf}")
-        js = Uglifier.compile js_compiled
-        open "#{javascripts}#{cf.gsub('.coffee', '.js')}", 'w' do |f|
-          f.puts js
-        end 
-      end 
-    end
-    
-    puts "All done."
-  end
-end
-
-#########################################
 ### TESTS
 #########################################
 
