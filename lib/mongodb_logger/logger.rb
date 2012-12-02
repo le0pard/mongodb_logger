@@ -29,7 +29,7 @@ module MongodbLogger
       internal_initialize
     rescue => e
       # should use a config block for this
-      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
+      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: #{e.message}")
     ensure
       if disable_file_logging?
         @log            = ::Logger.new(STDOUT)
@@ -95,7 +95,7 @@ module MongodbLogger
     end
 
     private
-      # facilitate testing
+
       def internal_initialize
         configure
         connect
@@ -112,7 +112,7 @@ module MongodbLogger
           'host' => 'localhost',
           'port' => 27017,
           'capsize' => default_capsize}.merge(resolve_config)
-        @db_configuration['collection'] ||= "#{Rails.env}_log"
+        @db_configuration['collection'] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
         @db_configuration['application_name'] ||= resolve_application_name
         @db_configuration['write_options'] ||= { w: 0, wtimeout: 200 }
 
@@ -122,7 +122,7 @@ module MongodbLogger
       end
 
       def resolve_application_name
-        Rails.application.class.to_s.split("::").first
+        Rails.application.class.to_s.split("::").first if defined?(Rails)
       end
 
       def resolve_config

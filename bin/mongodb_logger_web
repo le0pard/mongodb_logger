@@ -9,7 +9,6 @@ rescue LoadError
 end  
 require 'mongodb_logger/server'
 
-
 Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
   :before_run => lambda {|v|
     config_file = (ENV['MONGODBLOGGERCONFIG'] || v.args.first)
@@ -20,5 +19,5 @@ Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
     end
   }
 }) do |runner, opts, app|
-  # 
+  
 end

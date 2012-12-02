@@ -57,14 +57,7 @@ module MongodbLogger
     
     before do
       begin
-        #if ServerConfig.db && ServerConfig.collection
-        #  @db = ServerConfig.db
-        #  @collection = ServerConfig.collection
-        #else
-        #  @db = Rails.logger.mongo_connection
-        #  @collection = Rails.logger.mongo_collection
-        #end
-        @mongo_adapter = Rails.logger.mongo_adapter
+        @mongo_adapter = (ServerConfig.mongo_adapter ? ServerConfig.mongo_adapter : Rails.logger.mongo_adapter)
         @collection_stats = @mongo_adapter.collection_stats
       rescue => e
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
