@@ -14,7 +14,7 @@ root.MongodbLoggerMain =
     # tail logs buttons
     $(document).on 'click', '#tailLogsLink', (event) =>
       event.preventDefault()
-      MongodbLoggerMain.tailLogsUrl = $(event.currentTarget).attr('data-url')
+      MongodbLoggerMain.tailLogsUrl = $(event.currentTarget).data('url')
       $('#tailLogsBlock').addClass('started')
       MongodbLoggerMain.tailLogs(null)
     $(document).on 'click', '#tailLogsStopLink', (event) =>
@@ -38,13 +38,12 @@ root.MongodbLoggerMain =
       event.preventDefault()
       $.ajax
         url: $(event.currentTarget).attr('href')
-        success: (data) ->
-          $('#moreFilterList').append($('<li></li>').html(data))
+        success: (data) -> $('#moreFilterList').append($('<li></li>').html(data))
     # select filter types (integer, string, date)
     $(document).on 'change', 'select.filter_type', (event) =>
       event.preventDefault()
       element = $(event.currentTarget)
-      url = "#{element.attr('rel')}/#{element.val()}"
+      url = "#{element.data('url')}/#{element.val()}"
       $.ajax
         url: url
         dataType: "json"
@@ -67,10 +66,11 @@ root.MongodbLoggerMain =
               yearRange: 'c-50:c+10'
     # delete one filter
     $(document).on 'click', '.close_more_filter', (event) =>
+      event.preventDefault()
       $(event.currentTarget).parents('li').remove()
-      return false
     # message tabs
     $(document).on 'click', 'li.message_tab', (event) =>
+      event.preventDefault()
       element = $(event.currentTarget)
       tab = element.data('tab')
       $('li.message_tab').removeClass('active')
@@ -126,26 +126,26 @@ root.MongodbLoggerMain =
   # tail logs function
   tailLogs: (logLastId = null) ->
     url = MongodbLoggerMain.tailLogsUrl
-    if logLastId? && logLastId.length > 0
+    if logLastId? and logLastId.length
       url = "#{MongodbLoggerMain.tailLogsUrl}/#{logLastId}" 
     else
       MongodbLoggerMain.tailLogStarted = true
-    if MongodbLoggerMain.tailLogStarted
-      $.ajax
-        url: url
-        dataType: "json"
-        success: (data) ->
-          if data.time
-            $('#tailLogsTime').text(data.time)
-            if data.log_last_id?
-              logLastId = data.log_last_id
-            if data.content? && data.content.length > 0
-              elements = $(data.content)
-              elements.addClass('newlog')
-              $('#logsList tr:first').after(elements).effect("highlight", {}, 1000)
-            if data.collection_stats && $("#collection_stats").length > 0
-              $("#collection_stats").html(data.collection_stats)
-          setTimeout((-> MongodbLoggerMain.tailLogs(logLastId)), 2000) if MongodbLoggerMain.tailLogStarted
+    return false unless MongodbLoggerMain.tailLogStarted
+    $.ajax
+      url: url
+      dataType: "json"
+      success: (data) ->
+        if data.time
+          $('#tailLogsTime').text(data.time)
+          if data.log_last_id?
+            logLastId = data.log_last_id
+          if data.content? && data.content.length > 0
+            elements = $(data.content)
+            elements.addClass('newlog')
+            $('#logsList tr:first').after(elements).effect("highlight", {}, 1000)
+          if data.collection_stats && $("#collection_stats").length > 0
+            $("#collection_stats").html(data.collection_stats)
+        setTimeout((-> MongodbLoggerMain.tailLogs(logLastId)), 2000) if MongodbLoggerMain.tailLogStarted
   # move using keys by logs
   moveByLogs: (direction) ->
     if $('#logsList').length and $('#logsList').find('tr.current').length

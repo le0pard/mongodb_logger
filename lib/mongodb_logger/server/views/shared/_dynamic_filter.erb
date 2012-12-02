@@ -2,7 +2,7 @@
   <div class="unit size1of3">
     <div class="unit size1of2">
       <div class="prm">
-        <%= select_tag dynamic_filter, :type, MongodbLogger::ServerModel::AdditionalFilter::VAR_TYPES, :class => "filter_type", :rel => url_path("changed_filter") %>
+        <%= select_tag dynamic_filter, :type, MongodbLogger::ServerModel::AdditionalFilter::VAR_TYPES, :class => "filter_type", "data-url" => url_path("changed_filter") %>
       </div> <!-- prm -->      
     </div> <!-- unit -->
     <div class="unit size1of2">
