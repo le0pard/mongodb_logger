@@ -68,7 +68,7 @@ module MongodbLogger
       
       def mongo_connection_object
         if @configuration['hosts']
-          conn = ::Moped::Session.new(@configuration['hosts'], :timeout => 6)
+          conn = ::Moped::Session.new(@configuration['hosts'].map{|(host,port)| "#{host}:#{port}"}, :timeout => 6)
           @configuration['replica_set'] = true
         elsif @configuration['url']
           conn = ::Moped::Session.connect(@configuration['url'])
