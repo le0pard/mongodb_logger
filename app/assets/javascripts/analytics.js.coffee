@@ -47,7 +47,7 @@ class root.MongodbLoggerAnalytics
           label.attr({text: "#{date.getFullYear()}/#{date.getMonth() + 1}"})
     
 $ ->
-  $('#analyticForm').on 'submit', (e) =>
+  $(document).on 'submit', '#analyticForm', (e) =>
     e.preventDefault()
     form = $(e.currentTarget)
     $.ajax 
