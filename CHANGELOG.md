@@ -1,3 +1,10 @@
+## v0.4.0
+
+* Support adapters: mongo and moped
+* Change safe\_insert option to write\_options
+* Changed MapReduce graphs to Rickshaw
+* Huge rewrites of code
+
 ## v0.3.3
 
 * Mount assets separately or compile it by rake task 
