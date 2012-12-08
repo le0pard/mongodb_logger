@@ -3,15 +3,11 @@ root = global ? window
 class root.MongodbLoggerAnalytics
   constructor: (@mongoData) ->
     @chartContainer = 'analyticData'
-    @_resultsData = 
-      x: []
-      y: []
+    @_resultsData = []
     @_collectAllData()
     @_drawGraph()
   _collectAllData: =>
     headers = @mongoData.headers
-    dates = []
-    values = []
     for row in @mongoData.data
       date = if row._id.hasOwnProperty("hour")
         new Date(row._id.year, parseInt(row._id.month) - 1, row._id.day, row._id.hour, 0, 0)
@@ -19,32 +15,43 @@ class root.MongodbLoggerAnalytics
         new Date(row._id.year, parseInt(row._id.month) - 1, row._id.day)
       else
         new Date(row._id.year, parseInt(row._id.month) - 1, 0)
-      dates.push(date.getTime())
-      values.push(row.value.count)
-    @_resultsData = 
-      x: dates
-      y: values
+      @_resultsData.push
+        x: (date.getTime() / 1000)
+        y: row.value.count
   _drawGraph: =>
-    width = $("##{@chartContainer}").width() - 40
+    width = $("##{@chartContainer}").width() - 100
     height = 600
     $("##{@chartContainer}").empty()
-    @r = Raphael(@chartContainer, width, height)
-    lines = @r.linechart(10, 10, width - 40, height - 20, @_resultsData.x, @_resultsData.y,
-      nostroke: false # lines between points are drawn
-      axis: "0 0 1 1" # draw axes on the left and bottom
-      symbol: "circle" # use a filled circle as the point symbol
-      smooth: false # curve the lines to smooth turns on the chart
-      dash: "-" # draw the lines dashed
+    
+    @graph = new Rickshaw.Graph(
+      element: $("##{@chartContainer}")[0]
+      width: width
+      height: height
+      renderer: "line"
+      interpolation: "linear"
+      series: [
+        color: 'steelblue'
+        data: @_resultsData
+        name: "Results"
+      ]
     )
-    for i, label of lines.axis[0].text.items
-      date = new Date(parseInt(label.attr("text")))
-      switch parseInt(@mongoData.unit)
-        when 1
-          label.attr({text: "#{date.getFullYear()}/#{date.getMonth() + 1}/#{date.getDate()}"})
-        when 2
-          label.attr({text: "#{date.getFullYear()}/#{date.getMonth() + 1}/#{date.getDate()} #{date.getHours() + 1} h"})
-        else
-          label.attr({text: "#{date.getFullYear()}/#{date.getMonth() + 1}"})
+    @graph.render()
+    hoverDetail = new Rickshaw.Graph.HoverDetail(
+      graph: @graph
+      formatter: (series, x, y) =>
+        date = "<span class=\"date\">" + new Date(x * 1000).toUTCString() + "</span>"
+        swatch = "<span class=\"detail_swatch\" style=\"background-color: " + series.color + "\"></span>"
+        content = swatch + series.name + ": " + parseInt(y) + "<br>" + date
+        content
+    )
+    xAxis = new Rickshaw.Graph.Axis.Time(
+      graph: @graph
+    )
+    xAxis.render()
+    yAxis = new Rickshaw.Graph.Axis.Y(
+      graph: @graph
+    )
+    yAxis.render()
     
 $ ->
   $(document).on 'submit', '#analyticForm', (e) =>
