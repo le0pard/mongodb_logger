@@ -204,6 +204,13 @@
             <pre>gem install mongodb_logger</pre>
           </li>
           <li>
+            <p>Add adapter in Gemfile. Supported mongo and moped (mongoid). For example:</p>
+            <pre>gem "mongo"
+            gem "bson_ext" # for MRI</pre>
+            <p>or</p>
+            <pre>gem "moped"</pre>
+          </li>
+          <li>
             <p>Add the following line to your ApplicationController:</p>
             <pre>include MongodbLogger::Base</pre>
           </li>
