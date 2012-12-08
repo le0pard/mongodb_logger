@@ -13,7 +13,7 @@
             </div>
             <div class="unit size1of2">
               <div class="prm">
-                <%#= text_field_tag @filter, :action, :placeholder => "Action" %>
+                <%= select_tag @analytic, :unit, MongodbLogger::ServerModel::Analytic::ANALYTIC_UNITS %>
               </div>
             </div>            
           </div>                

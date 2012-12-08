@@ -68,11 +68,11 @@ module MongodbLogger
     end
 
     def show(page, layout = true)
-      #begin
+      begin
         erb page.to_sym, {:layout => layout}
-      #rescue => e
-        #erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
-      #end
+      rescue => e
+        erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
+      end
     end
 
 
@@ -137,9 +137,8 @@ module MongodbLogger
       end
       post "/#{page}/?" do
         @analytic = ServerModel::Analytic.new(@mongo_adapter, params[:analytic])
-        @analytic_data = @analytic.get_data
         content_type :json
-        @analytic_data.to_json
+        @analytic.get_data.to_json
       end
     end
     

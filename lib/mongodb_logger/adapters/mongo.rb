@@ -63,6 +63,10 @@ module MongodbLogger
         }
       end
       
+      def calculate_mapreduce(map, reduce, params = {})
+        @collection.map_reduce(map, reduce, {:query => params[:conditions], :sort => ['$natural', -1], :out => {:inline => true}, :raw => true}).find()
+      end
+      
       private
       
       def mongo_connection_object

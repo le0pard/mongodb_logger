@@ -63,6 +63,17 @@ module MongodbLogger
           :logs => logs
         }
       end
+      
+      def calculate_mapreduce(map, reduce, params = {})
+        @connection.command(
+          mapreduce: collection_name,
+          map: map,
+          reduce: reduce,
+          query: params[:conditions],
+          out: { inline: true },
+          raw: true
+        ).find()
+      end
 
       private
       

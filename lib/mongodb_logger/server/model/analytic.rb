@@ -2,32 +2,22 @@ module MongodbLogger
   module ServerModel
     class Analytic
       
-      FIXED_PARAMS_ON_FORM = ['type', 'start_date', 'end_date']
+      FIXED_PARAMS_ON_FORM = ['type', 'unit', 'start_date', 'end_date']
       ANALYTIC_TYPES = [[0, "Count of requests"], [1, "Count of errors"]]
-      ANALYTIC_HEADERS = [
-        {
-          :key => ["year", "month", "day"],
-          :value => ["count"]
-        },
-        {
-          :key => ["year", "month", "day"],
-          :value => ["count"]
-        }
-      ]
-      attr_reader :params, :collection
+      ANALYTIC_UNITS = [[0, "Month"], [1, "Day"], [2, "Hour"]]
+
+      attr_reader :params, :mongo_adapter
       FORM_NAME = "analytic"
       
-      
-      def initialize(collection, params)
+      def initialize(mongo_adapter, params)
         FIXED_PARAMS_ON_FORM.each do |key|
           create_variable(key, nil)
         end
-        @collection = collection
+        @mongo_adapter = mongo_adapter
         @params = params
         @params.each do |k,v|
           self.send("#{k}=", v) if self.respond_to?(k) && v && !v.blank?
         end unless @params.blank?
-        
         # def values
         self.start_date ||= Time.now.strftime('%Y-%m-%d')
         self.end_date ||= Time.now.strftime('%Y-%m-%d')
@@ -43,38 +33,65 @@ module MongodbLogger
         FORM_NAME
       end
       
-      def count_of_requests(conditions, is_errors = false)
-        collection_name = "mongodb_logger_count_of_requests"
-        map = "function() { var key = {year: this.request_time.getFullYear(), month: this.request_time.getMonth() + 1, day: this.request_time.getDate()}; emit(key, {count: 1});}"
-        reduce_count = "function(key, values) { var sum = 0; values.forEach(function(f) { sum += f.count; }); return {count: sum};}"
-        if is_errors
-          collection_name = "mongodb_logger_count_of_errors"
-          conditions.merge!({:is_exception => true})
+      def calculate_default_map_reduce(params = {})
+        addinional_params = case self.unit.to_i
+          when 1
+            "day: this.request_time.getDate()"
+          when 2
+            "day: this.request_time.getDate(), hour: this.request_time.getHours() + 1"
+          else
+            ""
         end
-        @collection.map_reduce(map, reduce_count, {:out => collection_name, :query => conditions, :sort => ['$natural', -1]})
+        map = <<EOF
+function() { 
+  var key = { 
+    year: this.request_time.getFullYear(), 
+    month: this.request_time.getMonth() + 1, 
+    #{addinional_params}
+  }; 
+  emit(key, {count: 1});
+}
+EOF
+        reduce = <<EOF
+function(key, values) { 
+  var sum = 0; 
+  values.forEach(function(f) { 
+    sum += f.count; 
+  }); 
+  return {count: sum};
+}
+EOF
+        case self.type.to_i
+          when 1
+            params[:conditions].merge!({:is_exception => true})
+          else
+            # nothing
+        end
+        
+        @mongo_adapter.calculate_mapreduce(map, reduce, {:conditions => params[:conditions]})
       end
       
       def get_data
-        m_start= Date.parse(self.start_date) rescue nil
-        m_start = Date.today if m_start.nil?
-        m_end = Date.parse(self.end_date) rescue nil
-        m_end = Date.today if m_end.nil?
+        m_start= Date.parse(self.start_date) rescue Date.today
+        m_end = Date.parse(self.end_date) rescue Date.today
         
         conditions = { :request_time => {
           '$gte' => Time.utc(m_start.year, m_start.month, m_start.day, 0, 0, 0), 
           '$lte' => Time.utc(m_end.year, m_end.month, m_end.day, 23, 59, 59)
         }}
         
-        mapreduce_collection = case self.type.to_i
-        when 0
-          count_of_requests(conditions)
-        when 1
-          count_of_requests(conditions, true)
-        else
-          count_of_requests(conditions)
-        end
+        all_data = calculate_default_map_reduce(
+          :conditions => conditions
+        )
         
-        {:data => mapreduce_collection.find(), :headers => ANALYTIC_HEADERS[self.type.to_i]}
+        {
+          :data => (all_data ? all_data.first.last : []), 
+          :headers => {
+            :key => ["year", "month", "day", "hour"],
+            :value => ["count"]
+          },
+          unit: self.unit
+        }
       end
       
     end
