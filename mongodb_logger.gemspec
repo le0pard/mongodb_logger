@@ -40,5 +40,4 @@ Gem::Specification.new do |gem|
   gem.name          = "mongodb_logger"
   gem.require_paths = ["lib"]
   gem.version       = MongodbLogger::VERSION
-  gem.platform      = Gem::Platform::RUBY
 end
