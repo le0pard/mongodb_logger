@@ -31,9 +31,17 @@ module MongodbLogger
         :path           => request.path,
         :url            => request.url,
         :params         => f_params,
-        :session        => f_session,
+        :session        => mongo_fix_session_keys(f_session),
         :ip             => request.remote_ip
       }) { yield }
+    end
+    # session keys can be with dots. It is invalid keys for BSON
+    def mongo_fix_session_keys(session)
+      new_session = {}
+      session.each do |i, j|
+        new_session[i.gsub(/\./i, "|")] = j.inspect
+      end
+      new_session
     end
   end
 end
