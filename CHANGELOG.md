@@ -1,3 +1,11 @@
+## v0.4.2
+
+* Fix problem with session keys (keys with dots is invalid for BSON)
+
+## v0.4.1
+
+* One gem for jruby and MRI
+
 ## v0.4.0
 
 * Support adapters: mongo and moped
