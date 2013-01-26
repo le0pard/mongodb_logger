@@ -1,4 +1,4 @@
-#Rack middleware for mounted rack app (e.g Grape)
+# Rack middleware for mounted rack app (e.g Grape)
 module MongodbLogger
   class RackMiddleware
     def initialize(app)
