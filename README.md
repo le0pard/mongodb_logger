@@ -159,6 +159,13 @@ In this callback send record without "\_id", because logger not wait for insert 
 If you want use MongodbLogger not only in Rails app, you can try to use rack middleware:
 
     use MongodbLogger::RackMiddleware
+    
+## Rails::Engine
+
+If you want use MongodbLogger with some of Rails::Engine, you can do this (example for Spree):
+
+    Spree::BaseController.send :include, MongodbLogger::Base
+    Spree::Admin::BaseController.send :include, MongodbLogger::Base # for admin
 
 ## The Front End
 
