@@ -4,8 +4,8 @@ require File.expand_path('../lib/mongodb_logger/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Alexey Vasiliev"]
   gem.email         = ["leopard.not.a@gmail.com"]
-  gem.description   = %q{MongoDB logger for Rails 3}
-  gem.summary       = %q{MongoDB logger for Rails 3}
+  gem.description   = %q{MongoDB logger for Rails}
+  gem.summary       = %q{MongoDB logger for Rails}
   gem.homepage      = "http://mongodb-logger.catware.org"
 
   gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
