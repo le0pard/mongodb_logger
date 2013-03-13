@@ -5,6 +5,6 @@ Feature: Install the Gem in a Rails application
     And I cd to "rails_root"
 
   Scenario: Use the gem without vendoring the gem in a Rails application
-    When I run `rails generate airbrake -k myapikey`
-    Then I should receive a Airbrake notification
+    When I run `rake mongodb_logger:assets:compile[public/assets]`
+    Then I should generate in public/assets files
     And I should see the Rails version

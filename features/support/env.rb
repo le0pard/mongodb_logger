@@ -10,10 +10,6 @@ Before do
   FileUtils.rm_rf(LOCAL_RAILS_ROOT)
 end
 
-After do
-  FileUtils.rm_rf(LOCAL_RAILS_ROOT)
-end
-
 When /^I reset Bundler environment variable$/ do
   BUNDLE_ENV_VARS.each do |key|
     ENV[key] = nil

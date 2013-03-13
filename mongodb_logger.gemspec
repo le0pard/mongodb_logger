@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
   gem.rdoc_options      = ["--charset=UTF-8"]
 
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rspec-rails"
   gem.add_development_dependency "shoulda"
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "cucumber"
