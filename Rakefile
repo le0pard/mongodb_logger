@@ -7,7 +7,7 @@ require 'rake'
 require 'rake/testtask'
 require 'cucumber'
 require 'cucumber/rake/task'
-require "bundler/gem_tasks"
+require 'bundler/gem_tasks'
 require 'appraisal'
 
 #########################################
@@ -20,10 +20,10 @@ task :default => [:test]
 
 desc "Clean out the tmp directory"
 task :clean do
-  exec "rm -rf tmp"
+  exec "rm -rf tmp/*"
 end
 
-desc 'Test unit.'
+desc 'Test unit'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib'
   test.test_files = ['test/unit/mongodb_logger_test.rb']
