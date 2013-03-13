@@ -21,6 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "uglifier"
   gem.add_development_dependency "jasmine"
   gem.add_development_dependency "appraisal"
+  gem.add_development_dependency "aruba"
   # adapters
   gem.add_development_dependency "mongo"
   gem.add_development_dependency "moped"

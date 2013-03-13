@@ -1,11 +1,16 @@
 require 'active_support'
 require 'rspec'
+require 'aruba/cucumber'
 
 PROJECT_ROOT     = File.expand_path(File.join(File.dirname(__FILE__), '..', '..')).freeze
 TEMP_DIR         = File.join(PROJECT_ROOT, 'tmp').freeze
 LOCAL_RAILS_ROOT = File.join(TEMP_DIR, 'rails_root').freeze
 
 Before do
+  FileUtils.rm_rf(LOCAL_RAILS_ROOT)
+end
+
+After do
   FileUtils.rm_rf(LOCAL_RAILS_ROOT)
 end
 
