@@ -12,7 +12,13 @@ module MongodbLogger
     extend Config
     
     def self.included(base)
-      base.class_eval { around_filter :enable_mongodb_logger }
+      base.class_eval do
+        begin
+          around_action :enable_mongodb_logger
+        rescue
+          around_filter :enable_mongodb_logger
+        end
+      end
     end
 
     def enable_mongodb_logger
@@ -37,11 +43,11 @@ module MongodbLogger
       }) { yield }
     end
     # session keys can be with dots. It is invalid keys for BSON
-    def mongo_fix_session_keys(session)
+    def mongo_fix_session_keys(session = {})
       new_session = {}
       session.each do |i, j|
         new_session[i.gsub(/\./i, "|")] = j.inspect
-      end
+      end if session
       new_session
     end
   end
