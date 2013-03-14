@@ -8,10 +8,7 @@ require 'mongodb_logger/server/partials'
 require 'mongodb_logger/server/content_for'
 require 'mongodb_logger/server/sprokets'
 
-require 'mongodb_logger/server/model/additional_filter'
-require 'mongodb_logger/server/model/filter'
-require 'mongodb_logger/server/model/analytic'
-
+require 'mongodb_logger/server/model'
 require 'mongodb_logger/server_config'
 
 if defined? Encoding
@@ -23,7 +20,7 @@ module MongodbLogger
     helpers Sinatra::ViewHelpers
     helpers Sinatra::Partials
     helpers Sinatra::ContentFor
-    
+
     dir = File.dirname(File.expand_path(__FILE__))
 
     set :views,         "#{dir}/server/views"
@@ -35,11 +32,11 @@ module MongodbLogger
       alias_method :h, :escape_html
       # pipeline
       include AssetHelpers
-      
+
       def current_page
         url_path request.path_info.sub('/','')
       end
-      
+
       def class_if_current(path = '')
         'class="active"' if current_page[0, path.size] == path
       end
@@ -52,9 +49,9 @@ module MongodbLogger
       def path_prefix
         request.env['SCRIPT_NAME']
       end
-      
+
     end
-    
+
     before do
       begin
         @mongo_adapter = (ServerConfig.mongo_adapter ? ServerConfig.mongo_adapter : Rails.logger.mongo_adapter)
@@ -63,7 +60,7 @@ module MongodbLogger
         erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
         return false
       end
-      
+
       cache_control :private, :must_revalidate, :max_age => 0
     end
 
@@ -87,48 +84,48 @@ module MongodbLogger
         show page, !request.xhr?
       end
     end
-    
+
     get "/tail_logs/?:log_last_id?" do
       @info = @mongo_adapter.tail_log_from_params(params)
       @info.merge!(
         :content => @info[:logs].map{|log| partial(:"shared/log", :object => log) }.join("\n"),
         :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats)
       )
-      content_type :json 
+      content_type :json
       @info.to_json
     end
-    
+
     get "/changed_filter/:type" do
       type_id = ServerModel::AdditionalFilter.get_type_index params[:type]
       conditions = ServerModel::AdditionalFilter::VAR_TYPE_CONDITIONS[type_id]
       values = ServerModel::AdditionalFilter::VAR_TYPE_VALUES[type_id]
-      
+
       content_type :json
-      { 
+      {
         :type_id => type_id,
         :conditions => conditions,
         :values => values
       }.to_json
     end
-    
+
     # log info
     get "/log/:id" do
       @log = @mongo_adapter.find_by_id(params[:id])
       show :show_log, !request.xhr?
     end
-    
+
     # log info right
     get "/log_info/:id" do
       @log = @mongo_adapter.find_by_id(params[:id])
       partial(:"shared/log_info", :object => @log)
     end
-    
+
     get "/add_filter/?" do
       @filter = ServerModel::Filter.new(nil)
       @filter_more = ServerModel::AdditionalFilter.new(nil, @filter)
       partial(:"shared/dynamic_filter", :object => @filter_more)
     end
-    
+
     # analytics
     %w( analytics ).each do |page|
       get "/#{page}/?" do
@@ -141,10 +138,10 @@ module MongodbLogger
         @analytic.get_data.to_json
       end
     end
-    
+
     error do
       erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
     end
-    
+
   end
 end
