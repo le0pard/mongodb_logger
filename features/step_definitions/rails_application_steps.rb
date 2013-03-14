@@ -35,18 +35,18 @@ Then(/^I should generate in assets folder mongodb_logger files$/) do
 end
 
 When /^I have copy tests_controller_spec$/ do
-  test_file = File.join(PROJECT_ROOT, 'test', 'config', 'samples', 'database.yml')
+  test_file = File.join(PROJECT_ROOT, 'spec', 'factories', 'config', 'database.yml')
   target = File.join(rails_root, 'config', 'database.yml')
   FileUtils.cp(test_file, target)
   
   FileUtils.mkdir_p("#{rails_root}/spec")
   FileUtils.mkdir_p("#{rails_root}/spec/controllers")
 
-  test_file = File.join(PROJECT_ROOT, 'test', 'rails', 'spec', 'spec_helper.rb')
+  test_file = File.join(PROJECT_ROOT, 'spec', 'rails_spec', 'spec_helper_rails.rb')
   target = File.join(rails_root, 'spec', 'spec_helper.rb')
   FileUtils.cp(test_file, target)
 
-  test_file = File.join(PROJECT_ROOT, 'test', 'rails', 'spec', 'controllers', 'tests_controller_spec.rb')
+  test_file = File.join(PROJECT_ROOT, 'spec', 'rails_spec', 'controllers', 'tests_controller_spec_rails.rb')
   target = File.join(rails_root, 'spec', 'controllers', 'tests_controller_spec.rb')
   FileUtils.cp(test_file, target)
 end

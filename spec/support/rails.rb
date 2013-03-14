@@ -13,10 +13,24 @@ class Rails
   end
 
   def self.root
-    Pathname.new(File.dirname(__FILE__))
+    Pathname.new(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "tmp")))
   end
 
   def self.application
     MongodbLogger::Application.new
+  end
+end
+
+module ActiveRecord
+  class LogSubscriber
+    def self.colorize_logging
+      true
+    end
+  end
+
+  class Base
+    def self.colorize_logging
+      true
+    end
   end
 end
