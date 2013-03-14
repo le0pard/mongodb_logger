@@ -18,9 +18,17 @@ end
 ### TESTS
 #########################################
 
-desc 'Default: run unit tests.'
-task :default => [:test]
-#task :default => [:test, "cucumber:rails:all"]
+desc 'Default: run tests.'
+#task :default => [:test, "mongodb_logger:tests", "rake appraisal"]
+task :default => ["mongodb_logger:tests"]
+
+namespace :mongodb_logger do
+  task :tests do
+    exec 'rake appraisal install '\
+    '&& rake appraisal cucumber '\
+    '&& FEATURE=features/mongodb_logger_web.feature rake cucumber '\
+  end
+end
 
 desc "Clean out the tmp directory"
 task :clean do
@@ -51,8 +59,6 @@ def cucumber_opts
   case ENV["BUNDLE_GEMFILE"]
   when /rails/
     opts << "features/rails.feature"
-  when /rack/
-    opts << "features/rack.feature"
   end
 end
 
