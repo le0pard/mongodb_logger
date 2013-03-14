@@ -43,9 +43,22 @@ namespace :test do
   end
 end
 
+def cucumber_opts
+  opts = "--tags ~@wip --format progress "
+
+  opts << ENV["FEATURE"] and return if ENV["FEATURE"]
+
+  case ENV["BUNDLE_GEMFILE"]
+  when /rails/
+    opts << "features/rails.feature"
+  when /rack/
+    opts << "features/rack.feature"
+  end
+end
+
 Cucumber::Rake::Task.new(:cucumber) do |t|
   t.fork = true
-  t.cucumber_opts = ['--format', (ENV['CUCUMBER_FORMAT'] || 'progress')]
+  t.cucumber_opts = cucumber_opts
 end
 
 begin
