@@ -2,6 +2,7 @@ root = global ? window
 
 class root.MongodbLoggerAnalytics
   constructor: (@mongoData) ->
+    return unless @mongoData and @mongoData.data and @mongoData.data.length
     @chartContainer = 'analyticData'
     @_resultsData = []
     @_collectAllData()
@@ -22,7 +23,7 @@ class root.MongodbLoggerAnalytics
     width = $("##{@chartContainer}").width() - 100
     height = 600
     $("##{@chartContainer}").empty()
-    
+
     @graph = new Rickshaw.Graph(
       element: $("##{@chartContainer}")[0]
       width: width
@@ -52,14 +53,14 @@ class root.MongodbLoggerAnalytics
       graph: @graph
     )
     yAxis.render()
-    
+
 $ ->
   $(document).on 'submit', '#analyticForm', (e) =>
     e.preventDefault()
     form = $(e.currentTarget)
-    $.ajax 
+    $.ajax
       url: form.attr('action')
-      dataType: 'json' 
+      dataType: 'json'
       data: form.serializeArray()
       type: "POST"
       success: (data, textStatus, jqXHR) =>
