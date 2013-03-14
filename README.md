@@ -2,19 +2,21 @@
 [![Build Status](https://travis-ci.org/le0pard/mongodb_logger.png)](https://travis-ci.org/le0pard/mongodb_logger)
 [![Code Climate](https://codeclimate.com/github/le0pard/mongodb_logger.png)](https://codeclimate.com/github/le0pard/mongodb_logger)
 
-MongodbLogger is a alternative logger for Rails 3, which log all requests of you application into MongoDB database.
+MongodbLogger is a alternative logger for Rails, which log all requests of you application into MongoDB database.
 It:
 
-* simple to integrate into existing Rails 3 application;
+* simple to integrate into existing Rails application;
 * allow to store all logs from web cluster into one scalable storage - MongoDB;
 * flexible schema of MongoDB allow to store and search any information from logs;
 * web panel allow filter logs, build graphs using MapReduce by information from logs;
 
-## Rails 3 support
+## Rails support
 
 Please note the latest version is compatible with rails 3.1.x or newer.
 
 For rails 3.0.x latest version 0.2.8.
+
+Doesn't support the Rails version below 3.
 
 ## Installation
 
