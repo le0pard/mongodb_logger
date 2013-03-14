@@ -81,47 +81,6 @@ module RailsHelpers
     File.join(rails_root, 'Rakefile')
   end
 
-  def config_gem(gem_name, version = nil)
-    run     = "Rails::Initializer.run do |config|"
-    insert  = "  config.gem '#{gem_name}'"
-    insert += ", :version => '#{version}'" if version
-    content = File.read(environment_path)
-    content = "require 'thread'\n#{content}"
-    if content.sub!(run, "#{run}\n#{insert}")
-      File.open(environment_path, 'wb') { |file| file.write(content) }
-    else
-      raise "Couldn't find #{run.inspect} in #{environment_path}"
-    end
-  end
-
-  def config_gem_dependencies
-    insert = <<-END
-    if Gem::VERSION >= "1.3.6"
-      module Rails
-        class GemDependency
-          def requirement
-            r = super
-            (r == Gem::Requirement.default) ? nil : r
-          end
-        end
-      end
-    end
-    END
-    run     = "Rails::Initializer.run do |config|"
-    content = File.read(environment_path)
-    if content.sub!(run, "#{insert}\n#{run}")
-      File.open(environment_path, 'wb') { |file| file.write(content) }
-    else
-      raise "Couldn't find #{run.inspect} in #{environment_path}"
-    end
-  end
-
-  def require_thread
-    content = File.read(rakefile_path)
-    content = "require 'thread'\n#{content}"
-    File.open(rakefile_path, 'wb') { |file| file.write(content) }
-  end
-
 end
 
 World(RailsHelpers)

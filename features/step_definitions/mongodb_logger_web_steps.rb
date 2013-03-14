@@ -5,7 +5,7 @@ require 'capybara/cucumber'
 require 'capybara/dsl'
 
 Before do
-  @mongo_adapter = MongodbLogger::ServerConfig.set_config(File.join(PROJECT_ROOT, 'test/config/samples/server_config.yml'))
+  @mongo_adapter = MongodbLogger::ServerConfig.set_config(File.join(PROJECT_ROOT, 'spec/factories/config/server_config.yml'))
   @mongo_adapter.collection.drop
   @mongo_adapter.create_collection
   Capybara.default_selector = :css
