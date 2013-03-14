@@ -7,6 +7,7 @@ require 'rake'
 require 'rake/testtask'
 require 'bundler/gem_tasks'
 require 'appraisal'
+require 'rspec/core/rake_task'
 begin
   require 'cucumber/rake/task'
 rescue LoadError
@@ -18,9 +19,8 @@ end
 ### TESTS
 #########################################
 
-desc 'Default: run tests.'
-#task :default => [:test, "mongodb_logger:tests", "rake appraisal"]
-task :default => ["mongodb_logger:tests"]
+desc 'Default: run tests'
+task :default => [:spec, "mongodb_logger:tests"]
 
 namespace :mongodb_logger do
   task :tests do
@@ -28,6 +28,10 @@ namespace :mongodb_logger do
     '&& rake appraisal cucumber '\
     '&& FEATURE=features/mongodb_logger_web.feature rake cucumber '\
   end
+end
+desc "run specs"
+task :spec do
+  RSpec::Core::RakeTask.new
 end
 
 desc "Clean out the tmp directory"
