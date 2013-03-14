@@ -15,7 +15,7 @@ module MongodbLogger
     # Looks for configuration files in this order
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
-    
+
     ADAPTERS = [
       ["mongo", Adapers::Mongo],
       ["moped", Adapers::Moped]
@@ -84,11 +84,11 @@ module MongodbLogger
       rescue
         begin
           # try to nice serialize record
-          nice_serialize @mongo_record
+          record_serializer @mongo_record, true
           @insert_block.call
         rescue
-          # do extra work to inpect (and flatten)
-          force_serialize @mongo_record
+          # do extra work to inspect (and flatten)
+          record_serializer @mongo_record, false
           @insert_block.call rescue nil
         end
       end
@@ -137,7 +137,7 @@ module MongodbLogger
         end
         config
       end
-      
+
       def find_adapter
         ADAPTERS.each do |(library, adapter)|
           begin
@@ -171,15 +171,15 @@ module MongodbLogger
       end
 
       # try to serialyze data by each key and found invalid object
-      def nice_serialize(rec)
+      def record_serializer(rec, nice = true)
         if msgs = rec[:messages]
           msgs.each do |i, j|
-            msgs[i] = nice_serialize_object(j)
+            msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
           end
         end
         if pms = rec[:params]
           pms.each do |i, j|
-            pms[i] = nice_serialize_object(j)
+            pms[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
           end
         end
       end
@@ -190,10 +190,10 @@ module MongodbLogger
             data
           when Hash
             hvalues = Hash.new
-            data.each{|k,v| hvalues[k] = nice_serialize_object(v) }
+            data.each{ |k,v| hvalues[k] = nice_serialize_object(v) }
             hvalues
           when Array
-            data.map{|v| nice_serialize_object(v) }
+            data.map{ |v| nice_serialize_object(v) }
           when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
             hvalues = {
               original_filename: data.original_filename,
@@ -204,15 +204,5 @@ module MongodbLogger
         end
       end
 
-      # force the data in the db by inspecting each top level array and hash element
-      # this will flatten other hashes and arrays
-      def force_serialize(rec)
-        if msgs = rec[:messages]
-          msgs.each { |i, j| msgs[i] = j.inspect }
-        end
-        if pms = rec[:params]
-          pms.each { |i, j| pms[i] = j.inspect }
-        end
-      end
   end
 end
