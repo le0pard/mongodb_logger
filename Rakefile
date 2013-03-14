@@ -24,8 +24,7 @@ task :default => [:spec, "mongodb_logger:tests"]
 
 namespace :mongodb_logger do
   task :tests do
-    exec 'rake appraisal install '\
-    '&& rake appraisal cucumber '\
+    exec 'rake appraisal cucumber '\
     '&& FEATURE=features/mongodb_logger_web.feature rake cucumber '\
   end
 end
