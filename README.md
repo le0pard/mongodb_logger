@@ -1,6 +1,8 @@
-# MongodbLogger [![Build Status](https://secure.travis-ci.org/le0pard/mongodb_logger.png)](http://travis-ci.org/le0pard/mongodb_logger)
+# MongodbLogger
+[![Build Status](https://travis-ci.org/le0pard/mongodb_logger.png)](https://travis-ci.org/le0pard/mongodb_logger)
+[![Code Climate](https://codeclimate.com/github/le0pard/mongodb_logger.png)](https://codeclimate.com/github/le0pard/mongodb_logger)
 
-MongodbLogger is a alternative logger for Rails 3, which log all requests of you application into MongoDB database. 
+MongodbLogger is a alternative logger for Rails 3, which log all requests of you application into MongoDB database.
 It:
 
 * simple to integrate into existing Rails 3 application;
@@ -10,7 +12,7 @@ It:
 
 ## Rails 3 support
 
-Please note the latest version is compatible with rails 3.1.x or newer. 
+Please note the latest version is compatible with rails 3.1.x or newer.
 
 For rails 3.0.x latest version 0.2.8.
 
@@ -24,15 +26,15 @@ For rails 3.0.x latest version 0.2.8.
 
         gem "mongo"
         gem "bson_ext"
-        
-  or 
+
+  or
 
         gem "moped"
 
 1. Add the following line to your ApplicationController:
 
         include MongodbLogger::Base
-        
+
 1. For use with Heroku you need to prevent the rails\_log\_stdout plugin from being added by Heroku:
 
         mkdir vendor/plugins/rails_log_stdout
@@ -69,7 +71,7 @@ For rails 3.0.x latest version 0.2.8.
           host: localhost
           port: 27017
           replica_set: true
-          
+
    Also you can use "url" parameter for setup connection to mongodb:
 
         development:
@@ -78,7 +80,7 @@ For rails 3.0.x latest version 0.2.8.
 
 
 1. For using with MongoDB Replica Set (more info you can read by this link [http://www.mongodb.org/display/DOCS/Replica+Sets](http://www.mongodb.org/display/DOCS/Replica+Sets)). In config set list of [host, port] in key "hosts":
-   
+
         development:
           database: my_app
           capsize: <%= 10.megabytes %>
@@ -88,30 +90,30 @@ For rails 3.0.x latest version 0.2.8.
             - - 127.0.0.1
               - 27018
             - - 127.0.0.1
-              - 27019    
+              - 27019
 
 1. For assets pipeline you can generate all js/css file into folder by rake task:
 
         rake mongodb_logger:assets:compile[public/assets]
-        
+
 ## Assets pipeline
-        
+
 For capistrano possible compile assets by receipt. Add this to config/deploy.rb:
 
     require 'mongodb_logger/capistrano'
     set :mongodb_logger_assets_dir, "public/assets" # where to put mongodb assets
     after 'deploy:update_code', 'mongodb_logger:precompile'
-        
+
 Also you can serve assets from rails app. You need just mount it separately:
-        
+
     mount MongodbLogger::Server.new, :at => "/mongodb", :as => :mongodb
     mount MongodbLogger::Assets.instance, :at => "/mongodb/assets", :as => :mongodb_assets # assets
-  
-  
+
+
 ## Usage
 
 After success instalation of gem, a new MongoDB document (record) will be created for each request on your application,
-by default will record the following information: Runtime, IP Address, Request Time, Controller, Method, 
+by default will record the following information: Runtime, IP Address, Request Time, Controller, Method,
 Action, Params, Application Name and All messages sent to the logger. The structure of the MongoDB document looks like this:
 
     {
@@ -151,7 +153,7 @@ For send email or do something on exception you can add callback:
         # do something with this data, for example - send email (better - by background job)
       end
     end
-  
+
 In this callback send record without "\_id", because logger not wait for insert response from MongoDB.
 
 ## Rack Middleware
@@ -159,7 +161,7 @@ In this callback send record without "\_id", because logger not wait for insert 
 If you want use MongodbLogger not only in Rails app, you can try to use rack middleware:
 
     use MongodbLogger::RackMiddleware
-    
+
 ## Rails::Engine
 
 If you want use MongodbLogger with some of Rails::Engine, you can do this (example for Spree):
@@ -169,43 +171,43 @@ If you want use MongodbLogger with some of Rails::Engine, you can do this (examp
 
 ## The Front End
 
-To setup web interface in you Rails application, first of all create autoload file in you Rails application 
- 
+To setup web interface in you Rails application, first of all create autoload file in you Rails application
+
 File: you\_rails\_app/config/initializers/mongodb\_logger.rb (example)
-      
+
     require 'mongodb_logger/server' # required
     # this secure you web interface by basic auth, but you can skip this, if you no need this
     MongodbLogger::Server.use Rack::Auth::Basic do |username, password|
         [username, password] == ['admin', 'password']
     end
- 
+
 and just mount MongodbLogger::Server in rails routes:
 
 File: you\_rails\_app/config/routes.rb
-      
+
     mount MongodbLogger::Server.new, :at => "/mongodb"
-      
+
 Now you can see web interface by url "http://localhost:3000/mongodb"
 
 If you've installed MongodbLogger as a gem and want running the front end without Rails application, you can do it by this command:
 
     mongodb_logger_web config.yml
-    
+
 where config.yml is config, similar to config of Rails apps, but without Rails.env. Example:
-    
+
     database: app_logs_dev
     host: localhost
     port: 27017
     collection: development_log # set for see development logs
-    
+
 parameter "collection" should be set, if your set custom for your Rails application or start this front end not for production
-enviroment (by default taken "production\_log" collection, in Rails application gem generate "#{Rails.env}\_log" collection, 
+enviroment (by default taken "production\_log" collection, in Rails application gem generate "#{Rails.env}\_log" collection,
 if it is not defined in config).
 
 It's a thin layer around rackup so it's configurable as well:
 
     mongodb_logger_web config.yml -p 8282
-      
+
 ###  Passenger, Unicorn, Thin, etc.
 
 Using Passenger, Unicorn, Thin, etc? MongodbLogger ships with a `config.ru` you can use. See  guide:
@@ -220,17 +222,17 @@ Don't forget setup MONGODBLOGGERCONFIG env variable, which provide information a
     MONGODBLOGGERCONFIG=examples/server_config.yml unicorn
 
 ##  Demo Application with MongodbLogger
-  
+
 Demo: [http://demo-mongodb-logger.catware.org/](http://demo-mongodb-logger.catware.org/)
-  
+
 Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https://github.com/le0pard/mongodb_logger_example_heroku)
-  
+
 
 ## Querying via the Rails console
 
   And now, for a couple quick examples on getting ahold of this log data...
   First, here's how to get a handle on the MongoDB from within a Rails console:
-      
+
     >> db = Rails.logger.mongo_adapter.connection
     => #<Mongo::DB:0x007fdc7c65adc8 @name="monkey_logs_dev" ... >
     >> collection = Rails.logger.mongo_adapter.collection
@@ -255,7 +257,7 @@ Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https:/
   Find all requests with an exception that contains "RoutingError" in the message or stack trace:
 
     >> collection.find({"messages.error" => /RoutingError/})
-      
+
   Find all requests with errors:
 
     >> collection.find({"is_exception" => true})
