@@ -2,16 +2,20 @@ require 'spec_helper'
 
 describe MongodbLogger::Logger do
   extend MongodbLogger::SpecMacros
-  
+
   EXCEPTION_MSG = "Foo"
-  
+
+  before :all do
+    create_logs_dir
+  end
+
   context "in instantiation" do
     before do
       described_class.any_instance.stub(:internal_initialize).and_return(nil)
       described_class.any_instance.stub(:disable_file_logging?).and_return(false)
       @mongodb_logger = described_class.new
     end
-    
+
     [MongodbLogger::SpecHelper::LOGGER_CONFIG,
       MongodbLogger::SpecHelper::DEFAULT_CONFIG,
       MongodbLogger::SpecHelper::MONGOID_CONFIG].each do |config|
@@ -26,7 +30,7 @@ describe MongodbLogger::Logger do
         should_use_database_name_in_config
       end
     end
-    
+
     context "during configuration when using #{MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_URL}" do
       before do
         setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_URL, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
@@ -34,14 +38,14 @@ describe MongodbLogger::Logger do
       after do
         cleanup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG)
       end
-      
+
       it "authenticated by url" do
         @mongodb_logger.send(:connect)
         @mongodb_logger.mongo_adapter.authenticated?.should be_true
         @mongodb_logger.db_configuration['database'].should == "system_log"
       end
     end
-    
+
     context "upon connecting with authentication settings" do
       before do
         setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_AUTH, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
@@ -51,7 +55,7 @@ describe MongodbLogger::Logger do
         remove_mongo_user
         cleanup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG)
       end
-      
+
       should_use_database_name_in_config
 
       it "authenticate with the credentials in the configuration" do
@@ -59,14 +63,14 @@ describe MongodbLogger::Logger do
         @mongodb_logger.mongo_adapter.authenticated?.should be_true
       end
     end
-    
+
     context "after configuration" do
       before do
         setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG)
         @mongodb_logger.send(:connect)
         @mongo_adapter = @mongodb_logger.mongo_adapter
       end
-      
+
       it "set the default host, port, and capsize if not configured" do
         @mongo_adapter.configuration['host'].should == 'localhost'
         @mongo_adapter.configuration['port'].should == 27017
@@ -76,7 +80,7 @@ describe MongodbLogger::Logger do
       it "set the mongo collection name depending on the Rails environment" do
          @mongo_adapter.collection_name.should == "#{Rails.env}_log"
       end
-      
+
       it "set the application name when specified in the config file" do
         @mongo_adapter.configuration['application_name'].should == "mongo_foo"
       end
@@ -99,11 +103,11 @@ describe MongodbLogger::Logger do
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
         @mongo_adapter.collection_stats[:storageSize].should < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
-      
+
     end
-    
+
   end
-  
+
   context "after instantiation" do
     before do
       common_mongodb_logger_setup
@@ -163,7 +167,7 @@ describe MongodbLogger::Logger do
       end
     end
   end
-  
+
   context "after configure" do
     before do
       MongodbLogger::Base.configure do |config|
@@ -173,12 +177,12 @@ describe MongodbLogger::Logger do
       end
       common_mongodb_logger_setup
     end
-    
+
     it "not call callback function on log" do
       MongodbLogger::Base.should_receive(:on_log_exception).exactly(0)
       log_to_mongo("Test")
     end
-    
+
     context "when an exception is raised" do
       it "should call callback function" do
         MongodbLogger::Base.should_receive(:on_log_exception).exactly(1)
@@ -199,14 +203,14 @@ describe MongodbLogger::Logger do
       @mongo_adapter.collection.find({"messages.debug" => { "$exists" => true }}).count.should == 0
     end
   end
-  
+
   context "without file logging" do
     before do
       setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_NO_FILE_LOGGING, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
       @log_file = Pathname.new('log.out')
       FileUtils.touch(@log_file)
     end
-    
+
     after do
       File.delete(@log_file)
     end
@@ -235,7 +239,7 @@ describe MongodbLogger::Logger do
       end
     end
   end
-  
+
   context "with custom collection" do
     before do
       config = MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_COLLECTION

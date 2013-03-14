@@ -12,10 +12,14 @@ module MongodbLogger::SpecHelper
   REPLICA_SET_CONFIG = "database_replica_set.yml"
   MONGOID_CONFIG = "mongoid.yml"
   LOGGER_CONFIG = "mongodb_logger.yml"
-  
-  def setup_for_config(source, dest = source)
+
+  def create_logs_dir
+    FileUtils.mkdir_p(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "tmp", "log")))
     FileUtils.mkdir_p(CONFIG_DIR)
     FileUtils.mkdir_p(File.join(CONFIG_DIR, "log"))
+  end
+
+  def setup_for_config(source, dest = source)
     File.delete(File.join(CONFIG_DIR, DEFAULT_CONFIG)) if File.exists?(File.join(CONFIG_DIR, DEFAULT_CONFIG))
     cp_config(source, dest)
     @mongodb_logger.send(:configure) if @mongodb_logger
@@ -28,7 +32,7 @@ module MongodbLogger::SpecHelper
   def cleanup_for_config(file)
     File.delete(File.join(CONFIG_DIR, file)) if File.exists?(File.join(CONFIG_DIR, file))
   end
-  
+
   def create_mongo_user
     db_conf = @mongodb_logger.db_configuration
     @user = db_conf['username']
@@ -40,14 +44,14 @@ module MongodbLogger::SpecHelper
   def remove_mongo_user
     @mongo_connection.remove_user(@user)
   end
-  
+
   def common_mongodb_logger_setup(options = {}, config = DEFAULT_CONFIG)
     cp_config(config, DEFAULT_CONFIG)
     @mongodb_logger = MongodbLogger::Logger.new(options)
     @mongo_adapter = @mongodb_logger.mongo_adapter
     @mongo_adapter.reset_collection
   end
-  
+
   # logs
   def log_to_mongo(msg)
     @mongodb_logger.mongoize({"id" => 1}) do
@@ -60,7 +64,7 @@ module MongodbLogger::SpecHelper
       @mongodb_logger.add_metadata(options)
     end
   end
-  
+
   def log_params_to_mongo(msg)
     @mongodb_logger.mongoize({:params => msg})
   end
@@ -70,5 +74,5 @@ module MongodbLogger::SpecHelper
       raise msg
     end
   end
-  
+
 end
