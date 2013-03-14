@@ -172,14 +172,11 @@ module MongodbLogger
 
       # try to serialyze data by each key and found invalid object
       def record_serializer(rec, nice = true)
-        if msgs = rec[:messages]
-          msgs.each do |i, j|
-            msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
-          end
-        end
-        if pms = rec[:params]
-          pms.each do |i, j|
-            pms[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
+        [:messages, :params].each do |key|
+          if msgs = rec[key]
+            msgs.each do |i, j|
+              msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
+            end
           end
         end
       end
