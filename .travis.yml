@@ -18,7 +18,7 @@ branches:
   only:
     - master
     - development
-    - adapters
+    - tests
 matrix:
   allow_failures:
     - rvm: ruby-head
