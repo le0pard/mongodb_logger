@@ -63,6 +63,7 @@ EOF
   definition = <<EOF
 class TestsController < ApplicationController
   LOG_MESSAGE = "FOO"
+  LOG_ERROR_MESSAGE = "Error"
   LOG_USER_ID = 12345
 
   def index
@@ -72,7 +73,7 @@ class TestsController < ApplicationController
   end
 
   def new
-    raise LOG_MESSAGE
+    raise LOG_ERROR_MESSAGE
   end
 
   def create
