@@ -34,7 +34,7 @@ module MongodbLogger
       end
 
       def rename_collection(to, drop_target = false)
-        mongo_connection_object.db("admin").command({ renameCollection: "#{@configuration['database']}.#{collection_name}", to: "#{@configuration['database']}.#{to}", dropTarget: drop_target })
+        rename_collection_command(mongo_connection_object.db("admin"), to, drop_target)
       end
 
       # filter

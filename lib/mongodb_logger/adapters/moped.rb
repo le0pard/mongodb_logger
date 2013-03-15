@@ -36,7 +36,7 @@ module MongodbLogger
 
       def rename_collection(to, drop_target = false)
         @connection.with(database: "admin", consistency: :strong) do |session|
-          session.command({ renameCollection: "#{@configuration['database']}.#{collection_name}", to: "#{@configuration['database']}.#{to}", dropTarget: drop_target })
+          rename_collection_command(session, to, drop_target)
         end
       end
 
