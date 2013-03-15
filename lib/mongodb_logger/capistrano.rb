@@ -18,7 +18,7 @@ Capistrano::Configuration.instance.load do
       Run collection migrate rake task.
     DESC
     task :migrate, :roles => mongodb_logger_db_role, :except => { :no_release => true } do
-      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} mongodb_logger:migrate]"
+      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} mongodb_logger:migrate"
     end
   end
 end
