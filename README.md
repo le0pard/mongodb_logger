@@ -158,6 +158,16 @@ For send email or do something on exception you can add callback:
 
 In this callback send record without "\_id", because logger not wait for insert response from MongoDB.
 
+## Copy (migrate) data to another capped collection
+
+If you need create bigger capper collection, you should create new collection with new size and copy data from old collection to new. For this created special rake task:
+
+    rake mongodb_logger:copy_data["test_logs", 1024000]
+
+where "test\_logs" - name of collection, in which we want copy data, 1024000 - size of "test\_logs" collection in bytes (this value need, if such collection not exist). If you already created new collection and just need copy data, you can use the same command, but without last argument:
+
+    rake mongodb_logger:copy_data["test_logs"]
+
 ## Rack Middleware
 
 If you want use MongodbLogger not only in Rails app, you can try to use rack middleware:
