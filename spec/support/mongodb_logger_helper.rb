@@ -6,6 +6,7 @@ module MongodbLogger::SpecHelper
   SAMPLE_CONFIG_DIR = File.expand_path(File.join(File.dirname(__FILE__), "..", "factories", "config"))
   DEFAULT_CONFIG = "database.yml"
   DEFAULT_CONFIG_WITH_AUTH = "database_with_auth.yml"
+  DEFAULT_CONFIG_CAPSIZE = "database_with_capsize.yml"
   DEFAULT_CONFIG_WITH_URL = "database_with_url.yml"
   DEFAULT_CONFIG_WITH_COLLECTION = "database_with_collection.yml"
   DEFAULT_CONFIG_WITH_NO_FILE_LOGGING = "database_no_file_logging.yml"

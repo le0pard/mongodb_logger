@@ -24,6 +24,7 @@ module MongodbLogger
             iterator += 1
             progress ((iterator.to_f / all_count.to_f) * 100).round
           end if all_count > 0
+          progress 100
           @migrate_logger.mongo_adapter.rename_collection(collection_name, true)
         end
       end

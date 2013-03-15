@@ -19,6 +19,10 @@ class Rails
   def self.application
     MongodbLogger::Application.new
   end
+
+  def self.logger
+    MongodbLogger::Logger.new
+  end
 end
 
 module ActiveRecord
