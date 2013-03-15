@@ -1,3 +1,10 @@
+## ...
+
+* Moved to new rspec and cucumber testing, fixed testing in travis
+* Added migration task for changed capped collection size ([#49](https://github.com/le0pard/mongodb_logger/issues/49))
+* Fix js problems on web page
+* Cleanup and DRY the code
+
 ## v0.4.2
 
 * Fix problem with session keys (keys with dots is invalid for BSON)
@@ -15,7 +22,7 @@
 
 ## v0.3.3
 
-* Mount assets separately or compile it by rake task 
+* Mount assets separately or compile it by rake task
 * Capistrano recipe for compiling assets
 
 ## v0.3.2
@@ -62,7 +69,7 @@
 
 ## v0.2.2
 
-* Fix set custom collection in config and add tests on it 
+* Fix set custom collection in config and add tests on it
 
 ## v0.2.1
 
