@@ -158,9 +158,9 @@ For send email or do something on exception you can add callback:
 
 In this callback send record without "\_id", because logger not wait for insert response from MongoDB.
 
-## Copy (migrate) data to another capped collection
+## Migrate to another size of capped collection
 
-If you need change capper collection size, you should create new collection with new size and copy data from old collection to new. For this created special rake task:
+If you need change capper collection size, you should change the "capsize" key in mongodb\_config and run this task for migration:
 
     rake mongodb_logger:migrate
 
