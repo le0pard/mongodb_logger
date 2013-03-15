@@ -12,4 +12,11 @@ module MongodbLogger::SpecMacros
       @mongodb_logger.db_configuration['database'].should == "system_log"
     end
   end
+
+  def should_have_default_capsize
+    it "cap collection the same size as in default" do
+      @mongo_adapter.collection_stats[:storageSize].should >= MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
+      @mongo_adapter.collection_stats[:storageSize].should < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+    end
+  end
 end
