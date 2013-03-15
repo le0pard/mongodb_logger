@@ -166,7 +166,7 @@ If you need change capper collection size, you should change the "capsize" key i
 
 ## Rack Middleware
 
-If you want use MongodbLogger not only in Rails app, you can try to use rack middleware:
+If you want use MongodbLogger in Rack app which is mounted to your Rails app, you can try to use rack middleware:
 
     use MongodbLogger::RackMiddleware
 
