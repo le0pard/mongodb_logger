@@ -1,5 +1,7 @@
-# -*- encoding: utf-8 -*-
-require File.expand_path('../lib/mongodb_logger/version', __FILE__)
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'mongodb_logger/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Alexey Vasiliev"]
@@ -26,7 +28,7 @@ Gem::Specification.new do |gem|
   # adapters
   gem.add_development_dependency "mongo"
   gem.add_development_dependency "moped"
-  
+
   gem.add_dependency "rake",            ">= 0.9.0"
   gem.add_dependency "json",            ">= 1.7.0"
   gem.add_dependency "activesupport",   ">= 3.1.0"
