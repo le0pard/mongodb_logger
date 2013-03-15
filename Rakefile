@@ -19,7 +19,7 @@ end
 ### TESTS
 #########################################
 
-ENV['BSON_EXT_DISABLED'] = 1 if ENV['CI']
+ENV['BSON_EXT_DISABLED'] = "true" if ENV['CI']
 
 desc 'Default: run tests'
 task :default => [:spec, "mongodb_logger:tests"]
