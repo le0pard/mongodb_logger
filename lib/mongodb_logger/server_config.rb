@@ -2,7 +2,7 @@ require 'mongodb_logger/logger'
 
 module MongodbLogger
   class ServerConfig
-    
+
     class ServerLogger < MongodbLogger::Logger
       private
       def resolve_config
@@ -12,14 +12,14 @@ module MongodbLogger
         config
       end
     end
-   
+
     class << self
       def set_config(config_path)
         ENV['MONGODBLOGGERCONFIG'] = config_path
-        @logger = ServerLogger.new(:path => "server.log")
+        @logger = ServerLogger.new(path: "server.log")
         @logger.mongo_adapter
       end
-   
+
       def mongo_adapter
         @logger.mongo_adapter if @logger
       end

@@ -1,9 +1,19 @@
 require 'mongodb_logger/server/sprokets'
+require 'mongodb_logger/utils/migrate'
+
 namespace :mongodb_logger do
+  desc 'copy data from mongodb collection to another'
+  task :copy_data, [:collection_name, :collection_size] => :environment do |t, args|
+    args.with_defaults(collection_size: nil)
+    return (raise "Specify output MongoDB collection") if args.collection_name.nil?
+    MongodbLogger::Utils::Migrate.new(args.collection_name, args.collection_size)
+    puts "Operation finished"
+  end
+
   namespace :assets do
-    desc 'compile assets'
-    task :compile, [:output_dir] => [:compile_js, :compile_css, :compile_imgs] do
-    end
+
+    desc 'compile all assets'
+    task :compile, [:output_dir] => [:compile_js, :compile_css, :compile_img]
 
     desc 'compile javascript assets'
     task :compile_js, [:output_dir] => :environment do |t, args|
@@ -24,9 +34,9 @@ namespace :mongodb_logger do
       asset.write_to(File.join(args.output_dir, sprockets.find_asset(asset_name).digest_path))
       puts "successfully compiled css assets"
     end
-    
+
     desc 'compile images assets'
-    task :compile_imgs, [:output_dir] => :environment do |t, args|
+    task :compile_img, [:output_dir] => :environment do |t, args|
       return (raise "Specify output dir for assets") if args.output_dir.nil?
       sprockets   = MongodbLogger::Assets.instance
       asset_names  = ['logo.png', 'spinner.gif']

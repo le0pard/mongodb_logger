@@ -1,7 +1,11 @@
 require 'active_support/core_ext/string/inflections'
 
-Then /^I should (?:(not ))?see "([^\"]*)"$/ do |negator,expected_text|
+Then /^I should (?:(not ))?see "([^\"]*)"$/ do |negator, expected_text|
   step %{the output should #{negator}contain "#{expected_text}"}
+end
+
+Then /^I should (?:(not ))?see like this \/([^\/]*)\/$/ do |negator, expected_text|
+  step %{the output should #{negator}match /#{expected_text}/}
 end
 
 When /^I route "([^\"]*)" to "([^\"]*)"$/ do |path, controller_action_pair|
@@ -38,7 +42,7 @@ When /^I have copy tests_controller_spec$/ do
   test_file = File.join(PROJECT_ROOT, 'spec', 'factories', 'config', 'database.yml')
   target = File.join(rails_root, 'config', 'database.yml')
   FileUtils.cp(test_file, target)
-  
+
   FileUtils.mkdir_p("#{rails_root}/spec")
   FileUtils.mkdir_p("#{rails_root}/spec/controllers")
 
@@ -59,7 +63,7 @@ class ApplicationController < ActionController::Base
 end
 EOF
   File.open(application_controller_filename, "w") {|file| file.puts definition }
-  
+
   definition = <<EOF
 class TestsController < ApplicationController
   LOG_MESSAGE = "FOO"
@@ -79,7 +83,7 @@ class TestsController < ApplicationController
   def create
     render text: "create"
   end
-  
+
   def edit
     render text: "edit"
   end
@@ -87,7 +91,7 @@ class TestsController < ApplicationController
   def update
     render text: "update"
   end
-  
+
   def destroy
     render text: "destroy"
   end
