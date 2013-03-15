@@ -1,7 +1,7 @@
 module MongodbLogger
   module Adapers
     class Mongo < Base
-      
+
       def initialize(options = {})
         @authenticated = false
         @configuration = options
@@ -19,29 +19,33 @@ module MongodbLogger
           end
         end
       end
-      
+
       def create_collection
         @connection.create_collection(collection_name,
           {:capped => true, :size => @configuration['capsize'].to_i})
       end
-      
+
       def insert_log_record(record, options = {})
         @collection.insert(record, options[:write_options])
       end
-      
+
       def collection_stats
         collection_stats_hash(@collection.stats)
       end
-      
+
+      def rename_collection(to, drop_target = false)
+        mongo_connection_object.db("admin").command({ renameCollection: "#{@configuration['database']}.#{collection_name}", to: "#{@configuration['database']}.#{to}", dropTarget: drop_target })
+      end
+
       # filter
       def filter_by_conditions(filter)
         @collection.find(filter.get_mongo_conditions).sort('$natural', -1).limit(filter.get_mongo_limit)
       end
-      
+
       def find_by_id(id)
         @collection.find_one(::BSON::ObjectId(id))
       end
-      
+
       def tail_log_from_params(params = {})
         logs = []
         last_id = nil
@@ -56,19 +60,19 @@ module MongodbLogger
           log = @collection.find_one({}, {:sort => ['$natural', -1]})
           log_last_id = log["_id"].to_s unless log.blank?
         end
-        { 
-          :log_last_id => log_last_id, 
+        {
+          :log_last_id => log_last_id,
           :time => Time.now.strftime("%F %T"),
           :logs => logs
         }
       end
-      
+
       def calculate_mapreduce(map, reduce, params = {})
         @collection.map_reduce(map, reduce, {:query => params[:conditions], :sort => ['$natural', -1], :out => {:inline => true}, :raw => true}).find()
       end
-      
+
       private
-      
+
       def mongo_connection_object
         if @configuration['hosts']
           conn = ::Mongo::ReplSetConnection.new(*(@configuration['hosts'] <<
@@ -85,7 +89,7 @@ module MongodbLogger
         @connection_type = conn.class
         conn
       end
-      
+
     end
   end
 end

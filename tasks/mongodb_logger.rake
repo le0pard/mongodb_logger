@@ -3,10 +3,8 @@ require 'mongodb_logger/utils/migrate'
 
 namespace :mongodb_logger do
   desc 'copy data from mongodb collection to another'
-  task :copy_data, [:collection_name, :collection_size] => :environment do |t, args|
-    args.with_defaults(collection_size: nil)
-    return (raise "Specify output MongoDB collection") if args.collection_name.nil?
-    MongodbLogger::Utils::Migrate.new(args.collection_name, args.collection_size)
+  task :migrate => :environment do |t, args|
+    MongodbLogger::Utils::Migrate.new
     puts "Operation finished"
   end
 

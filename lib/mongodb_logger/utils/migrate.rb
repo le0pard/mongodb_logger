@@ -5,28 +5,27 @@ module MongodbLogger
   module Utils
     class Migrate
 
-      def initialize(collection_name, collection_size = nil)
+      def initialize
         raise "this task work only in Rails app" unless defined?(Rails)
-        Progressbar.new.show("Importing data to #{collection_name} collection") do
+        Progressbar.new.show("Importing data to new capped collection") do
           mongodb_logger = Rails.logger
           @configuration = mongodb_logger.db_configuration
           @mongo_adapter = mongodb_logger.mongo_adapter
           all_count = @mongo_adapter.collection.find.count
-          raise "your collection is empty" unless all_count > 0
 
-          if collection_size.nil? && !@mongo_adapter.connection.collection_names.include?(collection_name)
-            raise "#{collection_name} not found in database"
-          else
-            @configuration.merge!({'collection' => collection_name, 'capsize' => collection_size})
-            @migrate_logger = MongoMigrateLogger.new(@configuration)
-          end
+          collection_name = @configuration['collection'].dup
+          tmp_collection_name = "#{@configuration['collection']}_copy_#{rand(100)}"
+          @configuration.merge!({ 'collection' => tmp_collection_name })
+          @migrate_logger = MongoMigrateLogger.new(@configuration)
+          @migrate_logger.mongo_adapter.reset_collection
 
           iterator = 0
           @mongo_adapter.collection.find.each do |row|
-            @migrate_logger.mongo_adapter.collection.insert(row) unless @migrate_logger.mongo_adapter.collection.find(row).first
+            @migrate_logger.mongo_adapter.collection.insert(row)
             iterator += 1
             progress ((iterator.to_f / all_count.to_f) * 100).round
           end
+          @migrate_logger.mongo_adapter.rename_collection(collection_name, true)
         end
       end
 

@@ -1,7 +1,7 @@
 module MongodbLogger
   module Adapers
     class Moped < Base
-      
+
       def initialize(options = {})
         @configuration = options
         if @configuration['url']
@@ -20,11 +20,11 @@ module MongodbLogger
           end
         end
       end
-      
+
       def create_collection
         @connection.command(create: collection_name, capped: true, size:  @configuration['capsize'].to_i)
       end
-      
+
       def insert_log_record(record, options = {})
         record[:_id] = ::Moped::BSON::ObjectId.new
         @connection.with(safe: options[:write_options])[collection_name].insert(record)
@@ -33,16 +33,22 @@ module MongodbLogger
       def collection_stats
         collection_stats_hash(@connection.command(collStats: collection_name))
       end
-      
+
+      def rename_collection(to, drop_target = false)
+        @connection.with(database: "admin", consistency: :strong) do |session|
+          session.command({ renameCollection: "#{@configuration['database']}.#{collection_name}", to: "#{@configuration['database']}.#{to}", dropTarget: drop_target })
+        end
+      end
+
       # filter
       def filter_by_conditions(filter)
         @collection.find(filter.get_mongo_conditions).sort('$natural' => -1).limit(filter.get_mongo_limit)
       end
-      
+
       def find_by_id(id)
         @collection.find("_id" => ::Moped::BSON::ObjectId.from_string(id)).first
       end
-      
+
       def tail_log_from_params(params = {})
         logs = []
         last_id = nil
@@ -57,13 +63,13 @@ module MongodbLogger
           log = @collection.find.sort('$natural' => -1).first
           log_last_id = log["_id"].to_s unless log.blank?
         end
-        { 
-          :log_last_id => log_last_id, 
+        {
+          :log_last_id => log_last_id,
           :time => Time.now.strftime("%F %T"),
           :logs => logs
         }
       end
-      
+
       def calculate_mapreduce(map, reduce, params = {})
         @connection.command(
           mapreduce: collection_name,
@@ -76,7 +82,7 @@ module MongodbLogger
       end
 
       private
-      
+
       def mongo_connection_object
         if @configuration['hosts']
           conn = ::Moped::Session.new(@configuration['hosts'].map{|(host,port)| "#{host}:#{port}"}, :timeout => 6)
@@ -89,7 +95,7 @@ module MongodbLogger
         @connection_type = conn.class
         conn
       end
-      
+
     end
   end
 end
