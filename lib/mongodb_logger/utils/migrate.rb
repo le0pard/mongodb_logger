@@ -13,8 +13,7 @@ module MongodbLogger
           @mongo_adapter = mongodb_logger.mongo_adapter
 
           collection_name = @configuration['collection'].dup
-          tmp_collection_name = "#{@configuration['collection']}_copy_#{rand(100)}"
-          @configuration.merge!({ 'collection' => tmp_collection_name })
+          @configuration.merge!({ 'collection' => "#{collection_name}_copy_#{rand(100)}" })
           @migrate_logger = MongoMigrateLogger.new(@configuration)
           @migrate_logger.mongo_adapter.reset_collection
 
