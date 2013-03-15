@@ -11,7 +11,6 @@ module MongodbLogger
           mongodb_logger = Rails.logger
           @configuration = mongodb_logger.db_configuration
           @mongo_adapter = mongodb_logger.mongo_adapter
-          all_count = @mongo_adapter.collection.find.count
 
           collection_name = @configuration['collection'].dup
           tmp_collection_name = "#{@configuration['collection']}_copy_#{rand(100)}"
@@ -20,11 +19,12 @@ module MongodbLogger
           @migrate_logger.mongo_adapter.reset_collection
 
           iterator = 0
+          all_count = @mongo_adapter.collection.find.count
           @mongo_adapter.collection.find.each do |row|
             @migrate_logger.mongo_adapter.collection.insert(row)
             iterator += 1
             progress ((iterator.to_f / all_count.to_f) * 100).round
-          end
+          end if all_count > 0
           @migrate_logger.mongo_adapter.rename_collection(collection_name, true)
         end
       end
