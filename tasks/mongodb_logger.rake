@@ -1,4 +1,4 @@
-require 'mongodb_logger/server/sprokets'
+require 'mongodb_logger/server/helpers/sprokets'
 require 'mongodb_logger/utils/migrate'
 
 namespace :mongodb_logger do
