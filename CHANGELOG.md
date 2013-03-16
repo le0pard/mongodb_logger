@@ -1,3 +1,7 @@
+## v0.5.1
+
+* Fixed params info in info box
+
 ## v0.5.0
 
 * Moved to new rspec and cucumber testing, fixed testing in travis
