@@ -4,9 +4,9 @@ html, body {
 
 body {
     min-width: 1000px;
-	font: 12px/140% helvetica, arial, sans-serif;
-	color: #333;
-	background: #F3F4EB;
+  font: 12px/140% helvetica, arial, sans-serif;
+  color: #333;
+  background: #F3F4EB;
 }
 
 .logo {
@@ -31,12 +31,12 @@ body {
 }
 
 .outer:after {
-	content: '';
-	display: block;
-	clear: both;
-	height: 0;
-	overflow: hidden;
-	font-size: 0;
+  content: '';
+  display: block;
+  clear: both;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
 }
 
 .page {
@@ -50,8 +50,8 @@ body {
 }
 
 .header {
-	height: 50px;
-	background-color: #363636;
+  height: 50px;
+  background-color: #363636;
 }
 
 .topline {
@@ -72,7 +72,7 @@ body {
     float: left;
     height: 50px;
     line-height: 50px;
-    font-size: 20px;    
+    font-size: 20px;
 }
 
 .topline li a {
@@ -91,7 +91,7 @@ body {
     background: -ms-linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
     background: linear-gradient(top,  rgba(255,255,255,0.62) 0%,rgba(23,146,212,0.5) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9effffff', endColorstr='#801792d4',GradientType=0 );
-    
+
 }
 
 .topline li.active a {
@@ -188,7 +188,7 @@ body {
     background: -ms-linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
     background: linear-gradient(top,  rgba(119,73,43,1) 0%,rgba(89,54,32,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#77492b', endColorstr='#593620',GradientType=0 );
-    
+
 }
 
 .stats strong {
@@ -197,8 +197,13 @@ body {
     color: #e7c5a9;
 }
 
+.max-size-code code {
+  height: 200px;
+  max-height: 200px;
+}
 
-/* 
+
+/*
 http://localhost:3000/mongodblogs/overview
 ./bin/mongodb_logger_web ../mongo.yml -F
 

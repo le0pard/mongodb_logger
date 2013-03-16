@@ -1,22 +1,20 @@
 require 'sinatra/base'
 require 'erubis'
-require 'json'
+require 'multi_json'
 require 'active_support'
+require 'mustache/sinatra'
 
-require 'mongodb_logger/server/view_helpers'
-require 'mongodb_logger/server/partials'
-require 'mongodb_logger/server/content_for'
-require 'mongodb_logger/server/sprokets'
-
+require 'mongodb_logger/server/helpers'
 require 'mongodb_logger/server/model'
 require 'mongodb_logger/server_config'
 
-if defined? Encoding
-  Encoding.default_external = Encoding::UTF_8
-end
+Encoding.default_external = Encoding::UTF_8 if defined?(Encoding)
 
 module MongodbLogger
   class Server < Sinatra::Base
+    module Views; end
+
+    register Mustache::Sinatra
     helpers Sinatra::ViewHelpers
     helpers Sinatra::Partials
     helpers Sinatra::ContentFor
@@ -26,34 +24,22 @@ module MongodbLogger
     set :views,         "#{dir}/server/views"
     #set :environment, :production
     set :static, true
+    set :mustache, {
+      templates: "#{dir}/server/templates",
+      views: "#{dir}/server/mustache"
+    }
 
     helpers do
       include Rack::Utils
-      alias_method :h, :escape_html
-      # pipeline
       include AssetHelpers
-
-      def current_page
-        url_path request.path_info.sub('/','')
-      end
-
-      def class_if_current(path = '')
-        'class="active"' if current_page[0, path.size] == path
-      end
-
-      def url_path(*path_parts)
-        [ path_prefix, path_parts ].join("/").squeeze('/')
-      end
+      include MustacheHelpers
+      alias_method :h, :escape_html
       alias_method :u, :url_path
-
-      def path_prefix
-        request.env['SCRIPT_NAME']
-      end
-
     end
 
     before do
       begin
+        @main_dir = dir
         @mongo_adapter = (ServerConfig.mongo_adapter ? ServerConfig.mongo_adapter : Rails.logger.mongo_adapter)
         @collection_stats = @mongo_adapter.collection_stats
       rescue => e
@@ -68,7 +54,7 @@ module MongodbLogger
       begin
         erb page.to_sym, {:layout => layout}
       rescue => e
-        erb :error, {:layout => false}, :error => "Error in view. Debug: #{e.inspect}"
+        erb :error, { :layout => false }, :error => "Error in view. Debug: #{e.inspect}"
       end
     end
 
@@ -77,35 +63,10 @@ module MongodbLogger
       redirect url_path(:overview)
     end
 
-    %w( overview ).each do |page|
-      get "/#{page}/?" do
-        @filter = ServerModel::Filter.new(params[:filter])
-        @logs = @mongo_adapter.filter_by_conditions(@filter)
-        show page, !request.xhr?
-      end
-    end
-
-    get "/tail_logs/?:log_last_id?" do
-      @info = @mongo_adapter.tail_log_from_params(params)
-      @info.merge!(
-        :content => @info[:logs].map{|log| partial(:"shared/log", :object => log) }.join("\n"),
-        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats)
-      )
-      content_type :json
-      @info.to_json
-    end
-
-    get "/changed_filter/:type" do
-      type_id = ServerModel::AdditionalFilter.get_type_index params[:type]
-      conditions = ServerModel::AdditionalFilter::VAR_TYPE_CONDITIONS[type_id]
-      values = ServerModel::AdditionalFilter::VAR_TYPE_VALUES[type_id]
-
-      content_type :json
-      {
-        :type_id => type_id,
-        :conditions => conditions,
-        :values => values
-      }.to_json
+    get "/overview/?" do
+      @filter = ServerModel::Filter.new(params[:filter])
+      @logs = @mongo_adapter.filter_by_conditions(@filter)
+      show :overview, !request.xhr?
     end
 
     # log info
@@ -114,10 +75,27 @@ module MongodbLogger
       show :show_log, !request.xhr?
     end
 
-    # log info right
-    get "/log_info/:id" do
-      @log = @mongo_adapter.find_by_id(params[:id])
-      partial(:"shared/log_info", :object => @log)
+    get "/tail_logs/?:log_last_id?" do
+      @info = @mongo_adapter.tail_log_from_params(params)
+      @info.merge!(
+        :content => @info[:logs].map{ |log| partial(:"shared/log", :object => log) }.join("\n"),
+        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats)
+      )
+      content_type :json
+      MultiJson.dump(@info)
+    end
+
+    get "/changed_filter/:type" do
+      type_id = ServerModel::AdditionalFilter.get_type_index params[:type]
+      conditions = ServerModel::AdditionalFilter::VAR_TYPE_CONDITIONS[type_id]
+      values = ServerModel::AdditionalFilter::VAR_TYPE_VALUES[type_id]
+
+      content_type :json
+      MultiJson.dump({
+        :type_id => type_id,
+        :conditions => conditions,
+        :values => values
+      })
     end
 
     get "/add_filter/?" do
@@ -135,12 +113,12 @@ module MongodbLogger
       post "/#{page}/?" do
         @analytic = ServerModel::Analytic.new(@mongo_adapter, params[:analytic])
         content_type :json
-        @analytic.get_data.to_json
+        MultiJson.dump(@analytic.get_data)
       end
     end
 
     error do
-      erb :error, {:layout => false}, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
+      erb :error, { :layout => false }, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
     end
 
   end

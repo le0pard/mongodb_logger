@@ -3,7 +3,7 @@ require 'rack/utils'
 require 'sprockets'
 
 module MongodbLogger
-  
+
   module AssetHelpers
     def asset_path(source)
       "#{request.env['SCRIPT_NAME']}/assets/#{Assets.instance.find_asset(source).digest_path}" unless Assets.instance.find_asset(source).nil?
@@ -16,11 +16,11 @@ module MongodbLogger
       end
     end
   end
-  
+
   class Assets < Sprockets::Environment
     class << self
       def instance(root = nil)
-        assets_path = File.expand_path('../../../../app/assets', __FILE__)
+        assets_path = File.expand_path('../../../../../app/assets', __FILE__)
         @instance ||= new(assets_path)
       end
     end
@@ -36,5 +36,5 @@ module MongodbLogger
       end
     end
   end
-  
+
 end

@@ -30,12 +30,13 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "moped"
 
   gem.add_dependency "rake",            ">= 0.9.0"
-  gem.add_dependency "json",            ">= 1.7.0"
+  gem.add_dependency "multi_json",      ">= 1.6.0"
   gem.add_dependency "activesupport",   ">= 3.1.0"
   gem.add_dependency "actionpack",      ">= 3.1.0"
   gem.add_dependency "sprockets",       ">= 2.0.0"
   gem.add_dependency "sinatra",         ">= 1.3.0"
   gem.add_dependency "erubis",          ">= 2.7.0"
+  gem.add_dependency "mustache",        ">= 0.99.0"
   gem.add_dependency "vegas",           "~> 0.1.0"
 
   gem.rubyforge_project = "mongodb_logger"

@@ -1,12 +1,12 @@
 root = global ? window
 
-root.MongodbLoggerMain = 
+root.MongodbLoggerMain =
   tailLogsUrl: null
   tailLogStarted: false
   logInfoOffset: null
   logInfoPadding: 15
   isChartsReady: false
-  
+
   init: ->
     # spinner
     $(document).ajaxStart => $('#ajaxLoader').show()
@@ -27,7 +27,7 @@ root.MongodbLoggerMain =
       element = $(event.currentTarget)
       element.parents('table').find('tr').removeClass('current')
       element.addClass('current')
-      $('#logInfo').load(element.data('url'))
+      $('#logInfo').html(MustacheTemplates["logs/info"]({ log: element.data('info') }))
     # filter tougle
     $(document).on 'click', 'div.filter_toggle', (event) =>
       event.preventDefault()
@@ -50,7 +50,7 @@ root.MongodbLoggerMain =
         success: (data) ->
           condOptions = []
           $.each data.conditions, (key, val) => condOptions.push("<option value='#{val}'>#{val}</option>")
-          element.parents('div.filter_block').find('select.filter_conditions').empty().append(condOptions.join("")) 
+          element.parents('div.filter_block').find('select.filter_conditions').empty().append(condOptions.join(""))
           if data.values.length
             valueInput = ['<select id="filter[more][]_value" name="filter[more][][value]">']
             $.each data.values, (key, val) => valueInput.push("<option value='#{val}'>#{val}</option>")
@@ -77,7 +77,7 @@ root.MongodbLoggerMain =
       $('pre.tab_content').addClass('hidden')
       element.addClass('active')
       $(".#{tab}").removeClass('hidden')
-    # keydown by logs  
+    # keydown by logs
     $(document).on 'keydown', '*', (event) =>
       switch event.keyCode
         when 37 # left
@@ -93,9 +93,9 @@ root.MongodbLoggerMain =
     this.initOnPages()
   initPjax: ->
     # pjax
-    $('a[data-pjax]').pjax()
-    $('body').bind 'pjax:start', () => $('#ajaxLoader').show()
-    $('body').bind 'pjax:end', () => 
+    $(document).pjax('a[data-pjax]', '#mainPjax')
+    $(document).on 'pjax:start', => $('#ajaxLoader').show()
+    $(document).on 'pjax:end', =>
       $('#ajaxLoader').hide()
       # stop tailing
       MongodbLoggerMain.tailLogStarted = false
@@ -107,7 +107,7 @@ root.MongodbLoggerMain =
   initOnPages: ->
     # code highlight
     $('pre code').each (i, e) -> hljs.highlightBlock(e, '  ')
-    # callendars  
+    # callendars
     $(".datepicker, .filter_values input.date").datepicker
       dateFormat: "yy-mm-dd"
       changeMonth: true
@@ -127,7 +127,7 @@ root.MongodbLoggerMain =
   tailLogs: (logLastId = null) ->
     url = MongodbLoggerMain.tailLogsUrl
     if logLastId? and logLastId.length
-      url = "#{MongodbLoggerMain.tailLogsUrl}/#{logLastId}" 
+      url = "#{MongodbLoggerMain.tailLogsUrl}/#{logLastId}"
     else
       MongodbLoggerMain.tailLogStarted = true
     return false unless MongodbLoggerMain.tailLogStarted
@@ -181,7 +181,7 @@ root.MongodbLoggerMain =
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
-  # check in selected element is visible for user          
+  # check in selected element is visible for user
   isScrolledIntoView: (elem) ->
     docViewTop = $(window).scrollTop()
     docViewBottom = docViewTop + $(window).height()

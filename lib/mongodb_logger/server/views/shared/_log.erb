@@ -1,4 +1,4 @@
-<tr class="log_info" data-url="<%=h url_path("log_info/#{log['_id']}") %>">
+<tr class="log_info" data-url="<%=h url_path("log_info/#{log['_id']}") %>" data-info="<%=h log_data_json(log) %>">
   <td class="td-time"><span class="<%= log['is_exception'] ? "error" : "notice" %>"></span> <%=h log['request_time']%></td>
   <td class="td-controller"><%=h log['controller']%></td>
   <td class="td-action"><%=h log['action']%></td>
