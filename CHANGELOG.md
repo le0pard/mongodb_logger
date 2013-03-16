@@ -1,7 +1,8 @@
-## ...
+## v0.5.0
 
 * Moved to new rspec and cucumber testing, fixed testing in travis
 * Added migration task for changed capped collection size ([#49](https://github.com/le0pard/mongodb_logger/issues/49))
+* Moved some part of web ui on mustache templates (now no need load info from server for right info tab)
 * Fix js problems on web page
 * Cleanup and DRY the code
 
