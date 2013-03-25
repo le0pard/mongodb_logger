@@ -1,6 +1,5 @@
 require 'rspec'
 
-require "mocha"
 require 'mocha/api'
 require 'shoulda'
 
