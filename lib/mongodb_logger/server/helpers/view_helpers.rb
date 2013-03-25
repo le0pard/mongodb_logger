@@ -22,8 +22,7 @@ module Sinatra::ViewHelpers
     rescue ArgumentError, TypeError
       return number
     end
-    base = 1024
-    max_exp  = STORAGE_UNITS.size - 1
+    base, max_exp = 1024, STORAGE_UNITS.size - 1
     exponent = (Math.log(number) / Math.log(base)).to_i # Convert to base
     exponent = max_exp if exponent > max_exp # we need this to avoid overflow for the highest unit
     number  /= base ** exponent
@@ -42,22 +41,16 @@ module Sinatra::ViewHelpers
   end
 
   def submit_tag(name, value, options = {})
-    attr = []
-    options.each do |key, val|
-      attr << "#{key}='#{val}'"
-    end
-    "<input type='submit' name='#{name.to_s}' value='#{value}' #{attr.join(" ")} />"
+    attributes = options.map{ |key, val| "#{key}='#{val}'" }
+    "<input type='submit' name='#{name.to_s}' value='#{value}' #{attributes.join(" ")} />"
   end
 
   def check_box_tag(object, name, options = {})
     value = nil
     value = options.delete(:value) if options[:value]
     value = object.send name if object && object.respond_to?(name)
-    attr = []
-    options.each do |key, val|
-      attr << "#{key}='#{val}'"
-    end
-    "<input id='#{object.form_name}_#{name.to_s}' type='checkbox' name='#{object.form_name}[#{name.to_s}]' #{'checked="checked"' if value} value='1' #{attr.join(" ")} />"
+    attributes = options.map{ |key, val| "#{key}='#{val}'" }
+    "<input id='#{object.form_name}_#{name.to_s}' type='checkbox' name='#{object.form_name}[#{name.to_s}]' #{'checked="checked"' if value} value='1' #{attributes.join(" ")} />"
   end
 
   def label_tag(object, name, label, options = {})
