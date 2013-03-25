@@ -63,10 +63,9 @@ module Sinatra::ViewHelpers
     value = options.delete(:value) if options[:value]
     value = object.send name if object && object.respond_to?(name)
     attributes = options.map{ |key, val| "#{key}='#{val}'" }
-    select_tag = []
-    select_tag << "<select id='#{object.form_name}_#{name.to_s}' name='#{object.form_name}[#{name.to_s}]' #{attributes.join(" ")}>"
+    select_tag ["<select id='#{object.form_name}_#{name.to_s}' name='#{object.form_name}[#{name.to_s}]' #{attributes.join(" ")}>"]
     options_array.each do |val|
-      if val.is_a?(Array) && 2 == val.length
+      if val.is_a?(Array)
         skey, sval = val[0], val[1]
       else
         skey = sval = val
