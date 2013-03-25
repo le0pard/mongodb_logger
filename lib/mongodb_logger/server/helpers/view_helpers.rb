@@ -54,11 +54,8 @@ module Sinatra::ViewHelpers
   end
 
   def label_tag(object, name, label, options = {})
-    attr = []
-    options.each do |key, val|
-      attr << "#{key}='#{val}'"
-    end
-    "<label for='#{object.form_name}_#{name.to_s}' #{attr.join(" ")}>#{label}</label>"
+    attributes = options.map{ |key, val| "#{key}='#{val}'" }
+    "<label for='#{object.form_name}_#{name.to_s}' #{attributes.join(" ")}>#{label}</label>"
   end
 
   def select_tag(object, name, options_array, options = {})
