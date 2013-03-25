@@ -10,7 +10,7 @@ require 'mongodb_logger/version'
 module MongodbLogger
   module Base
     extend Config
-    
+
     def self.included(base)
       base.class_eval do
         begin
@@ -23,10 +23,6 @@ module MongodbLogger
 
     def enable_mongodb_logger
       return yield unless Rails.logger.respond_to?(:mongoize)
-      f_params = case
-                   when request.respond_to?(:filtered_parameters) then request.filtered_parameters
-                   else params
-                 end
       f_session = case
                    when request.respond_to?(:session) then request.session
                    else session
@@ -37,7 +33,7 @@ module MongodbLogger
         :controller     => controller_name,
         :path           => request.path,
         :url            => request.url,
-        :params         => f_params,
+        :params         => (request.respond_to?(:filtered_parameters) ? request.filtered_parameters : params),
         :session        => mongo_fix_session_keys(f_session),
         :ip             => request.remote_ip
       }) { yield }
