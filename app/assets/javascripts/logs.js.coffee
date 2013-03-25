@@ -79,6 +79,7 @@ root.MongodbLoggerMain =
       $(".#{tab}").removeClass('hidden')
     # keydown by logs
     $(document).on 'keydown', '*', (event) =>
+      return if $("input").is(":focus")
       switch event.keyCode
         when 37 # left
           MongodbLoggerMain.moveByLogs('begin')
