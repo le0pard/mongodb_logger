@@ -7,22 +7,27 @@ module MongodbLogger
 
       def initialize
         raise "this task work only in Rails app" unless defined?(Rails)
-        Progressbar.new.show("Importing data to new capped collection") do
-          mongodb_logger = Rails.logger
-          collection_name = mongodb_logger.db_configuration['collection'].dup
-          @mongo_adapter = mongodb_logger.mongo_adapter
-          @migrate_logger = create_migration_collection(mongodb_logger.db_configuration)
+      end
 
-          iterator = 0
-          all_count = @mongo_adapter.collection.find.count
+      def run
+        Progressbar.new.show("Importing data to new capped collection") do
+          @mongo_adapter, collection_name = get_mongo_adapter_and_name
+          @migrate_logger = create_migration_collection(Rails.logger.db_configuration)
+
+          iterator, all_count = 0, @mongo_adapter.collection.find.count
           @mongo_adapter.collection.find.each do |row|
             @migrate_logger.mongo_adapter.collection.insert(row)
-            iterator += 1
-            progress ((iterator.to_f / all_count.to_f) * 100).round
+            progress (((iterator += 1).to_f / all_count.to_f) * 100).round
           end if all_count > 0
           progress 100
           @migrate_logger.mongo_adapter.rename_collection(collection_name, true)
         end
+      end
+
+      def get_mongo_adapter_and_name
+        mongodb_logger = Rails.logger
+        collection_name = mongodb_logger.db_configuration['collection'].dup
+        [mongodb_logger.mongo_adapter, collection_name]
       end
 
       def create_migration_collection(configuration)

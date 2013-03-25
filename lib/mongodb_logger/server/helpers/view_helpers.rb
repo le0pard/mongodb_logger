@@ -42,11 +42,8 @@ module Sinatra::ViewHelpers
     value = ""
     value = options.delete(:value) if options[:value]
     value = object.send name if object && object.respond_to?(name)
-    attr = []
-    options.each do |key, val|
-      attr << "#{key}='#{val}'"
-    end
-    "<input type='text' name='#{object.form_name}[#{name.to_s}]' value='#{value}' #{attr.join(" ")} />"
+    attributes = options.map{ |key, val| "#{key}='#{val}'" }
+    "<input type='text' name='#{object.form_name}[#{name.to_s}]' value='#{value}' #{attributes.join(" ")} />"
   end
 
   def submit_tag(name, value, options = {})
@@ -80,12 +77,9 @@ module Sinatra::ViewHelpers
     value = nil
     value = options.delete(:value) if options[:value]
     value = object.send name if object && object.respond_to?(name)
-    attr = []
-    options.each do |key, val|
-      attr << "#{key}='#{val}'"
-    end
+    attributes = options.map{ |key, val| "#{key}='#{val}'" }
     select_tag = []
-    select_tag << "<select id='#{object.form_name}_#{name.to_s}' name='#{object.form_name}[#{name.to_s}]' #{attr.join(" ")}>"
+    select_tag << "<select id='#{object.form_name}_#{name.to_s}' name='#{object.form_name}[#{name.to_s}]' #{attributes.join(" ")}>"
     options_array.each do |val|
       if val.is_a?(Array) && 2 == val.length
         skey, sval = val[0], val[1]

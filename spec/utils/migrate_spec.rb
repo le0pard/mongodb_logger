@@ -19,7 +19,7 @@ describe MongodbLogger::Utils::Migrate do
       should_have_default_capsize
 
       it 'changed after migration' do
-        MongodbLogger::Utils::Migrate.new
+        MongodbLogger::Utils::Migrate.new.run
         @mongodb_logger = MongodbLogger::Logger.new
         @mongo_adapter = @mongodb_logger.mongo_adapter
         @mongo_adapter.collection_stats[:storageSize].should >= 50.megabyte
