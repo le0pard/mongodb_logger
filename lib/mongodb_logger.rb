@@ -23,10 +23,7 @@ module MongodbLogger
 
     def enable_mongodb_logger
       return yield unless Rails.logger.respond_to?(:mongoize)
-      f_session = case
-                   when request.respond_to?(:session) then request.session
-                   else session
-                 end
+      f_session = (request.respond_to?(:session) ? request.session : session)
       Rails.logger.mongoize({
         :method         => request.method,
         :action         => action_name,
