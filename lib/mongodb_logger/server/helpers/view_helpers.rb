@@ -22,11 +22,6 @@ module Sinatra::ViewHelpers
     rescue ArgumentError, TypeError
       return number
     end
-    number = begin
-      Float(number)
-    rescue ArgumentError, TypeError
-      return number
-    end
     base = 1024
     max_exp  = STORAGE_UNITS.size - 1
     exponent = (Math.log(number) / Math.log(base)).to_i # Convert to base
