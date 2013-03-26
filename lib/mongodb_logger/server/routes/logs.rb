@@ -1,4 +1,3 @@
-
 module MongodbLogger
   class Server < Sinatra::Base
 
