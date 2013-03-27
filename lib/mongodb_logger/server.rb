@@ -1,4 +1,4 @@
-require 'sinatra'
+require 'sinatra/base'
 require 'erubis'
 require 'multi_json'
 require 'active_support'
