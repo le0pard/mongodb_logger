@@ -75,15 +75,14 @@ module MongodbLogger
 
       def mongo_connection_object
         if @configuration['hosts']
-          conn = ::Mongo::ReplSetConnection.new(*(@configuration['hosts'] <<
-            {:connect => true, :pool_timeout => 6, :ssl => @configuration['ssl']}))
+          conn = ::Mongo::MongoReplicaSetClient.new(@configuration['hosts'],
+            :pool_timeout => 6, :ssl => @configuration['ssl'])
           @configuration['replica_set'] = true
         elsif @configuration['url']
-          conn = ::Mongo::Connection.from_uri(@configuration['url'])
+          conn = ::Mongo::MongoClient.from_uri(@configuration['url'])
         else
-          conn = ::Mongo::Connection.new(@configuration['host'],
+          conn = ::Mongo::MongoClient.new(@configuration['host'],
                                        @configuration['port'],
-                                       :connect => true,
                                        :pool_timeout => 6,
                                        :ssl => @configuration['ssl'])
         end
