@@ -71,10 +71,11 @@ describe MongodbLogger::Logger do
         @mongo_adapter = @mongodb_logger.mongo_adapter
       end
 
-      it "set the default host, port, and capsize if not configured" do
+      it "set the default host, port, ssl and capsize if not configured" do
         @mongo_adapter.configuration['host'].should == 'localhost'
         @mongo_adapter.configuration['port'].should == 27017
         @mongo_adapter.configuration['capsize'].should == MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
+        @mongo_adapter.configuration['ssl'].should == false
       end
 
       it "set the mongo collection name depending on the Rails environment" do
@@ -104,6 +105,19 @@ describe MongodbLogger::Logger do
         @mongo_adapter.collection_stats[:storageSize].should < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
 
+    end
+
+    context "ssl" do
+      before do
+        setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_SSL, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
+      end
+      after do
+        cleanup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG)
+      end
+
+      it "be true" do
+        @mongodb_logger.db_configuration['ssl'].should == true
+      end
     end
 
   end
