@@ -111,7 +111,8 @@ module MongodbLogger
         @db_configuration = {
           'host' => 'localhost',
           'port' => 27017,
-          'capsize' => default_capsize}.merge(resolve_config)
+          'capsize' => default_capsize,
+          'ssl' => false}.merge(resolve_config)
         @db_configuration['collection'] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
         @db_configuration['application_name'] ||= resolve_application_name
         @db_configuration['write_options'] ||= { w: 0, wtimeout: 200 }
