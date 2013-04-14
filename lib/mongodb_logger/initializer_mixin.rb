@@ -1,14 +1,15 @@
 module MongodbLogger
   module InitializerMixin
-    
+
     def rails3(minor = 0)
       3 == Rails::VERSION::MAJOR && minor == Rails::VERSION::MINOR
     end
-    
+
     def create_logger(config)
       path = config.paths['log'].first
       level = ActiveSupport::BufferedLogger.const_get(config.log_level.to_s.upcase)
       logger = MongodbLogger::Logger.new(:path => path, :level => level)
+      logger = ActiveSupport::TaggedLogging.new(logger) if defined?(ActiveSupport::TaggedLogging)
       logger.level = level
       logger.auto_flushing = false if Rails.env.production? && rails3(1)
       logger
@@ -22,6 +23,6 @@ module MongodbLogger
       )
       logger
     end
-    
+
   end
 end
