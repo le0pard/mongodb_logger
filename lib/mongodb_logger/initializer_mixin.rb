@@ -10,7 +10,11 @@ module MongodbLogger
       level = ActiveSupport::BufferedLogger.const_get(config.log_level.to_s.upcase)
       logger = MongodbLogger::Logger.new(:path => path, :level => level)
       # decorating with TaggedLogging
-      logger = ActiveSupport::TaggedLogging.new(logger) if !!defined?(ActiveSupport::TaggedLogging)
+      if !!defined?(ActiveSupport::TaggedLogging)
+        logger = ActiveSupport::TaggedLogging.new(logger)
+        # define 'mongoize' in order to Rails.logger respond to it
+        logger.define_singleton_method(:mongoize) {|*args| super *args}
+      end
       logger.level = level
       logger.auto_flushing = false if Rails.env.production? && rails3(1)
       logger
