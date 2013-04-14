@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "cucumber"
   gem.add_development_dependency "cucumber-rails"
-  gem.add_development_dependency "capybara"
+  gem.add_development_dependency "capybara", '2.0.3'
   gem.add_development_dependency "coffee-script"
   gem.add_development_dependency "uglifier"
   gem.add_development_dependency "jasmine"
