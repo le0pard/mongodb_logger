@@ -4,6 +4,7 @@ require 'mongodb_logger/config'
 require 'mongodb_logger/logger'
 require 'mongodb_logger/railtie' if defined?(Rails::Railtie)
 require 'mongodb_logger/engine' if defined?(Rails::Engine)
+require 'mongodb_logger/tagged_logger' if defined?(ActiveSupport::TaggedLogging)
 require 'mongodb_logger/rack_middleware'
 require 'mongodb_logger/version'
 

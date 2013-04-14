@@ -9,7 +9,8 @@ module MongodbLogger
       path = config.paths['log'].first
       level = ActiveSupport::BufferedLogger.const_get(config.log_level.to_s.upcase)
       logger = MongodbLogger::Logger.new(:path => path, :level => level)
-      logger = ActiveSupport::TaggedLogging.new(logger) if defined?(ActiveSupport::TaggedLogging)
+      # decorating with TaggedLogging
+      logger = MongodbLogger::TaggedLogger.new(logger) if !!defined?(ActiveSupport::TaggedLogging)
       logger.level = level
       logger.auto_flushing = false if Rails.env.production? && rails3(1)
       logger

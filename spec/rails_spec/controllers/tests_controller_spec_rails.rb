@@ -42,6 +42,13 @@ describe TestsController do
       record = @collection.find.first
       @collection.find.first['method'].should == "GET"
     end
+
+    it "add_metadata should work" do
+      get :index
+      record = @collection.find.first
+      record['user_id'].should == described_class::LOG_USER_ID
+      record['application_name_again'].should == Rails.root.basename.to_s
+    end
   end
 
   describe "POST #create" do
