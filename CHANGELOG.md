@@ -1,3 +1,10 @@
+## master
+
+* Use new mongo API
+* Support ssl connection
+* Fix js hotkeys on filters
+* Added support of Rails 3.2 Tagged Logging [#54]
+
 ## v0.5.1
 
 * Fixed params info in info box
