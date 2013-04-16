@@ -1,4 +1,4 @@
-## master
+## 0.5.2
 
 * Use new mongo API
 * Support ssl connection
