@@ -2,13 +2,13 @@ require 'erb'
 require 'uri'
 require 'active_support'
 require 'active_support/core_ext'
-require 'active_support/core_ext/logger'
 require 'action_dispatch/http/upload'
 require 'mongodb_logger/adapters'
 require 'mongodb_logger/replica_set_helper'
+require 'mongodb_logger/rails_compability'
 
 module MongodbLogger
-  class Logger < ActiveSupport::BufferedLogger
+  class Logger < RailsLogger
     include ReplicaSetHelper
 
     DEFAULT_COLLECTION_SIZE = 250.megabytes
