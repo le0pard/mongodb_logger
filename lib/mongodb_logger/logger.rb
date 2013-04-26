@@ -23,7 +23,7 @@ module MongodbLogger
 
     attr_reader :db_configuration, :mongo_adapter
 
-    def initialize(log, level = DEBUG)
+    def initialize(log = nil, level = DEBUG)
       @log ||= File.join(Rails.root, "log/#{Rails.env}.log")
       @level = level
       internal_initialize

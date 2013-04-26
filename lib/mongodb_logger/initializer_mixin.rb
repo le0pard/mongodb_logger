@@ -10,7 +10,7 @@ module MongodbLogger
     def create_logger(config)
       path = config.paths['log'].first
       level = RailsLogger.const_get(config.log_level.to_s.upcase)
-      logger = MongodbLogger::Logger.new(path)
+      logger = MongodbLogger::Logger.new(path, level)
       # decorating with TaggedLogging
       logger = MongodbLogger::TaggedLogger.new(logger) if defined?(ActiveSupport::TaggedLogging)
       logger.level = level
