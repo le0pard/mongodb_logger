@@ -23,8 +23,8 @@ module MongodbLogger
 
     attr_reader :db_configuration, :mongo_adapter
 
-    def initialize(log = nil, level = DEBUG)
-      @log ||= File.join(Rails.root, "log/#{Rails.env}.log")
+    def initialize(path = nil, level = DEBUG)
+      path ||= File.join(Rails.root, "log/#{Rails.env}.log")
       @level = level
       internal_initialize
     rescue => e
@@ -35,7 +35,7 @@ module MongodbLogger
         @log            = ::Logger.new(STDOUT)
         @log.level      = @level
       else
-        super(@log, @level)
+        super(path, @level)
       end
     end
 
@@ -51,9 +51,10 @@ module MongodbLogger
 
     def add(severity, message = nil, progname = nil, &block)
       $stdout.puts(message) if ENV['HEROKU_RACK'] # log in stdout on Heroku
-      if @level && @level <= severity && message.present? && @mongo_record.present?
+      if @level && @level <= severity && (message.present? || progname.present?) && @mongo_record.present?
         # do not modify the original message used by the buffered logger
-        msg = logging_colorized? ? message.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : message
+        msg = (message ? message : progname)
+        msg = logging_colorized? ? msg.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : msg
         @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
       end
       # may modify the original message
@@ -69,7 +70,7 @@ module MongodbLogger
 
       runtime = Benchmark.measure{ yield }.real if block_given?
     rescue Exception => e
-      add(3, e.message.to_s + "\n" + e.backtrace.join("\n"))
+      add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
       # log exceptions
       @mongo_record[:is_exception] = true
       # Reraise the exception for anyone else who cares

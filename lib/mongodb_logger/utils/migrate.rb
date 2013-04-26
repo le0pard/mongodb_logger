@@ -40,7 +40,7 @@ module MongodbLogger
       class MongoMigrateLogger < MongodbLogger::Logger
         def initialize(config = {})
           @static_config = config
-          super(path: "/dev/null")
+          super("/dev/null")
         end
 
         private

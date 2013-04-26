@@ -16,7 +16,7 @@ module MongodbLogger
     class << self
       def set_config(config_path)
         ENV['MONGODBLOGGERCONFIG'] = config_path
-        @logger = ServerLogger.new(path: "server.log")
+        @logger = ServerLogger.new("server.log")
         @logger.mongo_adapter
       end
 

@@ -243,7 +243,7 @@ describe MongodbLogger::Logger do
     context "after instantiation" do
       context "upon insertion of a log record" do
         before do
-          @mongodb_logger = MongodbLogger::Logger.new(path: @log_file)
+          @mongodb_logger = MongodbLogger::Logger.new(@log_file)
           log_to_mongo("Test")
         end
 

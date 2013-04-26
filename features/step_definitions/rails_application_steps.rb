@@ -54,7 +54,7 @@ When /^I have copy tests_controller_spec$/ do
   target = File.join(rails_root, 'spec', 'controllers', 'tests_controller_spec.rb')
   FileUtils.cp(test_file, target)
   # init log file
-  logfile = File.join(PROJECT_ROOT, 'log', 'test.log')
+  logfile = File.join(rails_root, 'log', 'test.log')
   FileUtils.touch(logfile)
   FileUtils.chmod(0666, logfile)
 end
