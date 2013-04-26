@@ -141,6 +141,9 @@ module MongodbLogger
       end
 
       def find_adapter
+        return Adapers::Mongo if defined?(::Mongo)
+        return Adapers::Moped if defined?(::Moped)
+
         ADAPTERS.each do |(library, adapter)|
           begin
             require library
