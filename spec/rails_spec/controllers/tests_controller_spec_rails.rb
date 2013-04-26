@@ -17,7 +17,7 @@ describe TestsController do
 
     it "renders the index text" do
       get :index
-      response.should render_template(text: "index")
+      response.body.should == "index"
     end
 
     it "log a single record" do
@@ -31,10 +31,10 @@ describe TestsController do
       get :index
       record = @collection.find.first
       record.should_not be_nil
-      record["messages"]["debug"].should_not be_nil
-      record["messages"]["debug"].should be_a(Array)
-      record["messages"]["debug"].size.should == 1
-      record["messages"]["debug"].first.should == described_class::LOG_MESSAGE
+      record["messages"]["info"].should_not be_nil
+      record["messages"]["info"].should be_a(Array)
+      record["messages"]["info"].size.should == 1
+      record["messages"]["info"].first.should == described_class::LOG_MESSAGE
     end
 
     it "write request method" do

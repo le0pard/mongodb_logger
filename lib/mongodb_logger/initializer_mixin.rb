@@ -1,4 +1,4 @@
-require 'mongodb_logger/rails_compability'
+require 'mongodb_logger/rails_logger'
 
 module MongodbLogger
   module InitializerMixin
@@ -10,7 +10,7 @@ module MongodbLogger
     def create_logger(config)
       path = config.paths['log'].first
       level = RailsLogger.const_get(config.log_level.to_s.upcase)
-      logger = MongodbLogger::Logger.new(:path => path, :level => level)
+      logger = MongodbLogger::Logger.new(path)
       # decorating with TaggedLogging
       logger = MongodbLogger::TaggedLogger.new(logger) if defined?(ActiveSupport::TaggedLogging)
       logger.level = level

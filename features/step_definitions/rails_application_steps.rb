@@ -53,6 +53,10 @@ When /^I have copy tests_controller_spec$/ do
   test_file = File.join(PROJECT_ROOT, 'spec', 'rails_spec', 'controllers', 'tests_controller_spec_rails.rb')
   target = File.join(rails_root, 'spec', 'controllers', 'tests_controller_spec.rb')
   FileUtils.cp(test_file, target)
+  # init log file
+  #logfile = File.join(PROJECT_ROOT, 'log', 'test.log')
+  #FileUtils.touch(logfile)
+  #FileUtils.chmod(0666, logfile)
 end
 
 When /^I have set up tests controllers$/ do
@@ -71,7 +75,7 @@ class TestsController < ApplicationController
   LOG_USER_ID = 12345
 
   def index
-    logger.debug LOG_MESSAGE
+    logger.info LOG_MESSAGE
     logger.add_metadata(:application_name_again => Rails.root.basename.to_s, :user_id => LOG_USER_ID)
     render text: "index"
   end

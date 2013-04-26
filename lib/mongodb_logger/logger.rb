@@ -5,7 +5,7 @@ require 'active_support/core_ext'
 require 'action_dispatch/http/upload'
 require 'mongodb_logger/adapters'
 require 'mongodb_logger/replica_set_helper'
-require 'mongodb_logger/rails_compability'
+require 'mongodb_logger/rails_logger'
 
 module MongodbLogger
   class Logger < RailsLogger
@@ -23,9 +23,9 @@ module MongodbLogger
 
     attr_reader :db_configuration, :mongo_adapter
 
-    def initialize(options = {})
-      path = options[:path] || File.join(Rails.root, "log/#{Rails.env}.log")
-      @level = options[:level] || DEBUG
+    def initialize(log, level = DEBUG)
+      @log ||= File.join(Rails.root, "log/#{Rails.env}.log")
+      @level = level
       internal_initialize
     rescue => e
       # should use a config block for this
@@ -35,7 +35,7 @@ module MongodbLogger
         @log            = ::Logger.new(STDOUT)
         @log.level      = @level
       else
-        super(path, @level)
+        super(@log, @level)
       end
     end
 
