@@ -23,7 +23,7 @@ Given /^homepage$/ do
 end
 
 Then /^I should see text that no logs in system$/ do
-  page.has_selector?('div', text: 'No logs found, try to filter out the other parameters', :visible => true)
+  page.has_selector?('div', text: 'No logs found, try to filter out the other parameters', visible: true)
 end
 
 Given /^I should see start tail button$/ do

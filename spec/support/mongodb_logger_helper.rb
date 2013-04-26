@@ -68,7 +68,7 @@ module MongodbLogger::SpecHelper
   end
 
   def log_params_to_mongo(msg)
-    @mongodb_logger.mongoize({:params => msg})
+    @mongodb_logger.mongoize({params: msg})
   end
 
   def log_exception_to_mongo(msg)

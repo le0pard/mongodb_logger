@@ -63,9 +63,9 @@ module MongodbLogger
 
     def mongoize(options = {})
       @mongo_record = options.merge({
-        :messages => Hash.new { |hash, key| hash[key] = Array.new },
-        :request_time => Time.now.getutc,
-        :application_name => @db_configuration['application_name']
+        messages: Hash.new { |hash, key| hash[key] = Array.new },
+        request_time: Time.now.getutc,
+        application_name: @db_configuration['application_name']
       })
 
       runtime = Benchmark.measure{ yield }.real if block_given?

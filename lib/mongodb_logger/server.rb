@@ -43,18 +43,18 @@ module MongodbLogger
         @mongo_adapter = (ServerConfig.mongo_adapter ? ServerConfig.mongo_adapter : Rails.logger.mongo_adapter)
         @collection_stats = @mongo_adapter.collection_stats
       rescue => e
-        erb :error, {:layout => false}, :error => "Can't connect to MongoDB!"
+        erb :error, { layout: false }, error: "Can't connect to MongoDB!"
         return false
       end
 
-      cache_control :private, :must_revalidate, :max_age => 0
+      cache_control :private, :must_revalidate, max_age: 0
     end
 
     def show(page, layout = true)
       begin
-        erb page.to_sym, {:layout => layout}
+        erb page.to_sym, { layout: layout }
       rescue => e
-        erb :error, { :layout => false }, :error => "Error in view. Debug: #{e.inspect}"
+        erb :error, { layout: false }, error: "Error in view. Debug: #{e.inspect}"
       end
     end
 
@@ -63,7 +63,7 @@ module MongodbLogger
     end
 
     error do
-      erb :error, { :layout => false }, :error => 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
+      erb :error, { layout: false }, error: 'Sorry there was a nasty error. Maybe no connection to MongoDB. Debug: ' + env['sinatra.error'].inspect + '<br />' + env.inspect
     end
 
   end
