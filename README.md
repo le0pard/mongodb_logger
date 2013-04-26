@@ -144,7 +144,7 @@ Beyond that, if you want to add extra information to the base of the document (l
 you can just call the Rails.logger.add\_metadata method on your logger like so (for example from a before\_filter):
 
     # make sure we're using the MongodbLogger in this environment
-    Rails.logger.add_metadata(:user_id => @current_user.id) if Rails.logger.respond_to?(:add_metadata)
+    Rails.logger.add_metadata(user_id: @current_user.id) if Rails.logger.respond_to?(:add_metadata)
 
 ## Callback on exceptions
 
