@@ -22,7 +22,7 @@ module MongodbLogger
 
       def create_collection
         @connection.create_collection(collection_name,
-          {:capped => true, :size => @configuration['capsize'].to_i})
+          { capped: true, size: @configuration['capsize'].to_i })
       end
 
       def insert_log_record(record, options = {})
@@ -57,18 +57,18 @@ module MongodbLogger
           end
           logs.reverse!
         else
-          log = @collection.find_one({}, {:sort => ['$natural', -1]})
+          log = @collection.find_one({}, { sort: ['$natural', -1] })
           log_last_id = log["_id"].to_s unless log.blank?
         end
         {
-          :log_last_id => log_last_id,
-          :time => Time.now.strftime("%F %T"),
-          :logs => logs
+          log_last_id: log_last_id,
+          time: Time.now.strftime("%F %T"),
+          logs: logs
         }
       end
 
       def calculate_mapreduce(map, reduce, params = {})
-        @collection.map_reduce(map, reduce, {:query => params[:conditions], :sort => ['$natural', -1], :out => {:inline => true}, :raw => true}).find()
+        @collection.map_reduce(map, reduce, { query: params[:conditions], sort: ['$natural', -1], out: { inline: true }, raw: true }).find()
       end
 
       private
@@ -76,15 +76,15 @@ module MongodbLogger
       def mongo_connection_object
         if @configuration['hosts']
           conn = ::Mongo::MongoReplicaSetClient.new(@configuration['hosts'],
-            :pool_timeout => 6, :ssl => @configuration['ssl'])
+            pool_timeout: 6, ssl: @configuration['ssl'])
           @configuration['replica_set'] = true
         elsif @configuration['url']
           conn = ::Mongo::MongoClient.from_uri(@configuration['url'])
         else
           conn = ::Mongo::MongoClient.new(@configuration['host'],
                                        @configuration['port'],
-                                       :pool_timeout => 6,
-                                       :ssl => @configuration['ssl'])
+                                       pool_timeout: 6,
+                                       ssl: @configuration['ssl'])
         end
         @connection_type = conn.class
         conn

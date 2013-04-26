@@ -23,12 +23,12 @@ Given /^homepage$/ do
 end
 
 Then /^I should see text that no logs in system$/ do
-  page.has_selector?('div', :text => 'No logs found, try to filter out the other parameters', :visible => true)
+  page.has_selector?('div', text: 'No logs found, try to filter out the other parameters', :visible => true)
 end
 
 Given /^I should see start tail button$/ do
-  page.has_link?('tailLogsLink', :visible => true)
-  page.has_link?('tailLogsStopLink', :visible => false)
+  page.has_link?('tailLogsLink', visible: true)
+  page.has_link?('tailLogsStopLink', visible: false)
 end
 
 When /^I click on start tail button$/ do
@@ -36,12 +36,12 @@ When /^I click on start tail button$/ do
 end
 
 Then /^I should see stop tails button$/ do
-  page.has_link?('tailLogsLink', :visible => false)
-  page.has_link?('tailLogsStopLink', :visible => true)
+  page.has_link?('tailLogsLink', visible: false)
+  page.has_link?('tailLogsStopLink', visible: true)
 end
 
 Then /^box with time of last log tail$/ do
-  page.has_selector?('span#tailLogsTime', :visible => true)
+  page.has_selector?('span#tailLogsTime', visible: true)
 end
 
 When /^I click on stop tail button$/ do

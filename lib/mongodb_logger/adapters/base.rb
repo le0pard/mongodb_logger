@@ -31,12 +31,12 @@ module MongodbLogger
 
       def collection_stats_hash(stats)
         {
-          :is_capped => (stats["capped"] && ([1, true].include?(stats["capped"]))),
-          :count => stats["count"].to_i,
-          :size => stats["size"].to_f,
-          :storageSize => stats["storageSize"].to_f,
-          :db_name => @configuration["database"],
-          :collection => collection_name
+          is_capped: (stats["capped"] && ([1, true].include?(stats["capped"]))),
+          count: stats["count"].to_i,
+          size: stats["size"].to_f,
+          storageSize: stats["storageSize"].to_f,
+          db_name: @configuration["database"],
+          collection: collection_name
         }
       end
 

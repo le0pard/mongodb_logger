@@ -26,14 +26,14 @@ module MongodbLogger
       return yield unless Rails.logger.respond_to?(:mongoize)
       f_session = (request.respond_to?(:session) ? request.session : session)
       Rails.logger.mongoize({
-        :method         => request.method,
-        :action         => action_name,
-        :controller     => controller_name,
-        :path           => request.path,
-        :url            => request.url,
-        :params         => (request.respond_to?(:filtered_parameters) ? request.filtered_parameters : params),
-        :session        => mongo_fix_session_keys(f_session),
-        :ip             => request.remote_ip
+        method:         request.method,
+        action:         action_name,
+        controller:     controller_name,
+        path:           request.path,
+        url:            request.url,
+        params:         (request.respond_to?(:filtered_parameters) ? request.filtered_parameters : params),
+        session:        mongo_fix_session_keys(f_session),
+        ip:             request.remote_ip
       }) { yield }
     end
     # session keys can be with dots. It is invalid keys for BSON

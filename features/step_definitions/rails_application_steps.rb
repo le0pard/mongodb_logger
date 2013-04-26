@@ -76,7 +76,7 @@ class TestsController < ApplicationController
 
   def index
     logger.info LOG_MESSAGE
-    logger.add_metadata(:application_name_again => Rails.root.basename.to_s, :user_id => LOG_USER_ID)
+    logger.add_metadata(application_name_again: Rails.root.basename.to_s, user_id: LOG_USER_ID)
     render text: "index"
   end
 

@@ -9,7 +9,7 @@ end
 require 'mongodb_logger/server'
 
 Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
-  :before_run => lambda {|v|
+  before_run: lambda {|v|
     config_file = (ENV['MONGODBLOGGERCONFIG'] || v.args.first)
     if config_file
       MongodbLogger::ServerConfig.set_config(config_file)

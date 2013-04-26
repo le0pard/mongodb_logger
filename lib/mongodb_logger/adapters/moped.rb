@@ -64,9 +64,9 @@ module MongodbLogger
           log_last_id = log["_id"].to_s unless log.blank?
         end
         {
-          :log_last_id => log_last_id,
-          :time => Time.now.strftime("%F %T"),
-          :logs => logs
+          log_last_id: log_last_id,
+          time: Time.now.strftime("%F %T"),
+          logs: logs
         }
       end
 
@@ -85,12 +85,12 @@ module MongodbLogger
 
       def mongo_connection_object
         if @configuration['hosts']
-          conn = ::Moped::Session.new(@configuration['hosts'].map{|(host,port)| "#{host}:#{port}"}, :timeout => 6, :ssl => @configuration['ssl'])
+          conn = ::Moped::Session.new(@configuration['hosts'].map{|(host,port)| "#{host}:#{port}"}, timeout: 6, ssl: @configuration['ssl'])
           @configuration['replica_set'] = true
         elsif @configuration['url']
           conn = ::Moped::Session.connect(@configuration['url'])
         else
-          conn = ::Moped::Session.new(["#{@configuration['host']}:#{@configuration['port']}"], :timeout => 6, :ssl => @configuration['ssl'])
+          conn = ::Moped::Session.new(["#{@configuration['host']}:#{@configuration['port']}"], timeout: 6, ssl: @configuration['ssl'])
         end
         @connection_type = conn.class
         conn
