@@ -4,8 +4,7 @@ module MongodbLogger
     include MongodbLogger::InitializerMixin
 
     initializer :initialize_mongodb_logger, before: :initialize_logger do
-      app_config = Rails.application.config
-      Rails.logger = config.logger = create_logger(app_config)
+      Rails.logger = config.logger = create_logger(Rails.application.config)
     end
 
     rake_tasks do

@@ -43,6 +43,7 @@ describe MongodbLogger::Logger do
         @mongodb_logger.send(:connect)
         @mongodb_logger.mongo_adapter.authenticated?.should be_true
         @mongodb_logger.db_configuration['database'].should == "system_log"
+        @mongodb_logger.db_configuration[:database].should == "system_log"
       end
     end
 
@@ -76,6 +77,13 @@ describe MongodbLogger::Logger do
         @mongo_adapter.configuration['port'].should == 27017
         @mongo_adapter.configuration['capsize'].should == MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
         @mongo_adapter.configuration['ssl'].should == false
+      end
+
+      it "set the default host, port, ssl and capsize if not configured in sym keys" do
+        @mongo_adapter.configuration[:host].should == 'localhost'
+        @mongo_adapter.configuration[:port].should == 27017
+        @mongo_adapter.configuration[:capsize].should == MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
+        @mongo_adapter.configuration[:ssl].should == false
       end
 
       it "set the mongo collection name depending on the Rails environment" do
@@ -117,6 +125,7 @@ describe MongodbLogger::Logger do
 
       it "be true" do
         @mongodb_logger.db_configuration['ssl'].should == true
+        @mongodb_logger.db_configuration[:ssl].should == true
       end
     end
 

@@ -5,24 +5,24 @@ module MongodbLogger
       def initialize(options = {})
         @authenticated = false
         @configuration = options
-        if @configuration['url']
-          uri = URI.parse(@configuration['url'])
-          @configuration['database'] = uri.path.gsub(/^\//, '')
-          @connection ||= mongo_connection_object.db(@configuration['database'])
+        if @configuration[:url]
+          uri = URI.parse(@configuration[:url])
+          @configuration[:database] = uri.path.gsub(/^\//, '')
+          @connection ||= mongo_connection_object.db(@configuration[:database])
           @authenticated = true
         else
-          @connection ||= mongo_connection_object.db(@configuration['database'])
-          if @configuration['username'] && @configuration['password']
+          @connection ||= mongo_connection_object.db(@configuration[:database])
+          if @configuration[:username] && @configuration[:password]
             # the driver stores credentials in case reconnection is required
-            @authenticated = @connection.authenticate(@configuration['username'],
-                                                          @configuration['password'])
+            @authenticated = @connection.authenticate(@configuration[:username],
+                                                          @configuration[:password])
           end
         end
       end
 
       def create_collection
         @connection.create_collection(collection_name,
-          { capped: true, size: @configuration['capsize'].to_i })
+          { capped: true, size: @configuration[:capsize].to_i })
       end
 
       def insert_log_record(record, options = {})
@@ -74,17 +74,17 @@ module MongodbLogger
       private
 
       def mongo_connection_object
-        if @configuration['hosts']
-          conn = ::Mongo::MongoReplicaSetClient.new(@configuration['hosts'],
-            pool_timeout: 6, ssl: @configuration['ssl'])
-          @configuration['replica_set'] = true
-        elsif @configuration['url']
-          conn = ::Mongo::MongoClient.from_uri(@configuration['url'])
+        if @configuration[:hosts]
+          conn = ::Mongo::MongoReplicaSetClient.new(@configuration[:hosts],
+            pool_timeout: 6, ssl: @configuration[:ssl])
+          @configuration[:replica_set] = true
+        elsif @configuration[:url]
+          conn = ::Mongo::MongoClient.from_uri(@configuration[:url])
         else
-          conn = ::Mongo::MongoClient.new(@configuration['host'],
-                                       @configuration['port'],
+          conn = ::Mongo::MongoClient.new(@configuration[:host],
+                                       @configuration[:port],
                                        pool_timeout: 6,
-                                       ssl: @configuration['ssl'])
+                                       ssl: @configuration[:ssl])
         end
         @connection_type = conn.class
         conn

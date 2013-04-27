@@ -104,23 +104,23 @@ module MongodbLogger
       end
 
       def disable_file_logging?
-        @db_configuration.fetch('disable_file_logging', false)
+        @db_configuration.fetch(:disable_file_logging, false)
       end
 
       def configure
         default_capsize = DEFAULT_COLLECTION_SIZE
         @db_configuration = {
-          'host' => 'localhost',
-          'port' => 27017,
-          'capsize' => default_capsize,
-          'ssl' => false}.merge(resolve_config)
-        @db_configuration['collection'] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
-        @db_configuration['application_name'] ||= resolve_application_name
-        @db_configuration['write_options'] ||= { w: 0, wtimeout: 200 }
+          host: 'localhost',
+          port: 27017,
+          capsize: default_capsize,
+          ssl: false}.merge(resolve_config).with_indifferent_access
+        @db_configuration[:collection] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
+        @db_configuration[:application_name] ||= resolve_application_name
+        @db_configuration[:write_options] ||= { w: 0, wtimeout: 200 }
 
-        @insert_block = @db_configuration.has_key?('replica_set') && @db_configuration['replica_set'] ?
-          lambda { rescue_connection_failure{ insert_log_record(@db_configuration['write_options']) } } :
-          lambda { insert_log_record(@db_configuration['write_options']) }
+        @insert_block = @db_configuration.has_key?(:replica_set) && @db_configuration[:replica_set] ?
+          lambda { rescue_connection_failure{ insert_log_record(@db_configuration[:write_options]) } } :
+          lambda { insert_log_record(@db_configuration[:write_options]) }
       end
 
       def resolve_application_name
@@ -197,7 +197,7 @@ module MongodbLogger
           when Array
             data.map{ |v| nice_serialize_object(v) }
           when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
-            hvalues = {
+            {
               original_filename: data.original_filename,
               content_type: data.content_type
             }

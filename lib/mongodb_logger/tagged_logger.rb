@@ -1,16 +1,26 @@
 module MongodbLogger
   # rails 3
-  class Rails3TaggedLogger < ActiveSupport::TaggedLogging
-    delegate :mongoize, :add_metadata, to: :base_logger
+  if ActiveSupport::TaggedLogging.instance_of?(::Class)
+    class Rails3TaggedLogger < ActiveSupport::TaggedLogging
+      delegate :mongoize, :add_metadata, to: :mongo_logger
 
-    def base_logger
-      @logger
+      def mongo_logger
+        @logger
+      end
     end
-  end if ActiveSupport::TaggedLogging.instance_of?(::Class)
-  # tagged logger
-  module TaggedLogger
-    def self.new(logger)
-      defined?(Rails3TaggedLogger) ? Rails3TaggedLogger.new(logger) : ActiveSupport::TaggedLogging.new(logger)
+    # module TaggedLogger
+    module TaggedLogger
+      def self.new(logger)
+        Rails3TaggedLogger.new(logger)
+      end
+    end
+  # rails 4
+  else
+    # module TaggedLogger
+    module TaggedLogger
+      def self.new(logger)
+        ActiveSupport::TaggedLogging.new(logger)
+      end
     end
   end
 end

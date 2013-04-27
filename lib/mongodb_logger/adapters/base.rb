@@ -5,7 +5,7 @@ module MongodbLogger
       attr_reader :configuration, :connection, :connection_type, :collection, :authenticated
 
       def collection_name
-        @configuration['collection']
+        @configuration[:collection]
       end
 
       def authenticated?
@@ -14,12 +14,12 @@ module MongodbLogger
 
       def check_for_collection
         # setup the capped collection if it doesn't already exist
-        create_collection unless @connection.collection_names.include?(@configuration['collection'])
-        @collection = @connection[@configuration['collection']]
+        create_collection unless @connection.collection_names.include?(@configuration[:collection])
+        @collection = @connection[@configuration[:collection]]
       end
 
       def rename_collection_command(admin_session, to, drop_target = false)
-        admin_session.command({ renameCollection: "#{@configuration['database']}.#{collection_name}", to: "#{@configuration['database']}.#{to}", dropTarget: drop_target })
+        admin_session.command({ renameCollection: "#{@configuration[:database]}.#{collection_name}", to: "#{@configuration[:database]}.#{to}", dropTarget: drop_target })
       end
 
       def reset_collection

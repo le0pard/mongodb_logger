@@ -14,9 +14,9 @@ module MongodbLogger
 
     def self.included(base)
       base.class_eval do
-        begin
+        if defined?(around_action)
           around_action :enable_mongodb_logger
-        rescue
+        else
           around_filter :enable_mongodb_logger
         end
       end
@@ -38,7 +38,7 @@ module MongodbLogger
     end
     # session keys can be with dots. It is invalid keys for BSON
     def mongo_fix_session_keys(session = {})
-      new_session = {}
+      new_session = Hash.new
       session.each do |i, j|
         new_session[i.gsub(/\./i, "|")] = j.inspect
       end if session
