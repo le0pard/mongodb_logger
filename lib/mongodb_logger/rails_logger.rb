@@ -1,4 +1,10 @@
-require 'active_support/core_ext/logger' unless defined?(ActiveSupport::Logger)
+require 'active_support/core_ext'
+
 module MongodbLogger
-  class RailsLogger < (defined?(ActiveSupport::Logger) ? ActiveSupport::Logger : ActiveSupport::BufferedLogger); end
+  if defined?(ActiveSupport::Logger)
+    class RailsLogger < ActiveSupport::Logger; end
+  else
+    require 'active_support/core_ext/logger'
+    class RailsLogger < ActiveSupport::BufferedLogger; end
+  end
 end
