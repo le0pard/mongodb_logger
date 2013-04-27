@@ -1,3 +1,8 @@
+## master
+
+* Support rails 4
+* config as hash with indifferent access
+
 ## 0.5.2
 
 * Use new mongo API
