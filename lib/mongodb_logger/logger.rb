@@ -1,6 +1,7 @@
 require 'erb'
 require 'uri'
 require 'active_support'
+require 'active_support/core_ext'
 require 'action_dispatch/http/upload'
 require 'mongodb_logger/rails_logger'
 require 'mongodb_logger/adapters'
