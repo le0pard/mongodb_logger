@@ -1,17 +1,11 @@
 module MongodbLogger
   # rails 3
   if ActiveSupport::TaggedLogging.instance_of?(::Class)
-    class Rails3TaggedLogger < ActiveSupport::TaggedLogging
+    class TaggedLogger < ActiveSupport::TaggedLogging
       delegate :mongoize, :add_metadata, to: :mongo_logger
 
       def mongo_logger
         @logger
-      end
-    end
-    # module TaggedLogger
-    module TaggedLogger
-      def self.new(logger)
-        Rails3TaggedLogger.new(logger)
       end
     end
   # rails 4
