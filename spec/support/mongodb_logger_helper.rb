@@ -49,7 +49,9 @@ module MongodbLogger::SpecHelper
 
   def common_mongodb_logger_setup(options = {}, config = DEFAULT_CONFIG)
     cp_config(config, DEFAULT_CONFIG)
-    @mongodb_logger = MongodbLogger::Logger.new(nil, (options[:level] || MongodbLogger::Logger::DEBUG))
+    level = (options[:level] || MongodbLogger::Logger::DEBUG)
+    @mongodb_logger = MongodbLogger::Logger.new(nil, level)
+    @mongodb_logger.level = level
     @mongo_adapter = @mongodb_logger.mongo_adapter
     @mongo_adapter.reset_collection
   end
