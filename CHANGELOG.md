@@ -1,6 +1,8 @@
 ## master
 
-* Support rails 4
+## 0.6.0
+
+* Support Rails 4
 * config as hash with indifferent access
 
 ## 0.5.2
