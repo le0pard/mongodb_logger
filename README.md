@@ -37,10 +37,19 @@ Doesn't support the Rails version below 3.
 
         include MongodbLogger::Base
 
-1. For use with Heroku you need to prevent the rails\_log\_stdout plugin from being added by Heroku:
+1. For use with Heroku you need to prevent the rails\_log\_stdout plugin from being added by Heroku for rails 3:
 
         mkdir vendor/plugins/rails_log_stdout
         touch vendor/plugins/rails_log_stdout/.gitkeep
+
+   For Rails 4 just create in folder config/initializers/*.rb file and add this code:
+
+        logger = MongodbLogger::Logger.new(nil, Rails.logger.level)
+        # decorating with TaggedLogging
+        logger = MongodbLogger::TaggedLogger.new(logger) if defined?(ActiveSupport::TaggedLogging)
+        logger.level = Rails.logger.level
+        # set new logger
+        Rails.logger = logger
 
 1. Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
