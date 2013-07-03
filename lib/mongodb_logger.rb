@@ -39,9 +39,9 @@ module MongodbLogger
     # session keys can be with dots. It is invalid keys for BSON
     def mongo_fix_session_keys(session = {})
       new_session = Hash.new
-      session.each do |i, j|
+      session.to_hash.each do |i, j|
         new_session[i.gsub(/\./i, "|")] = j.inspect
-      end if session
+      end unless session.empty?
       new_session
     end
   end

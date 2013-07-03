@@ -1,5 +1,9 @@
 ## master
 
+## 0.6.1
+
+* Fix problem with store sessions
+
 ## 0.6.0
 
 * Support Rails 4
