@@ -42,16 +42,7 @@ Doesn't support the Rails version below 3.
         mkdir vendor/plugins/rails_log_stdout
         touch vendor/plugins/rails_log_stdout/.gitkeep
 
-   For Rails 4 just create in folder config/application.rb file and add this code:
-
-        module Your app
-          class Application < Rails::Application
-            include MongodbLogger::InitializerMixin
-            ...
-
-            Rails.logger = config.logger = create_logger(config)
-          end
-        end
+   For Rails 4 just remove from Gemfile "rails_12factor" rubygem.
 
 1. Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
