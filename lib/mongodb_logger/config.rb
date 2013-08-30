@@ -2,19 +2,20 @@ module MongodbLogger
   # Change config options in an initializer:
   #
   # MongodbLogger::Base.on_log_exception do |mongo_record|
-  #   ... call some code ... 
+  #   ... call some code ...
   # end
   #
   # Or in a block:
   #
   # MongodbLogger::Base.configure do |config|
   #   config.on_log_exception do |mongo_record|
-  #     ... call some code ... 
+  #     ... call some code ...
   #   end
   # end
 
   module Config
-    attr_accessor :on_log_exception
+    extend self
+    attr_writer :on_log_exception, :disabled
 
     def configure
       yield self
@@ -25,8 +26,12 @@ module MongodbLogger
         @on_log_exception = block
       elsif @on_log_exception
         @on_log_exception.call(*args)
-      end 
+      end
     end
-    
+
+    def disabled
+      @disabled ||= false
+    end
+
   end
 end

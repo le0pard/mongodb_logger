@@ -192,24 +192,26 @@ describe MongodbLogger::Logger do
   end
 
   context "after configure" do
-    before do
-      MongodbLogger::Base.configure do |config|
-        config.on_log_exception do |mongo_record|
-          # do something with error
+    context "#on_log_exception" do
+      before do
+        MongodbLogger::Base.configure do |config|
+          config.on_log_exception do |mongo_record|
+            # do something with error
+          end
         end
+        common_mongodb_logger_setup
       end
-      common_mongodb_logger_setup
-    end
 
-    it "not call callback function on log" do
-      MongodbLogger::Base.should_receive(:on_log_exception).exactly(0)
-      log_to_mongo("Test")
-    end
+      it "not call callback function on log" do
+        MongodbLogger::Base.should_receive(:on_log_exception).exactly(0)
+        log_to_mongo("Test")
+      end
 
-    context "when an exception is raised" do
-      it "should call callback function" do
-        MongodbLogger::Base.should_receive(:on_log_exception).exactly(1)
-        expect { log_exception_to_mongo(EXCEPTION_MSG) }.to raise_error RuntimeError, EXCEPTION_MSG
+      context "when an exception is raised" do
+        it "should call callback function" do
+          MongodbLogger::Base.should_receive(:on_log_exception).exactly(1)
+          expect { log_exception_to_mongo(EXCEPTION_MSG) }.to raise_error RuntimeError, EXCEPTION_MSG
+        end
       end
     end
   end
