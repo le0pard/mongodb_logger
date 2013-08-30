@@ -160,6 +160,18 @@ For send email or do something on exception you can add callback:
 
 In this callback send record without "\_id", because logger not wait for insert response from MongoDB.
 
+## Disable mongodb_logger
+
+To disable MongodbLogger you can use option disable. But this should be set before rails load (for example in Rails app the top of "config/application.rb"):
+
+    MongodbLogger::Base.configure do |config|
+      config.disable = true
+    end
+
+or
+
+     MongodbLogger::Base.disable = true
+
 ## Migrate to another size of capped collection
 
 If you need change capper collection size, you should change the "capsize" key in mongodb\_config and run this task for migration:

@@ -1,5 +1,7 @@
 ## master
 
+* Disable gem by option disable = false.
+
 ## 0.6.1
 
 * Fix problem with store sessions
