@@ -1,5 +1,7 @@
 ## master
 
+## 0.6.2
+
 * Disable gem by option disable = false.
 
 ## 0.6.1
