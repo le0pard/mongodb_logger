@@ -4,6 +4,10 @@ module MongodbLogger
     def initialize(app)
       @app = app
     end
+    
+    def request_ip(request)
+      return request.env["REMOTE_ADDR"]
+    end
 
     def call(env)
       request = ::Rack::Request.new env
@@ -15,7 +19,7 @@ module MongodbLogger
         path:       request.path,
         url:        request.url,
         params:     request.params,
-        ip:         env['REMOTE_ADDR']  
+        ip:         request_ip(request)
       }
 
       Rails.logger.mongoize(log_attrs) do
