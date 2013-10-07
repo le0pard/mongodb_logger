@@ -2,7 +2,7 @@ require 'mongodb_logger/server/helpers/sprokets'
 require 'mongodb_logger/utils/migrate'
 
 namespace :mongodb_logger do
-  desc 'copy data from mongodb collection to another'
+  desc 'copy data from old mongodb collection to another'
   task :migrate => :environment do |t, args|
     MongodbLogger::Utils::Migrate.new.run
     puts "Operation finished"
