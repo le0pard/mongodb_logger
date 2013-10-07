@@ -26,6 +26,7 @@ module MongodbLogger
       end
 
       def insert_log_record(record, options = {})
+        record[:_id] = ::BSON::ObjectId.new
         @collection.insert(record, options[:write_options])
       end
 
@@ -43,7 +44,7 @@ module MongodbLogger
       end
 
       def find_by_id(id)
-        @collection.find_one(::BSON::ObjectId(id))
+        @collection.find_one(::BSON::ObjectId.from_string(id))
       end
 
       def tail_log_from_params(params = {})
@@ -51,7 +52,7 @@ module MongodbLogger
         last_id = nil
         if params[:log_last_id] && !params[:log_last_id].blank?
           log_last_id = params[:log_last_id]
-          @collection.find({'_id' => { '$gt' => ::BSON::ObjectId(log_last_id) }}).sort('$natural', -1).each do |log|
+          @collection.find({'_id' => { '$gt' => ::BSON::ObjectId.from_string(log_last_id) }}).sort('$natural', -1).each do |log|
             logs << log
             log_last_id = log["_id"].to_s
           end
