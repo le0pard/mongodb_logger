@@ -27,7 +27,7 @@ module MongodbLogger
 
       def insert_log_record(record, options = {})
         record[:_id] = ::BSON::ObjectId.new
-        @connection.with(safe: options[:write_options])[collection_name].insert(record)
+        @connection.with(write: options[:write_options])[collection_name].insert(record)
       end
 
       def collection_stats
