@@ -97,114 +97,114 @@ module MongodbLogger
 
     private
 
-      def internal_initialize
-        configure
-        connect
-        check_for_collection
+    def internal_initialize
+      configure
+      connect
+      check_for_collection
+    end
+
+    def disable_file_logging?
+      @db_configuration.fetch(:disable_file_logging, false)
+    end
+
+    def configure
+      default_capsize = DEFAULT_COLLECTION_SIZE
+      @db_configuration = {
+        host: 'localhost',
+        port: 27017,
+        capsize: default_capsize,
+        ssl: false}.merge(resolve_config).with_indifferent_access
+      @db_configuration[:collection] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
+      @db_configuration[:application_name] ||= resolve_application_name
+      @db_configuration[:write_options] ||= { w: 0, wtimeout: 200 }
+
+      @insert_block = @db_configuration.has_key?(:replica_set) && @db_configuration[:replica_set] ?
+        lambda { rescue_connection_failure{ insert_log_record(@db_configuration[:write_options]) } } :
+        lambda { insert_log_record(@db_configuration[:write_options]) }
+    end
+
+    def resolve_application_name
+      Rails.application.class.to_s.split("::").first if defined?(Rails)
+    end
+
+    def resolve_config
+      config = {}
+      CONFIGURATION_FILES.each do |filename|
+        config_file = Rails.root.join("config", filename)
+        if config_file.file?
+          config = YAML.load(ERB.new(config_file.read).result)[Rails.env]
+          config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
+          break unless config.blank?
+        end
       end
+      config
+    end
 
-      def disable_file_logging?
-        @db_configuration.fetch(:disable_file_logging, false)
+    def find_adapter
+      return Adapers::Mongo if defined?(::Mongo)
+      return Adapers::Moped if defined?(::Moped)
+
+      ADAPTERS.each do |(library, adapter)|
+        begin
+          require library
+          return adapter
+        rescue LoadError
+          next
+        end
       end
+      return nil
+    end
 
-      def configure
-        default_capsize = DEFAULT_COLLECTION_SIZE
-        @db_configuration = {
-          host: 'localhost',
-          port: 27017,
-          capsize: default_capsize,
-          ssl: false}.merge(resolve_config).with_indifferent_access
-        @db_configuration[:collection] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
-        @db_configuration[:application_name] ||= resolve_application_name
-        @db_configuration[:write_options] ||= { w: 0, wtimeout: 200 }
+    def connect
+      adapter = find_adapter
+      raise "!!! MongodbLogger not found supported adapter. Please, add mongo with bson_ext gems or moped gem into Gemfile !!!" if adapter.nil?
+      @mongo_adapter ||= adapter.new(@db_configuration)
+      @db_configuration = @mongo_adapter.configuration
+    end
 
-        @insert_block = @db_configuration.has_key?(:replica_set) && @db_configuration[:replica_set] ?
-          lambda { rescue_connection_failure{ insert_log_record(@db_configuration[:write_options]) } } :
-          lambda { insert_log_record(@db_configuration[:write_options]) }
-      end
+    def check_for_collection
+      @mongo_adapter.check_for_collection
+    end
 
-      def resolve_application_name
-        Rails.application.class.to_s.split("::").first if defined?(Rails)
-      end
+    def insert_log_record(write_options)
+      @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
+    end
 
-      def resolve_config
-        config = {}
-        CONFIGURATION_FILES.each do |filename|
-          config_file = Rails.root.join("config", filename)
-          if config_file.file?
-            config = YAML.load(ERB.new(config_file.read).result)[Rails.env]
-            config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
-            break unless config.blank?
+    def logging_colorized?
+      # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
+      @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
+    end
+
+    # try to serialyze data by each key and found invalid object
+    def record_serializer(rec, nice = true)
+      [:messages, :params].each do |key|
+        if msgs = rec[key]
+          msgs.each do |i, j|
+            msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
           end
         end
-        config
       end
+    end
 
-      def find_adapter
-        return Adapers::Mongo if defined?(::Mongo)
-        return Adapers::Moped if defined?(::Moped)
-
-        ADAPTERS.each do |(library, adapter)|
-          begin
-            require library
-            return adapter
-          rescue LoadError
-            next
-          end
-        end
-        return nil
+    def nice_serialize_object(data)
+      case data
+        when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
+          data
+        when Hash
+          hvalues = Hash.new
+          data.each{ |k,v| hvalues[k] = nice_serialize_object(v) }
+          hvalues
+        when Array
+          data.map{ |v| nice_serialize_object(v) }
+        when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
+          {
+            original_filename: data.original_filename,
+            content_type: data.content_type
+          }
+        else
+          data.inspect
       end
-
-      def connect
-        adapter = find_adapter
-        raise "!!! MongodbLogger not found supported adapter. Please, add mongo with bson_ext gems or moped gem into Gemfile !!!" if adapter.nil?
-        @mongo_adapter ||= adapter.new(@db_configuration)
-        @db_configuration = @mongo_adapter.configuration
-      end
-
-      def check_for_collection
-        @mongo_adapter.check_for_collection
-      end
-
-      def insert_log_record(write_options)
-        @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
-      end
-
-      def logging_colorized?
-        # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
-        @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
-      end
-
-      # try to serialyze data by each key and found invalid object
-      def record_serializer(rec, nice = true)
-        [:messages, :params].each do |key|
-          if msgs = rec[key]
-            msgs.each do |i, j|
-              msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
-            end
-          end
-        end
-      end
-
-      def nice_serialize_object(data)
-        case data
-          when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
-            data
-          when Hash
-            hvalues = Hash.new
-            data.each{ |k,v| hvalues[k] = nice_serialize_object(v) }
-            hvalues
-          when Array
-            data.map{ |v| nice_serialize_object(v) }
-          when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
-            {
-              original_filename: data.original_filename,
-              content_type: data.content_type
-            }
-          else
-            data.inspect
-        end
-      end
+    end
 
   end
 end

@@ -13,16 +13,6 @@ module MongodbLogger
       show :show_log, !request.xhr?
     end
 
-    get "/tail_logs/?:log_last_id?" do
-      @info = @mongo_adapter.tail_log_from_params(params)
-      @info.merge!(
-        :content => @info[:logs].map{ |log| partial(:"shared/log", :object => log) }.join("\n"),
-        :collection_stats => partial(:"shared/collection_stats", :object => @collection_stats)
-      )
-      content_type :json
-      MultiJson.dump(@info)
-    end
-
     get "/changed_filter/:type" do
       type_id = ServerModel::AdditionalFilter.get_type_index params[:type]
       conditions = ServerModel::AdditionalFilter::VAR_TYPE_CONDITIONS[type_id]

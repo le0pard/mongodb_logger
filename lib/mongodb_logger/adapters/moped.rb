@@ -42,32 +42,11 @@ module MongodbLogger
 
       # filter
       def filter_by_conditions(filter)
-        @collection.find(filter.get_mongo_conditions).sort('$natural' => -1).limit(filter.get_mongo_limit)
+        @collection.find(filter.get_mongo_conditions).limit(filter.get_mongo_limit).sort('$natural' => -1)
       end
 
       def find_by_id(id)
         @collection.find("_id" => ::BSON::ObjectId.from_string(id)).first
-      end
-
-      def tail_log_from_params(params = {})
-        logs = []
-        last_id = nil
-        if params[:log_last_id] && !params[:log_last_id].blank?
-          log_last_id = params[:log_last_id]
-          @collection.find({'_id' => { '$gt' => ::BSON::ObjectId.from_string(log_last_id) }}).sort('$natural' => -1).each do |log|
-            logs << log
-            log_last_id = log["_id"].to_s
-          end
-          logs.reverse!
-        else
-          log = @collection.find.sort('$natural' => -1).first
-          log_last_id = log["_id"].to_s unless log.blank?
-        end
-        {
-          log_last_id: log_last_id,
-          time: Time.now.strftime("%F %T"),
-          logs: logs
-        }
       end
 
       def calculate_mapreduce(map, reduce, params = {})

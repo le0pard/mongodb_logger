@@ -1,6 +1,6 @@
 <% if @collection_stats[:is_capped] %>
   <% content_for :right_top_panel do %>
-    <%= partial(:"shared/tail_panel") %>
+    <%= partial(:"shared/filter_panel") %>
   <% end %>
 <% end %>
 
@@ -15,20 +15,20 @@
             <div class="unit size1of2">
               <div class="prm">
                 <%= text_field_tag @filter, :controller, :placeholder => "Controller" %>
-              </div> <!-- prm -->                        
+              </div> <!-- prm -->
             </div>
             <div class="unit size1of2">
               <div class="prm">
                 <%= text_field_tag @filter, :action, :placeholder => "Action" %>
               </div>
-            </div>            
-          </div>                
+            </div>
+          </div>
             <div class="unit size1of3">
               <div class="unit size1of2">
                 <div class="prm">
                   <%= select_tag @filter, :limit, [[50, "Limits - 50"], [100, "Limits - 100"], [200, "Limits - 200"], [500, "Limits - 500"], [1000, "Limits - 1000"]] %>
-                </div> <!-- prm -->                
-              </div> <!-- unit -->   
+                </div> <!-- prm -->
+              </div> <!-- unit -->
               <div class="unit size1of2">
                 <div class="prm">
                   <%= text_field_tag @filter, :application_name, :placeholder => "Application Name" %>
@@ -47,7 +47,7 @@
               </div> <!-- unit -->
             </div> <!-- unit -->
         </div> <!-- outer -->
-        
+
         <div class="outer">
               <ul id="moreFilterList">
                 <% @filter.more_filters.each_with_index do |f_filter, index| %>
@@ -59,36 +59,36 @@
               <div class="mbs">
                 <a id="addMoreFilter" href="<%=h url_path("add_filter") %>" class="add">+ Add Filter</a>
               </div>
-              
+
         </div> <!-- outer -->
-        
+
         <div class="outer">
           <%= submit_tag :submit, "Filter", :class => "button primary mrs" %> <a href="<%=h url_path("overview") %>">Clear</a>
         </div> <!-- outer -->
-        
+
         <div class="outer">
           <div class="pvs">
             <hr />
           </div>
-        </div>  
-          
+        </div>
+
         <div class="outer">
           <div class="unit size1of1">
             <div class="pvs">
-              <strong>Mongodb Condition:</strong><br /> 
+              <strong>Mongodb Condition:</strong><br />
               <%=h @filter.get_mongo_conditions.inspect %>
             </div>
           </div>
         </div>
-        
+
       </form>
       </div> <!-- filter -->
 
       <div class="filter_toggle filter-toggle"><span class="arrow-down <%= 'rotate' unless @filter.get_mongo_conditions.blank? %>">Filter</span></div>
-      
+
       <% if @logs.count > 0 %>
         <table id="logsList">
-          <tr>          
+          <tr>
             <th>Received</th>
             <th>Controller</th>
             <th>Action</th>
@@ -96,7 +96,7 @@
             <th>IP</th>
             <th>Runtime</th>
           </tr>
-        
+
           <% @logs.each do |log| %>
             <%= partial(:"shared/log", :object => log) %>
           <% end %>
@@ -105,15 +105,15 @@
         <div class="pale pal txtC">No logs found, try to filter out the other parameters</div>
       <% end %>
   </div> <!-- unit size3of4 -->
-  
+
   <div class="unit size1of4">
     <div class="details">
-      
+
       <div id="logInfo">
         <div class="pale h2 pal txtC">
           Please choose log to see details
         </div> <!-- pale h2 -->
       </div>
-    </div> <!-- details -->    
+    </div> <!-- details -->
   </div> <!-- unit size1of4 -->
 </div> <!-- outer -->

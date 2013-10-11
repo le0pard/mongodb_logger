@@ -12,15 +12,10 @@ root.MongodbLoggerMain =
     $(document).ajaxStart => $('#ajaxLoader').show()
     $(document).ajaxStop => $('#ajaxLoader').hide()
     # tail logs buttons
-    $(document).on 'click', '#tailLogsLink', (event) =>
-      event.preventDefault()
-      MongodbLoggerMain.tailLogsUrl = $(event.currentTarget).data('url')
-      $('#tailLogsBlock').addClass('started')
-      MongodbLoggerMain.tailLogs(null)
-    $(document).on 'click', '#tailLogsStopLink', (event) =>
-      event.preventDefault()
-      MongodbLoggerMain.tailLogStarted = false
-      $('#tailLogsBlock').removeClass('started')
+    $(document).on 'click', '#filterLogsLink', (event) =>
+      @showFilters(event)
+    $(document).on 'click', '#filterLogsStopLink', (event) =>
+      @hideFilters(event)
     # log info click
     $(document).on 'click', '.log_info', (event) =>
       event.preventDefault()
@@ -30,9 +25,7 @@ root.MongodbLoggerMain =
       $('#logInfo').html(MustacheTemplates["logs/info"]({ log: element.data('info') }))
     # filter tougle
     $(document).on 'click', 'div.filter_toggle', (event) =>
-      event.preventDefault()
-      $('div.filter').slideToggle()
-      $('div.filter_toggle span.arrow-down').toggleClass('rotate')
+      @toggleFilters(event)
     # additional filters
     $(document).on 'click', '#addMoreFilter', (event) =>
       event.preventDefault()
@@ -90,8 +83,23 @@ root.MongodbLoggerMain =
         when 40 # down
           MongodbLoggerMain.moveByLogs('down')
     # init pjax
-    this.initPjax()
-    this.initOnPages()
+    @initPjax()
+    @initOnPages()
+  showFilters: (e) ->
+    e.preventDefault()
+    $('div.filter').slideDown()
+    $('div.filter_toggle span.arrow-down').addClass('rotate')
+    $('#filterLogsBlock').addClass('started')
+  hideFilters: (e) ->
+    e.preventDefault()
+    $('div.filter').slideUp()
+    $('div.filter_toggle span.arrow-down').removeClass('rotate')
+    $('#filterLogsBlock').removeClass('started')
+  toggleFilters: (e) ->
+    if $('div.filter_toggle span.arrow-down').hasClass('rotate')
+      @hideFilters(e)
+    else
+      @showFilters(e)
   initPjax: ->
     # pjax
     $(document).pjax('a[data-pjax]', '#mainPjax')
@@ -124,29 +132,6 @@ root.MongodbLoggerMain =
         else
           $("#logInfo").stop().animate
             marginTop: 0
-  # tail logs function
-  tailLogs: (logLastId = null) ->
-    url = MongodbLoggerMain.tailLogsUrl
-    if logLastId? and logLastId.length
-      url = "#{MongodbLoggerMain.tailLogsUrl}/#{logLastId}"
-    else
-      MongodbLoggerMain.tailLogStarted = true
-    return false unless MongodbLoggerMain.tailLogStarted
-    $.ajax
-      url: url
-      dataType: "json"
-      success: (data) ->
-        if data.time
-          $('#tailLogsTime').text(data.time)
-          if data.log_last_id?
-            logLastId = data.log_last_id
-          if data.content? && data.content.length > 0
-            elements = $(data.content)
-            elements.addClass('newlog')
-            $('#logsList tr:first').after(elements).effect("highlight", {}, 1000)
-          if data.collection_stats && $("#collection_stats").length > 0
-            $("#collection_stats").html(data.collection_stats)
-        setTimeout((-> MongodbLoggerMain.tailLogs(logLastId)), 2000) if MongodbLoggerMain.tailLogStarted
   # move using keys by logs
   moveByLogs: (direction) ->
     if $('#logsList').length and $('#logsList').find('tr.current').length
@@ -189,6 +174,5 @@ root.MongodbLoggerMain =
     elemTop = $(elem).offset().top
     elemBottom = elemTop + $(elem).height()
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
-
-$ ->
-  MongodbLoggerMain.init()
+# init
+$ -> MongodbLoggerMain.init()
