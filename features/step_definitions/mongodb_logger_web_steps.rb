@@ -26,25 +26,21 @@ Then /^I should see text that no logs in system$/ do
   page.has_selector?('div', text: 'No logs found, try to filter out the other parameters', visible: true)
 end
 
-Given /^I should see start tail button$/ do
-  page.has_link?('tailLogsLink', visible: true)
-  page.has_link?('tailLogsStopLink', visible: false)
+Given /^I should see show filter button$/ do
+  page.has_link?('filterLogsLink', visible: true)
+  page.has_link?('filterLogsStopLink', visible: false)
 end
 
-When /^I click on start tail button$/ do
-  click_link('tailLogsLink')
+When /^I click on show filter button$/ do
+  click_link('filterLogsLink')
 end
 
-Then /^I should see stop tails button$/ do
-  page.has_link?('tailLogsLink', visible: false)
-  page.has_link?('tailLogsStopLink', visible: true)
+Then /^I should see hide filter button$/ do
+  page.has_link?('filterLogsLink', visible: false)
+  page.has_link?('filterLogsStopLink', visible: true)
 end
 
-Then /^box with time of last log tail$/ do
-  page.has_selector?('span#tailLogsTime', visible: true)
-end
-
-When /^I click on stop tail button$/ do
-  click_link('tailLogsStopLink')
+When /^I click on hide filter button$/ do
+  click_link('filterLogsStopLink')
 end
 
