@@ -20,11 +20,10 @@ module MongodbLogger
       logger = RailsLogger.new(STDERR)
       logger.level = RailsLogger::WARN
       logger.warn(
-        "MongodbLogger Initializer Error: Unable to access log file. Please ensure that #{path} exists and is chmod 0666. " +
-        "The log level has been raised to WARN and the output directed to STDERR until the problem is fixed." + "\n" +
+        "MongodbLogger Initializer Error: Rails will switched to standard logger." + "\n" +
         e.message + "\n" + e.backtrace.join("\n")
       )
-      logger
+      return nil
     end
 
   end
