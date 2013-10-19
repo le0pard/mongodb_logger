@@ -24,7 +24,7 @@ module MongodbLogger::SpecHelper
   def setup_for_config(source, dest = source)
     File.delete(File.join(CONFIG_DIR, DEFAULT_CONFIG)) if File.exists?(File.join(CONFIG_DIR, DEFAULT_CONFIG))
     cp_config(source, dest)
-    @mongodb_logger.send(:configure) if @mongodb_logger
+    @mongodb_logger.send(:configure)
   end
 
   def cp_config(source, dest = source)

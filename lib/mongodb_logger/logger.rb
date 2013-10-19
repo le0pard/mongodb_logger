@@ -29,7 +29,7 @@ module MongodbLogger
       internal_initialize
     rescue => e
       # should use a config block for this
-      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: #{e.message}")
+      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using Rails Logger due to exception: #{e.message}")
     ensure
       if disable_file_logging?
         @log            = ::Logger.new(STDOUT)
@@ -132,7 +132,7 @@ module MongodbLogger
       CONFIGURATION_FILES.each do |filename|
         config_file = Rails.root.join("config", filename)
         if config_file.file?
-          config = YAML.load(ERB.new(config_file.read).result)[Rails.env]
+          config = YAML.load(ERB.new(config_file.read).result)[Rails.env.to_s]
           config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
           break unless config.blank?
         end

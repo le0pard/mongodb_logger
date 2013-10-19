@@ -22,8 +22,8 @@ describe MongodbLogger::Utils::Migrate do
         MongodbLogger::Utils::Migrate.new.run
         @mongodb_logger = MongodbLogger::Logger.new
         @mongo_adapter = @mongodb_logger.mongo_adapter
-        @mongo_adapter.collection_stats[:storageSize].should >= 50.megabyte
-        @mongo_adapter.collection_stats[:storageSize].should < 51.megabyte
+        expect(@mongo_adapter.collection_stats[:storageSize]).to be >= 50.megabyte
+        expect(@mongo_adapter.collection_stats[:storageSize]).to be < 51.megabyte
       end
     end
 

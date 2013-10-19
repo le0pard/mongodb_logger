@@ -41,9 +41,9 @@ describe MongodbLogger::Logger do
 
       it "authenticated by url" do
         @mongodb_logger.send(:connect)
-        @mongodb_logger.mongo_adapter.authenticated?.should be_true
-        @mongodb_logger.db_configuration['database'].should == "system_log"
-        @mongodb_logger.db_configuration[:database].should == "system_log"
+        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_true
+        expect(@mongodb_logger.db_configuration['database']).to eq("system_log")
+        expect(@mongodb_logger.db_configuration[:database]).to eq("system_log")
       end
     end
 
@@ -61,7 +61,7 @@ describe MongodbLogger::Logger do
 
       it "authenticate with the credentials in the configuration" do
         @mongodb_logger.send(:connect)
-        @mongodb_logger.mongo_adapter.authenticated?.should be_true
+        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_true
       end
     end
 
@@ -73,44 +73,44 @@ describe MongodbLogger::Logger do
       end
 
       it "set the default host, port, ssl and capsize if not configured" do
-        @mongo_adapter.configuration['host'].should == 'localhost'
-        @mongo_adapter.configuration['port'].should == 27017
-        @mongo_adapter.configuration['capsize'].should == MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
-        @mongo_adapter.configuration['ssl'].should == false
+        expect(@mongo_adapter.configuration['host']).to eq('localhost')
+        expect(@mongo_adapter.configuration['port']).to eq(27017)
+        expect(@mongo_adapter.configuration['capsize']).to eq(MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE)
+        expect(@mongo_adapter.configuration['ssl']).to eq(false)
       end
 
       it "set the default host, port, ssl and capsize if not configured in sym keys" do
-        @mongo_adapter.configuration[:host].should == 'localhost'
-        @mongo_adapter.configuration[:port].should == 27017
-        @mongo_adapter.configuration[:capsize].should == MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
-        @mongo_adapter.configuration[:ssl].should == false
+        expect(@mongo_adapter.configuration[:host]).to eq('localhost')
+        expect(@mongo_adapter.configuration[:port]).to eq(27017)
+        expect(@mongo_adapter.configuration[:capsize]).to eq(MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE)
+        expect(@mongo_adapter.configuration[:ssl]).to eq(false)
       end
 
       it "set the mongo collection name depending on the Rails environment" do
-         @mongo_adapter.collection_name.should == "#{Rails.env}_log"
+         expect(@mongo_adapter.collection_name).to eq("#{Rails.env}_log")
       end
 
       it "set the application name when specified in the config file" do
-        @mongo_adapter.configuration['application_name'].should == "mongo_foo"
+        expect(@mongo_adapter.configuration['application_name']).to eq("mongo_foo")
       end
 
       it "set safe insert when specified in the config file" do
-        @mongo_adapter.configuration['write_options'].should be_present
+        expect(@mongo_adapter.configuration['write_options']).to be_present
       end
 
       it "use the database name in the config file" do
-        @mongo_adapter.configuration['database'].should == "system_log"
+        expect(@mongo_adapter.configuration['database']).to eq("system_log")
       end
 
       it "not authenticate" do
-        @mongo_adapter.authenticated?.should be_false
+        expect(@mongo_adapter.authenticated?).to be_false
       end
 
       it "create a capped collection in the database with the configured size" do
         @mongodb_logger.send(:check_for_collection)
-        @mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection']).should be_true
+        expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_true
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
-        @mongo_adapter.collection_stats[:storageSize].should < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+        expect(@mongo_adapter.collection_stats[:storageSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
 
     end
@@ -124,8 +124,8 @@ describe MongodbLogger::Logger do
       end
 
       it "be true" do
-        @mongodb_logger.db_configuration['ssl'].should == true
-        @mongodb_logger.db_configuration[:ssl].should == true
+        expect(@mongodb_logger.db_configuration['ssl']).to eq(true)
+        expect(@mongodb_logger.db_configuration[:ssl]).to eq(true)
       end
     end
 
@@ -145,7 +145,7 @@ describe MongodbLogger::Logger do
 
       it "allow recreation of the capped collection to remove all records" do
         @mongo_adapter.reset_collection
-        @mongo_adapter.collection.find.count.should == 0
+        expect(@mongo_adapter.collection.find.count).to eq(0)
       end
     end
 
@@ -156,37 +156,37 @@ describe MongodbLogger::Logger do
       end
 
       it "detect logging is colorized" do
-        @mongodb_logger.send(:logging_colorized?).should be_true
+        expect(@mongodb_logger.send(:logging_colorized?)).to be_true
       end
 
       should_contain_one_log_record
 
       it "strip out colorization from log messages" do
-        @mongo_adapter.collection.find({"messages.debug" => @log_message}).count.should == 1
+        expect(@mongo_adapter.collection.find({"messages.debug" => @log_message}).count).to eq(1)
       end
     end
 
     it "add application metadata to the log record" do
       options = { "application" => self.class.name }
       log_metadata_to_mongo(options)
-      @mongo_adapter.collection.find({"application" => self.class.name}).count.should == 1
+      expect(@mongo_adapter.collection.find({"application" => self.class.name}).count).to eq(1)
     end
 
     it "not raise an exception when bson-unserializable data is logged in the :messages key" do
       log_to_mongo(Tempfile.new("foo"))
-      @mongo_adapter.collection.find.count.should == 1
+      expect(@mongo_adapter.collection.find.count).to eq(1)
     end
 
     it "not raise an exception when bson-unserializable data is logged in the :params key" do
       log_params_to_mongo({:foo => Tempfile.new("bar")})
-      @mongo_adapter.collection.find.count.should == 1
+      expect(@mongo_adapter.collection.find.count).to eq(1)
     end
 
     context "when an exception is raised" do
       it "log the exception" do
         expect { log_exception_to_mongo(EXCEPTION_MSG) }.to raise_error RuntimeError, EXCEPTION_MSG
-        @mongo_adapter.collection.find({"messages.error" => /^#{EXCEPTION_MSG}/}).count.should == 1
-        @mongo_adapter.collection.find({"is_exception" => true}).count.should == 1
+        expect(@mongo_adapter.collection.find({"messages.error" => /^#{EXCEPTION_MSG}/}).count).to eq(1)
+        expect(@mongo_adapter.collection.find({"is_exception" => true}).count).to eq(1)
       end
     end
   end
@@ -203,13 +203,13 @@ describe MongodbLogger::Logger do
       end
 
       it "not call callback function on log" do
-        MongodbLogger::Base.should_receive(:on_log_exception).exactly(0)
+        expect(MongodbLogger::Base).to receive(:on_log_exception).exactly(0)
         log_to_mongo("Test")
       end
 
       context "when an exception is raised" do
         it "should call callback function" do
-          MongodbLogger::Base.should_receive(:on_log_exception).exactly(1)
+          expect(MongodbLogger::Base).to receive(:on_log_exception).exactly(1)
           expect { log_exception_to_mongo(EXCEPTION_MSG) }.to raise_error RuntimeError, EXCEPTION_MSG
         end
       end
@@ -225,12 +225,13 @@ describe MongodbLogger::Logger do
     should_contain_one_log_record
 
     it "not log DEBUG messages" do
-      @mongo_adapter.collection.find({"messages.debug" => { "$exists" => true }}).count.should == 0
+      expect(@mongo_adapter.collection.find({"messages.debug" => { "$exists" => true }}).count).to eq(0)
     end
   end
 
   context "without file logging" do
     before do
+      @mongodb_logger = described_class.new
       setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_WITH_NO_FILE_LOGGING, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
       @log_file = Pathname.new('log.out')
       FileUtils.touch(@log_file)
@@ -242,12 +243,12 @@ describe MongodbLogger::Logger do
 
     context "in instantiation" do
       it "not call super in the initialize method" do
-        described_class.should_receive(:open).exactly(0)
+        expect(described_class).to receive(:open).exactly(0)
         MongodbLogger::Logger.new
       end
 
       it "set log" do
-        MongodbLogger::Logger.new.instance_variable_get(:@log).should be_a_kind_of(Logger)
+        expect(MongodbLogger::Logger.new.instance_variable_get(:@log)).to be_a_kind_of(Logger)
       end
     end
 
@@ -259,7 +260,7 @@ describe MongodbLogger::Logger do
         end
 
         it "not log the record to a file" do
-          File.open(@log_file.to_s, "rb").read.should be_blank
+          expect(File.open(@log_file.to_s, "rb").read).to be_blank
         end
       end
     end
@@ -274,8 +275,8 @@ describe MongodbLogger::Logger do
     end
 
     it "changed collection name" do
-      @mongo_adapter.collection.name.should == @file_config['collection']
-      @mongo_adapter.collection_stats[:collection].should == @file_config['collection']
+      expect(@mongo_adapter.collection.name).to eq(@file_config['collection'])
+      expect(@mongo_adapter.collection_stats[:collection]).to eq(@file_config['collection'])
     end
   end
 

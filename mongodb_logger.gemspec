@@ -26,7 +26,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "appraisal"
   gem.add_development_dependency "aruba"
   # for tests
-  gem.add_development_dependency "mongo"
+  gem.add_development_dependency "mongo", ">= 1.9.2"
 
   gem.add_dependency "rake",            ">= 0.9.0"
   gem.add_dependency "multi_json",      ">= 1.6.0"

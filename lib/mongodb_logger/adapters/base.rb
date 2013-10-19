@@ -19,7 +19,7 @@ module MongodbLogger
       end
 
       def rename_collection_command(admin_session, to, drop_target = false)
-        admin_session.command({ renameCollection: "#{@configuration[:database]}.#{collection_name}", to: "#{@configuration[:database]}.#{to}", dropTarget: drop_target })
+        admin_session.command(renameCollection: "#{@configuration[:database]}.#{collection_name}", to: "#{@configuration[:database]}.#{to}", dropTarget: drop_target)
       end
 
       def reset_collection
