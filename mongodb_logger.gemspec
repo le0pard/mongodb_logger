@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "coffee-script"
   gem.add_development_dependency "uglifier"
   gem.add_development_dependency "jasmine"
-  gem.add_development_dependency "appraisal"
+  gem.add_development_dependency "appraisal", ">= 0.5.2"
   gem.add_development_dependency "aruba"
   # for tests
   gem.add_development_dependency "mongo", ">= 1.9.2"
