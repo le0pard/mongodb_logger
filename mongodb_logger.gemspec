@@ -13,8 +13,8 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
   gem.rdoc_options      = ["--charset=UTF-8"]
 
-  gem.add_development_dependency "rspec"
-  gem.add_development_dependency "rspec-rails"
+  gem.add_development_dependency "rspec", ">= 2.14.0"
+  gem.add_development_dependency "rspec-rails", ">= 2.14.0"
   gem.add_development_dependency "shoulda"
   gem.add_development_dependency "mocha"
   gem.add_development_dependency "cucumber"
@@ -37,8 +37,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "erubis",          ">= 2.7.0"
   gem.add_dependency "mustache",        ">= 0.99.0"
   gem.add_dependency "vegas",           "~> 0.1.0"
-
-  gem.rubyforge_project = "mongodb_logger"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")

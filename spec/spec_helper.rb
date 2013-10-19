@@ -13,4 +13,10 @@ Dir["#{File.expand_path(File.join(File.dirname(__FILE__), "support"))}/**/*.rb"]
 
 RSpec.configure do |config|
   config.include MongodbLogger::SpecHelper
+
+  config.order = "random"
+
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
 end
