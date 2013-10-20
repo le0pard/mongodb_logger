@@ -23,7 +23,7 @@ module MongodbLogger
         "MongodbLogger Initializer Error: Rails will switched to standard logger." + "\n" +
         e.message + "\n" + e.backtrace.join("\n")
       )
-      (ENV['HEROKU_RACK'] ? logger : nil)
+      (ENV['HEROKU_RACK'] ? logger : nil) # use standard rails logger, except heroku
     end
 
   end
