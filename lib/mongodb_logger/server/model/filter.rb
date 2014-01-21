@@ -2,23 +2,21 @@ require 'mongodb_logger/server/model/additional_filter'
 
 module MongodbLogger
   module ServerModel
-    class Filter
-      
+    class Filter < Base
+
       DEFAULT_LIMIT = 100
       FIXED_PARAMS_ON_FORM = ['action', 'controller', 'ip', 'application_name', 'is_exception', 'limit']
       attr_reader :params, :mongo_conditions
       # dynamic filters
       FORM_NAME = "filter"
       attr_accessor :more_filters
-      
+
       def initialize(params)
         FIXED_PARAMS_ON_FORM.each do |key|
           create_variable(key, nil)
         end
         @params = params
-        @params.each do |k,v|
-          self.send("#{k}=", v) if self.respond_to?(k) && v && !v.blank?
-        end unless @params.blank?
+        set_params_to_methods
         # limits
         self.limit = DEFAULT_LIMIT.to_s if self.limit.nil?
         # dynamic filters
@@ -26,20 +24,14 @@ module MongodbLogger
         # build mongo conditions
         build_mongo_conditions
       end
-      
-      def create_variable(k, v)
-        self.instance_variable_set("@#{k}", v)  ##  create instance variable
-        self.class.send(:define_method, k, proc{self.instance_variable_get("@#{k}")})  ## method to return instance variable
-        self.class.send(:define_method, "#{k}=", proc{|v| self.instance_variable_set("@#{k}", v)})  ## method to set instance variable
-      end
-      
+
       def create_dynamic_filters
         self.more_filters = []
         @params[AdditionalFilter::FORM_NAME].each do |filter|
           self.more_filters << AdditionalFilter.new(filter, self)
         end if !@params.blank? && @params[AdditionalFilter::FORM_NAME] && !@params[AdditionalFilter::FORM_NAME].blank?
       end
-      
+
       def build_mongo_conditions
         @mongo_conditions = Hash.new
         FIXED_PARAMS_ON_FORM.each do |param_key|
@@ -54,31 +46,31 @@ module MongodbLogger
           end
           @mongo_conditions[param_key.to_s] = mkey_val if !mkey_val.nil? && !mkey_val.blank?
         end
-        
+
         self.more_filters.each do |m_filter|
           unless m_filter.mongo_conditions.blank?
             cond = m_filter.mongo_conditions
             if @mongo_conditions[m_filter.key] && @mongo_conditions[m_filter.key].is_a?(Hash)
               @mongo_conditions[m_filter.key].merge!(cond[m_filter.key])
             else
-             @mongo_conditions.merge!(m_filter.mongo_conditions)  
+             @mongo_conditions.merge!(m_filter.mongo_conditions)
             end
           end
         end unless self.more_filters.blank?
       end
-      
+
       def get_mongo_conditions
         @mongo_conditions
       end
-      
+
       def get_mongo_limit
         self.limit.to_i
       end
-      
+
       def form_name
         FORM_NAME
       end
-      
+
     end
   end
 end

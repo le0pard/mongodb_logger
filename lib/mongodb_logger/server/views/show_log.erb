@@ -2,8 +2,8 @@
 
 <div class="unit-right">
   <div class="pam">
-    <a href="<%=h url_path("overview") %>" data-pjax='#main_pjax' class="button small grey">Back</a>
-  </div> <!-- pam -->            
+    <a href="<%=h url_path("overview") %>" data-pjax='true' class="button small grey">Back</a>
+  </div> <!-- pam -->
 </div> <!-- unit-right -->
 <h1 class="pam">Log #<%=h @log['_id'] %></h1>
 <ul class="list">
@@ -99,6 +99,16 @@
       </div> <!-- unit -->
       <div class="unit size4of5">
         <pre><code><%= pretty_hash(meta_informations(@log)) %></code></pre>
+      </div> <!-- unit -->
+    </li>
+  <% end %>
+  <% unless @log['session'].blank? %>
+    <li class="outer pvs phm">
+      <div class="unit size1of5">
+        <span class="pale">Session:</span>
+      </div> <!-- unit -->
+      <div class="unit size4of5">
+        <pre><code><%= pretty_hash(@log['session']) %></code></pre>
       </div> <!-- unit -->
     </li>
   <% end %>

@@ -1,16 +1,21 @@
 require 'active_support/core_ext/string/inflections'
 require 'mongodb_logger/server'
+require 'capybara'
 require 'capybara/cucumber'
-
-include Capybara::DSL
+require 'capybara/dsl'
 
 Before do
-  MongodbLogger::ServerConfig.set_config_for_testing(File.join(PROJECT_ROOT, 'test/config/samples/server_config.yml'))
-  Capybara.app = MongodbLogger::Server
+  @mongo_adapter = MongodbLogger::ServerConfig.set_config(File.join(PROJECT_ROOT, 'spec/factories/config/server_config.yml'))
+  @mongo_adapter.reset_collection
+  Capybara.default_selector = :css
+  Capybara.app = Rack::Builder.new do
+    map('/assets')  { run MongodbLogger::Assets.instance }
+    map('/')        { run MongodbLogger::Server.new }
+  end
 end
 
 After do
-  MongodbLogger::ServerConfig.collection.drop
+  @mongo_adapter.collection.drop
 end
 
 Given /^homepage$/ do
@@ -18,28 +23,24 @@ Given /^homepage$/ do
 end
 
 Then /^I should see text that no logs in system$/ do
-  page.has_selector?('div', :text => 'No logs found, try to filter out the other parameters', :visible => true)
+  page.has_selector?('div', text: 'No logs found, try to filter out the other parameters', visible: true)
 end
 
-Given /^I should see start tail button$/ do
-  page.has_link?('tail_logs_link', :visible => true)
-  page.has_link?('tail_logs_stop_link', :visible => false)
+Given /^I should see show filter button$/ do
+  page.has_link?('filterLogsLink', visible: true)
+  page.has_link?('filterLogsStopLink', visible: false)
 end
 
-When /^I click on start tail button$/ do
-  click_link('tail_logs_link')
+When /^I click on show filter button$/ do
+  click_link('filterLogsLink')
 end
 
-Then /^I should see stop tails button$/ do
-  page.has_link?('tail_logs_link', :visible => false)
-  page.has_link?('tail_logs_stop_link', :visible => true)
+Then /^I should see hide filter button$/ do
+  page.has_link?('filterLogsLink', visible: false)
+  page.has_link?('filterLogsStopLink', visible: true)
 end
 
-Then /^box with time of last log tail$/ do
-  page.has_selector?('span', :id => 'tail_logs_time', :visible => true)
-end
-
-When /^I click on stop tail button$/ do
-  click_link('tail_logs_stop_link')
+When /^I click on hide filter button$/ do
+  click_link('filterLogsStopLink')
 end
 

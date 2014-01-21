@@ -1,43 +1,38 @@
 <!DOCTYPE html>
-<html>
+<!--[if IE 8]>          <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
   <title>MongoDB Logger</title>
   <link href="<%= asset_path('mongodb_logger.css') %>" media="screen" rel="stylesheet" type="text/css">
+  <script src="<%= asset_path('mongodb_logger.js') %>" type="text/javascript"></script>
 </head>
 <body>
-<div class="page">          
-  <div class="header">
-    <div class="wrapper">
-      <div class="unit-right stats">
-        <div class="unit size2of3">
-          <div class="ptxs pls"><strong>DB:</strong> <%=h @db.name %></div>
-          <div class="pls"><strong>Collection:</strong> <%=h @collection.name %></div>
-        </div> <!-- unit -->
-        <div id="collection_stats">
-          <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
+  <div class="page">
+    <div class="header">
+      <div class="wrapper">
+        <div class="unit-right stats">
+          <div class="unit size2of3">
+            <div class="ptxs pls"><strong>DB:</strong> <%=h @collection_stats[:db_name] %></div>
+            <div class="pls"><strong>Collection:</strong> <%=h @collection_stats[:collection] %></div>
+          </div> <!-- unit -->
+          <div id="collection_stats">
+            <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
+          </div>
         </div>
-      </div>
-      <a href="<%=h url_path("overview") %>" class="logo" data-pjax='#main_pjax'><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>
-    </div> <!-- wrapper -->
-  </div> <!-- header -->            
-  <div class="content">
-    <div class="wrapper">
-      <div id="main_pjax" class="mainbox">
-        <%= yield %>
-      </div> <!-- mainbox -->
-    </div> <!-- wrapper -->
-  </div> <!-- content -->
-</div>
+        <a href="<%=h url_path("overview") %>" class="logo"><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>
+      </div> <!-- wrapper -->
+    </div> <!-- header -->
+    <div class="content">
+      <div class="wrapper">
+        <div id="mainPjax" class="mainbox">
+          <%= yield %>
+        </div> <!-- mainbox -->
+      </div> <!-- wrapper -->
+    </div> <!-- content -->
+  </div>
 
-<!-- scripts -->
-<script src="<%= asset_path('mongodb_logger.js') %>" type="text/javascript"></script>
-
-<!-- charts -->
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  google.load('visualization', '1', {'packages':['corechart']});
-  google.setOnLoadCallback(MongodbLoggerMain.init_analytic_charts);
-</script>
-
+  <%= partial(:"shared/layout/mustache") %>
 </body>
 </html>

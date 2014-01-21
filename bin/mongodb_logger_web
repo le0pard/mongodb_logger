@@ -1,17 +1,15 @@
 #!/usr/bin/env ruby
-
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 begin
   require 'vegas'
 rescue LoadError
   require 'rubygems'
   require 'vegas'
-end  
+end
 require 'mongodb_logger/server'
 
-
 Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
-  :before_run => lambda {|v|
+  before_run: lambda {|v|
     config_file = (ENV['MONGODBLOGGERCONFIG'] || v.args.first)
     if config_file
       MongodbLogger::ServerConfig.set_config(config_file)
@@ -20,5 +18,5 @@ Vegas::Runner.new(MongodbLogger::Server, 'mongodb_logger_web', {
     end
   }
 }) do |runner, opts, app|
-  # 
+
 end

@@ -1,250 +1,178 @@
 root = global ? window
 
-root.MongodbLoggerMain = 
-  tail_logs_url: null
-  tail_log_started: false
-  log_info_offset: null
-  log_info_padding: 15
-  is_charts_ready: false
-  
+root.MongodbLoggerMain =
+  tailLogsUrl: null
+  tailLogStarted: false
+  logInfoOffset: null
+  logInfoPadding: 15
+  isChartsReady: false
+
   init: ->
     # spinner
-    $(document).ajaxStart =>
-      $('#ajax_loader').show()
-    $(document).ajaxStop =>
-      $('#ajax_loader').hide()
+    $(document).ajaxStart => $('#ajaxLoader').show()
+    $(document).ajaxStop => $('#ajaxLoader').hide()
     # tail logs buttons
-    $(document).on 'click', '#tail_logs_link', (event) =>
-      MongodbLoggerMain.tail_logs_url = $(event.target).attr('data-url')
-      $('#tail_logs_block').addClass('started')
-      MongodbLoggerMain.tail_logs(null)
-      return false
-    $(document).on 'click', '#tail_logs_stop_link', (event) =>
-      MongodbLoggerMain.tail_log_started = false
-      $('#tail_logs_block').removeClass('started')
-      return false
+    $(document).on 'click', '#filterLogsLink', (event) =>
+      @showFilters(event)
+    $(document).on 'click', '#filterLogsStopLink', (event) =>
+      @hideFilters(event)
     # log info click
     $(document).on 'click', '.log_info', (event) =>
-      elm_obj = $(event.target)
-      url = elm_obj.data('url')
-      url = elm_obj.parent('tr').data('url') if !url?
-      if url?
-        elm_obj.parents('table').find('tr').removeClass('current')
-        elm_obj.parent('tr').addClass('current')
-        $('#log_info').load(url)
-      return false
+      event.preventDefault()
+      element = $(event.currentTarget)
+      element.parents('table').find('tr').removeClass('current')
+      element.addClass('current')
+      $('#logInfo').html(MustacheTemplates["logs/info"]({ log: element.data('info') }))
     # filter tougle
-    $(document).on 'click', 'div.filter-toggle', (event) =>
-      $('div.filter').slideToggle()
-      $('div.filter-toggle span.arrow-down').toggleClass('rotate')
+    $(document).on 'click', 'div.filter_toggle', (event) =>
+      @toggleFilters(event)
     # additional filters
-    $(document).on 'click', '#add_more_filter', (event) =>
-      url = $(event.target).attr('href')
+    $(document).on 'click', '#addMoreFilter', (event) =>
+      event.preventDefault()
       $.ajax
-        url: url
-        success: (data) ->
-          content = $('<li></li>').html(data)
-          $('#more_filter_list').append(content)
-      return false
+        url: $(event.currentTarget).attr('href')
+        success: (data) -> $('#moreFilterList').append($('<li></li>').html(data))
     # select filter types (integer, string, date)
     $(document).on 'change', 'select.filter_type', (event) =>
-      elm_object = $(event.target)
-      url = elm_object.attr('rel') + "/" + elm_object.val()
+      event.preventDefault()
+      element = $(event.currentTarget)
+      url = "#{element.data('url')}/#{element.val()}"
       $.ajax
         url: url
         dataType: "json"
         success: (data) ->
-          cond_options = ""
-          value_input = ""
-          $.each data.conditions, (key, val) =>
-            cond_options += '<option value="' + val + '">' + val + '</option>'
-          elm_object.parents('div.filter_block').find('select.filter_conditions').empty().append(cond_options) 
-          if data.values.length > 0
-            value_input = '<select id="filter[more][]_value" name="filter[more][][value]">'
-            $.each data.values, (key, val) =>
-              value_input += '<option value="' + val + '">' + val + '</option>'
-            value_input += '</select>'
+          condOptions = []
+          $.each data.conditions, (key, val) => condOptions.push("<option value='#{val}'>#{val}</option>")
+          element.parents('div.filter_block').find('select.filter_conditions').empty().append(condOptions.join(""))
+          if data.values.length
+            valueInput = ['<select id="filter[more][]_value" name="filter[more][][value]">']
+            $.each data.values, (key, val) => valueInput.push("<option value='#{val}'>#{val}</option>")
+            valueInput.push('</select>')
           else
-            value_input = '<input type="text" name="filter[more][][value]" value="" placeholder="value">'
-          elm_object.parents('div.filter_block').find('div.filter_values').html(value_input)
-          if "date" == elm_object.val()
-            elm_object.parents('div.filter_block').find('div.filter_values input').datepicker
+            valueInput = ['<input type="text" name="filter[more][][value]" value="" placeholder="value">']
+          element.parents('div.filter_block').find('div.filter_values').html(valueInput.join(""))
+          if "date" is element.val()
+            element.parents('div.filter_block').find('div.filter_values input').datepicker
               dateFormat: "yy-mm-dd"
               changeMonth: true
               changeYear: true
               yearRange: 'c-50:c+10'
-      return false
     # delete one filter
     $(document).on 'click', '.close_more_filter', (event) =>
-      $(event.target).parents('li').remove()
-      return false
+      event.preventDefault()
+      $(event.currentTarget).parents('li').remove()
     # message tabs
     $(document).on 'click', 'li.message_tab', (event) =>
-      elm_obj = $(event.target)
-      tab = elm_obj.attr('data-tab')
-      if tab?
-        $('li.message_tab').removeClass('active')
-        $('pre.tab_content').addClass('hidden')
-        elm_obj.addClass('active')
-        $('.' + tab).removeClass('hidden')
-    # analytic form
-    $(document).on 'submit', '#analyticForm', (event) =>
-      element = $('#analyticForm')
-      url = element.attr('action')
-      data = element.serializeArray()
-      $.ajax 
-        url: url
-        dataType: 'json' 
-        data: data
-        type: "POST"
-        success: (data, textStatus, jqXHR) =>
-          MongodbLoggerMain.build_analytic_charts(data)
-      return false
-    # keydown by logs  
+      event.preventDefault()
+      element = $(event.currentTarget)
+      tab = element.data('tab')
+      $('li.message_tab').removeClass('active')
+      $('pre.tab_content').addClass('hidden')
+      element.addClass('active')
+      $(".#{tab}").removeClass('hidden')
+    # keydown by logs
     $(document).on 'keydown', '*', (event) =>
-      console.log event.keyCode
+      return if $("input").is(":focus")
       switch event.keyCode
         when 37 # left
-          MongodbLoggerMain.move_by_logs('begin')
+          MongodbLoggerMain.moveByLogs('begin')
         when 38 # up
-          MongodbLoggerMain.move_by_logs('up')
+          MongodbLoggerMain.moveByLogs('up')
         when 39 # right
-          MongodbLoggerMain.move_by_logs('end')
+          MongodbLoggerMain.moveByLogs('end')
         when 40 # down
-          MongodbLoggerMain.move_by_logs('down')
-          
+          MongodbLoggerMain.moveByLogs('down')
     # init pjax
-    this.init_pjax()
-    this.init_on_pages()
-    
-  init_pjax: ->
+    @initPjax()
+    @initOnPages()
+  showFilters: (e) ->
+    e.preventDefault()
+    $('div.filter').slideDown()
+    $('div.filter_toggle span.arrow-down').addClass('rotate')
+    $('#filterLogsBlock').addClass('started')
+  hideFilters: (e) ->
+    e.preventDefault()
+    $('div.filter').slideUp()
+    $('div.filter_toggle span.arrow-down').removeClass('rotate')
+    $('#filterLogsBlock').removeClass('started')
+  toggleFilters: (e) ->
+    if $('div.filter_toggle span.arrow-down').hasClass('rotate')
+      @hideFilters(e)
+    else
+      @showFilters(e)
+  initPjax: ->
     # pjax
-    $('a[data-pjax]').pjax()
-    $('body').bind 'pjax:start', () => 
-      $('#ajax_loader').show()
-    $('body').bind 'pjax:end', () => 
-      $('#ajax_loader').hide()
+    $(document).pjax('a[data-pjax]', '#mainPjax')
+    $(document).on 'pjax:start', => $('#ajaxLoader').show()
+    $(document).on 'pjax:end', =>
+      $('#ajaxLoader').hide()
       # stop tailing
-      MongodbLoggerMain.tail_log_started = false
+      MongodbLoggerMain.tailLogStarted = false
       # scroll on top
-      if ($(window).scrollTop() > 100)
-        $('html, body').stop().animate({ scrollTop: 0 }, 'slow')
+      $('html, body').stop().animate({ scrollTop: 0 }, 'slow') if ($(window).scrollTop() > 100)
       # init pages
-      MongodbLoggerMain.init_on_pages()
+      MongodbLoggerMain.initOnPages()
   # init this on pjax
-  init_on_pages: ->
+  initOnPages: ->
     # code highlight
-    $('pre code').each (i, e) ->
-      hljs.highlightBlock(e, '  ')
-    # callendars  
-    $( ".datepicker, .filter_values input.date" ).datepicker
+    $('pre code').each (i, e) -> hljs.highlightBlock(e, '  ')
+    # callendars
+    $(".datepicker, .filter_values input.date").datepicker
       dateFormat: "yy-mm-dd"
       changeMonth: true
       changeYear: true
       yearRange: 'c-50:c+10'
     # log info window
-    if $("#log_info").length > 0
-      MongodbLoggerMain.log_info_offset = $("#log_info").offset()
+    if $("#logInfo").length > 0
+      MongodbLoggerMain.logInfoOffset = $("#logInfo").offset()
       $(window).scroll =>
-        if $(window).scrollTop() > MongodbLoggerMain.log_info_offset.top
-          $("#log_info").stop().animate
-            marginTop: $(window).scrollTop() - MongodbLoggerMain.log_info_offset.top + MongodbLoggerMain.log_info_padding
+        if $(window).scrollTop() > MongodbLoggerMain.logInfoOffset.top
+          $("#logInfo").stop().animate
+            marginTop: $(window).scrollTop() - MongodbLoggerMain.logInfoOffset.top + MongodbLoggerMain.logInfoPadding
         else
-          $("#log_info").stop().animate
+          $("#logInfo").stop().animate
             marginTop: 0
-  # tail logs function
-  tail_logs: (log_last_id) ->
-    url = MongodbLoggerMain.tail_logs_url
-    if log_last_id? && log_last_id.length > 0
-      url = MongodbLoggerMain.tail_logs_url + "/" + log_last_id 
-    else
-      MongodbLoggerMain.tail_log_started = true
-      log_last_id = ""
-    if MongodbLoggerMain.tail_log_started
-      $.ajax
-        url: url
-        dataType: "json"
-        success: (data) ->
-          if data.time
-            $('#tail_logs_time').text(data.time)
-            if data.log_last_id?
-              log_last_id = data.log_last_id
-            if data.content? && data.content.length > 0
-              elements = $(data.content)
-              elements.addClass('newlog')
-              $('#logs_list tr:first').after(elements).effect("highlight", {}, 1000)
-            if data.collection_stats && $("#collection_stats").length > 0
-              $("#collection_stats").html(data.collection_stats)
-          if MongodbLoggerMain.tail_log_started
-            fcallback = -> MongodbLoggerMain.tail_logs(log_last_id)
-            setTimeout fcallback, 2000
   # move using keys by logs
-  move_by_logs: (direction) ->
-    if $('#logs_list').length > 0 && $('#logs_list').find('tr.current').length > 0
-      current_element = $('#logs_list').find('tr.current')
+  moveByLogs: (direction) ->
+    if $('#logsList').length and $('#logsList').find('tr.current').length
+      currentElement = $('#logsList').find('tr.current')
       switch direction
         when 'begin'
-          element = $('#logs_list tr:first').next("tr")
-          if element.length > 0
+          element = $('#logsList tr:first').next("tr")
+          if element.length
             element.find('td:first').trigger('click')
             $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
         when 'end'
-          element = $('#logs_list tr:last')
-          if element.length > 0
+          element = $('#logsList tr:last')
+          if element.length
             element.find('td:first').trigger('click')
             $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
         when 'down'
-          element = current_element.next("tr")
-          if element.length > 0
+          element = currentElement.next("tr")
+          if element.length
             element.find('td:first').trigger('click')
-            if MongodbLoggerMain.is_scrolled_into_view(element)
+            if MongodbLoggerMain.isScrolledIntoView(element)
               $(window).scrollTop($(window).scrollTop() + element.height())
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
         when 'up'
-          element = current_element.prev("tr")
-          if element.length > 0
+          element = currentElement.prev("tr")
+          if element.length
             element.find('td:first').trigger('click')
-            if MongodbLoggerMain.is_scrolled_into_view(element)
+            if MongodbLoggerMain.isScrolledIntoView(element)
               $(window).scrollTop($(window).scrollTop() - element.height())
             else
               $(window).scrollTop(element.height() + element.offset().top - 100)
             return false
-  # check in selected element is visible for user          
-  is_scrolled_into_view: (elem) ->
+  # check in selected element is visible for user
+  isScrolledIntoView: (elem) ->
     docViewTop = $(window).scrollTop()
     docViewBottom = docViewTop + $(window).height()
     elemTop = $(elem).offset().top
     elemBottom = elemTop + $(elem).height()
     return ((docViewTop < elemTop) && (docViewBottom > elemBottom))
-  # charts ready for usage
-  init_analytic_charts: ->
-    MongodbLoggerMain.is_charts_ready = true
-  # build charts
-  build_analytic_charts: (data) ->
-    if MongodbLoggerMain.is_charts_ready is true
-      if data.data?
-        data_table = new google.visualization.DataTable()
-        data_table.addColumn('date', 'Date')
-        data_table.addColumn('number', 'Requests')
-        temp_data = []
-        for row in data.data
-          temp_data.push([new Date(row['_id'].year, row['_id'].month - 1, row['_id'].day), row.value.count])
-
-        data_table.addRows(temp_data)
-        chart = new google.visualization.LineChart(document.getElementById('analyticData'))
-        options = 
-          title: $('#analytic_type option:selected').text()
-          width: '100%'
-          height: 600
-          vAxis:
-            title: $('#analytic_type option:selected').text()
-        chart.draw(data_table, options)
-    else
-      alert "Error of loading Google Charts. Sorry :("
-
-$ ->
-  MongodbLoggerMain.init()
+# init
+$ -> MongodbLoggerMain.init()

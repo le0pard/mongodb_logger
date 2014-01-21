@@ -1,0 +1,25 @@
+{{#log}}
+  <div class="pas">
+    <div class="unit-right">
+      <a href="{{web_url}}" data-pjax='true' class="button small grey">More Info</a>
+    </div> <!-- unit-right -->
+    <h2 class="phs mvs"><span class="{{is_exception_class}}">Message</span> {{_id}}</h2>
+    <div class="phs wrap_text">{{main_msg}}</div> <!-- phs -->
+    <h2 class="phs mtm mbs">URL (method: {{method}})</h2>
+    <div class="phs wrap_text">
+      <a href="{{url}}" target="_blank">{{url}}</a>
+    </div> <!-- phs -->
+    <h2 class="phs mtm mbs">Received</h2>
+    <div class="phs">{{request_time}}</div> <!-- phs -->
+    <h2 class="phs mtm mbs">IP</h2>
+    <div class="phs">
+      <a href="http://www.infosniper.net/index.php?ip_address={{ip}}&map_source=1&overview_map=1&lang=1&map_type=1&zoom_level=7" target="_blank">
+        {{ip}}
+      </a>
+    </div> <!-- phs -->
+    <h2 class="phs mtm mbs">Params</h2>
+    <div class="phs max-size-code">
+      <pre><code>{{{params}}}</code></pre>
+    </div> <!-- phs -->
+  </div> <!-- pas -->
+{{/log}}

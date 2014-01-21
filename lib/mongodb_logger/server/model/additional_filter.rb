@@ -2,66 +2,58 @@ require 'date'
 
 module MongodbLogger
   module ServerModel
-    class AdditionalFilter
-      
+    class AdditionalFilter < Base
+
       FORM_NAME               = "more"
       FIXED_PARAMS_ON_FORM    = ['type', 'key', 'condition', 'value']
-      
+
       VAR_TYPES               = ["integer", "string", "boolean", "date"]
-      
+
       VAR_TYPE_CONDITIONS = [
         ["equals", "not equals", "regexes", "<", "<=", ">=", ">"],
         ["equals", "not equals", "regexes", "<", "<=", ">=", ">"],
         ["equals", "exists"],
         ["<", "<=", ">=", ">"]
       ]
-      
+
       VAR_TYPE_VALUES = [
         [],
         [],
         ["true", "false"],
         []
       ]
-      
+
       attr_reader :form_data, :filter_model
-      
+
       def initialize(params, filter_model)
         @filter_model = filter_model
         @params = params
         FIXED_PARAMS_ON_FORM.each do |key|
           create_variable(key, nil)
         end
-        @params.each do |k,v|
-          self.send("#{k}=", v) if self.respond_to?(k) && v && !v.blank?
-        end unless @params.blank?
+        set_params_to_methods
       end
-      
-      def create_variable(k, v)
-        self.instance_variable_set("@#{k}", v)  ##  create instance variable
-        self.class.send(:define_method, k, proc{self.instance_variable_get("@#{k}")})  ## method to return instance variable
-        self.class.send(:define_method, "#{k}=", proc{|v| self.instance_variable_set("@#{k}", v)})  ## method to set instance variable
-      end
-      
+
       def self.get_type_index(type)
         type.nil? ? 0 : VAR_TYPES.index(type)
       end
-      
+
       def get_type_index
         @type.nil? ? 0 : VAR_TYPES.index(@type)
       end
-      
+
       def selected_values
         VAR_TYPE_VALUES[get_type_index]
       end
-      
+
       def is_selected_values?
         !VAR_TYPE_VALUES[get_type_index].blank?
       end
-      
+
       def form_name
         "#{filter_model.form_name}[#{FORM_NAME}][]"
       end
-      
+
       def mongo_conditions
         data = Hash.new
         return data if self.key.blank?
@@ -98,7 +90,7 @@ module MongodbLogger
         end
         data
       end
-    
+
     end
   end
 end

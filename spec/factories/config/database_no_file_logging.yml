@@ -1,0 +1,12 @@
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+  mongodb_logger:
+    database: system_log
+    application_name: mongo_foo
+    write_options: 
+      w: 1
+      wtimeout: 200
+    disable_file_logging: true

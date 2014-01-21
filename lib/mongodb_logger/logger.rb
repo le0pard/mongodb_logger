@@ -1,14 +1,14 @@
 require 'erb'
 require 'uri'
-require 'mongo'
 require 'active_support'
 require 'active_support/core_ext'
-require 'active_support/core_ext/logger'
 require 'action_dispatch/http/upload'
+require 'mongodb_logger/rails_logger'
+require 'mongodb_logger/adapters'
 require 'mongodb_logger/replica_set_helper'
 
 module MongodbLogger
-  class Logger < ActiveSupport::BufferedLogger
+  class Logger < RailsLogger
     include ReplicaSetHelper
 
     DEFAULT_COLLECTION_SIZE = 250.megabytes
@@ -16,15 +16,20 @@ module MongodbLogger
     CONFIGURATION_FILES = ["mongodb_logger.yml", "mongoid.yml", "database.yml"]
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
 
-    attr_reader :db_configuration, :mongo_connection, :mongo_collection_name, :mongo_collection, :mongo_connection_type
+    ADAPTERS = [
+      ["mongo", Adapers::Mongo],
+      ["moped", Adapers::Moped]
+    ]
 
-    def initialize(options={})
-      path = options[:path] || File.join(Rails.root, "log/#{Rails.env}.log")
-      @level = options[:level] || DEBUG
+    attr_reader :db_configuration, :mongo_adapter
+
+    def initialize(path = nil, level = DEBUG)
+      path ||= File.join(Rails.root, "log/#{Rails.env}.log")
+      @level = level
       internal_initialize
     rescue => e
       # should use a config block for this
-      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using BufferedLogger due to exception: " + e.message)
+      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using Rails Logger due to exception: #{e.message}")
     ensure
       if disable_file_logging?
         @log            = ::Logger.new(STDOUT)
@@ -34,9 +39,9 @@ module MongodbLogger
       end
     end
 
-    def add_metadata(options={})
+    def add_metadata(options = {})
       options.each do |key, value|
-        unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :method].include?(key.to_sym)
+        unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :session, :method].include?(key.to_sym)
           @mongo_record[key] = value
         else
           raise ArgumentError, ":#{key} is a reserved key for the mongodb logger. Please choose a different key"
@@ -46,33 +51,26 @@ module MongodbLogger
 
     def add(severity, message = nil, progname = nil, &block)
       $stdout.puts(message) if ENV['HEROKU_RACK'] # log in stdout on Heroku
-      if @level && @level <= severity && message.present? && @mongo_record.present?
+      if @level && @level <= severity && (message.present? || progname.present?) && @mongo_record.present?
         # do not modify the original message used by the buffered logger
-        msg = logging_colorized? ? message.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : message
+        msg = (message ? message : progname)
+        msg = logging_colorized? ? msg.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : msg
         @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
       end
       # may modify the original message
       disable_file_logging? ? message : (@level ? super : message)
     end
 
-    # Drop the capped_collection and recreate it
-    def reset_collection
-      if @mongo_connection && @mongo_collection
-        @mongo_collection.drop
-        create_collection
-      end
-    end
-
-    def mongoize(options={})
+    def mongoize(options = {})
       @mongo_record = options.merge({
-        :messages => Hash.new { |hash, key| hash[key] = Array.new },
-        :request_time => Time.now.getutc,
-        :application_name => @application_name
+        messages: Hash.new { |hash, key| hash[key] = Array.new },
+        request_time: Time.now.getutc,
+        application_name: @db_configuration['application_name']
       })
 
       runtime = Benchmark.measure{ yield }.real if block_given?
     rescue Exception => e
-      add(3, e.message.to_s + "\n" + e.backtrace.join("\n"))
+      add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
       # log exceptions
       @mongo_record[:is_exception]      = true
       @mongo_record[:exception_message] = "(#{e.class}) #{e.message.inspect}"
@@ -88,164 +86,126 @@ module MongodbLogger
       rescue
         begin
           # try to nice serialize record
-          nice_serialize @mongo_record
+          record_serializer @mongo_record, true
           @insert_block.call
         rescue
-          # do extra work to inpect (and flatten)
-          force_serialize @mongo_record
+          # do extra work to inspect (and flatten)
+          record_serializer @mongo_record, false
           @insert_block.call rescue nil
         end
       end
     end
 
-    def authenticated?
-      @authenticated
+    private
+
+    def internal_initialize
+      configure
+      connect
+      check_for_collection
     end
 
-    private
-      # facilitate testing
-      def internal_initialize
-        configure
-        connect
-        check_for_collection
-      end
+    def disable_file_logging?
+      @db_configuration.fetch(:disable_file_logging, false)
+    end
 
-      def disable_file_logging?
-        @db_configuration.fetch('disable_file_logging', false)
-      end
+    def configure
+      default_capsize = DEFAULT_COLLECTION_SIZE
+      @db_configuration = {
+        host: 'localhost',
+        port: 27017,
+        capsize: default_capsize,
+        ssl: false}.merge(resolve_config).with_indifferent_access
+      @db_configuration[:collection] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
+      @db_configuration[:application_name] ||= resolve_application_name
+      @db_configuration[:write_options] ||= { w: 0, wtimeout: 200 }
 
-      def configure
-        default_capsize = DEFAULT_COLLECTION_SIZE
-        @authenticated = false
-        @db_configuration = {
-          'host' => 'localhost',
-          'port' => 27017,
-          'capsize' => default_capsize}.merge(resolve_config)
-        @mongo_collection_name = @db_configuration['collection'] || "#{Rails.env}_log"
-        @application_name = resolve_application_name
-        @safe_insert = @db_configuration['safe_insert'] || false
+      @insert_block = @db_configuration.has_key?(:replica_set) && @db_configuration[:replica_set] ?
+        lambda { rescue_connection_failure{ insert_log_record(@db_configuration[:write_options]) } } :
+        lambda { insert_log_record(@db_configuration[:write_options]) }
+    end
 
-        @insert_block = @db_configuration.has_key?('replica_set') && @db_configuration['replica_set'] ?
-          lambda { rescue_connection_failure{ insert_log_record(@safe_insert) } } :
-          lambda { insert_log_record }
-      end
+    def resolve_application_name
+      Rails.application.class.to_s.split("::").first if defined?(Rails)
+    end
 
-      def resolve_application_name
-        if @db_configuration.has_key?('application_name')
-          @db_configuration['application_name']
-        else
-          Rails.application.class.to_s.split("::").first
+    def resolve_config
+      config = {}
+      CONFIGURATION_FILES.each do |filename|
+        config_file = Rails.root.join("config", filename)
+        if config_file.file?
+          config = YAML.load(ERB.new(config_file.read).result)[Rails.env.to_s]
+          config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
+          break unless config.blank?
         end
       end
+      config
+    end
 
-      def resolve_config
-        config = {}
-        CONFIGURATION_FILES.each do |filename|
-          config_file = Rails.root.join("config", filename)
-          if config_file.file?
-            config = YAML.load(ERB.new(config_file.read).result)[Rails.env]
-            config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
-            break unless config.blank?
-          end
-        end
-        config
-      end
+    def find_adapter
+      return Adapers::Mongo if defined?(::Mongo)
+      return Adapers::Moped if defined?(::Moped)
 
-      def mongo_connection_object
-        if @db_configuration['hosts']
-          conn = Mongo::ReplSetConnection.new(*(@db_configuration['hosts'] <<
-            {:connect => true, :pool_timeout => 6}))
-          @db_configuration['replica_set'] = true
-        elsif @db_configuration['url']
-          conn = Mongo::Connection.from_uri(@db_configuration['url'])
-        else
-          conn = Mongo::Connection.new(@db_configuration['host'],
-                                       @db_configuration['port'],
-                                       :connect => true,
-                                       :pool_timeout => 6)
-        end
-        @mongo_connection_type = conn.class
-        conn
-      end
-
-      def connect
-        if @db_configuration['url']
-          uri = URI.parse(@db_configuration['url'])
-          @mongo_connection ||= mongo_connection_object.db(uri.path.gsub(/^\//, ''))
-          @authenticated = true
-        else
-          @mongo_connection ||= mongo_connection_object.db(@db_configuration['database'])
-          if @db_configuration['username'] && @db_configuration['password']
-            # the driver stores credentials in case reconnection is required
-            @authenticated = @mongo_connection.authenticate(@db_configuration['username'],
-                                                          @db_configuration['password'])
-          end
+      ADAPTERS.each do |(library, adapter)|
+        begin
+          require library
+          return adapter
+        rescue LoadError
+          next
         end
       end
+      return nil
+    end
 
-      def create_collection
-        @mongo_connection.create_collection(@mongo_collection_name,
-                                            {:capped => true, :size => @db_configuration['capsize'].to_i})
-      end
+    def connect
+      adapter = find_adapter
+      raise "!!! MongodbLogger not found supported adapter. Please, add mongo with bson_ext gems or moped gem into Gemfile !!!" if adapter.nil?
+      @mongo_adapter ||= adapter.new(@db_configuration)
+      @db_configuration = @mongo_adapter.configuration
+    end
 
-      def check_for_collection
-        # setup the capped collection if it doesn't already exist
-        create_collection unless @mongo_connection.collection_names.include?(@mongo_collection_name)
-        @mongo_collection = @mongo_connection[@mongo_collection_name]
-      end
+    def check_for_collection
+      @mongo_adapter.check_for_collection
+    end
 
-      def insert_log_record(safe = false)
-        @mongo_collection.insert(@mongo_record, :safe => safe)
-      end
+    def insert_log_record(write_options)
+      @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
+    end
 
-      def logging_colorized?
-        # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
-        @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
-      end
+    def logging_colorized?
+      # Cache it since these ActiveRecord attributes are assigned after logger initialization occurs in Rails boot
+      @colorized ||= Object.const_defined?(:ActiveRecord) && ActiveRecord::LogSubscriber.colorize_logging
+    end
 
-      # try to serialyze data by each key and found invalid object
-      def nice_serialize(rec)
-        if msgs = rec[:messages]
+    # try to serialyze data by each key and found invalid object
+    def record_serializer(rec, nice = true)
+      [:messages, :params].each do |key|
+        if msgs = rec[key]
           msgs.each do |i, j|
-            msgs[i] = nice_serialize_object(j)
-          end
-        end
-        if pms = rec[:params]
-          pms.each do |i, j|
-            pms[i] = nice_serialize_object(j)
+            msgs[i] = (true == nice ? nice_serialize_object(j) : j.inspect)
           end
         end
       end
+    end
 
-      def nice_serialize_object(data)
-        case data
-          when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
-            data
-          when Hash
-            hvalues = Hash.new
-            data.each{|k,v| hvalues[k] = nice_serialize_object(v) }
-            hvalues
-          when Array
-            data.map{|v| nice_serialize_object(v) }
-          when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
-            hvalues = {
-              :original_filename => data.original_filename,
-              :content_type => data.content_type
-            }
-          else
-            data.inspect
-        end
+    def nice_serialize_object(data)
+      case data
+        when NilClass, String, Fixnum, Bignum, Float, TrueClass, FalseClass, Time, Regexp, Symbol
+          data
+        when Hash
+          hvalues = Hash.new
+          data.each{ |k,v| hvalues[k] = nice_serialize_object(v) }
+          hvalues
+        when Array
+          data.map{ |v| nice_serialize_object(v) }
+        when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile # uploaded files
+          {
+            original_filename: data.original_filename,
+            content_type: data.content_type
+          }
+        else
+          data.inspect
       end
+    end
 
-      # force the data in the db by inspecting each top level array and hash element
-      # this will flatten other hashes and arrays
-      def force_serialize(rec)
-        if msgs = rec[:messages]
-          msgs.each { |i, j| msgs[i] = j.inspect }
-        end
-        if pms = rec[:params]
-          pms.each { |i, j| pms[i] = j.inspect }
-        end
-      end
   end
 end

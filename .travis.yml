@@ -1,19 +1,26 @@
-before_script:
-  - "sh -e /etc/init.d/xvfb start"
-script: "sh -c 'export DISPLAY=:99.0 && test/test.sh'"
 language: ruby
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - gem install bundler --pre
+before_script:
+  - bundle exec rake appraisal:install
 services:
   - mongodb
 rvm:
-  - 1.9.2
   - 1.9.3
-#  - ruby-head
-#  - jruby-head
+  - 2.0.0
+  - jruby-19mode
+  - ruby-head
+  - jruby-head
 notifications:
   email: false
 branches:
   only:
     - master
     - development
-    - gem
-#bundler_args: --path vendor/bundle
+matrix:
+  allow_failures:
+    - rvm: jruby-19mode
+    - rvm: ruby-head
+    - rvm: jruby-head

@@ -1,0 +1,6 @@
+<script type="text/javascript">
+  window.MustacheTemplates = {};
+  <% Dir["#{File.expand_path(File.join(@main_dir, "server", "templates"))}/**/*.mustache"].each do |template| %>
+    window.MustacheTemplates[<%= template.split(File::SEPARATOR).last(2).join("/").gsub(".mustache", "").inspect %>] = Mustache.compile(<%= File.open(template, 'rb').read.inspect %>);
+  <% end %>
+</script>
