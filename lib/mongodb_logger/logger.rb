@@ -72,7 +72,8 @@ module MongodbLogger
     rescue Exception => e
       add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
       # log exceptions
-      @mongo_record[:is_exception] = true
+      @mongo_record[:is_exception]      = true
+      @mongo_record[:exception_message] = "(#{e.class}) #{e.message.inspect}"
       # Reraise the exception for anyone else who cares
       raise e
     ensure
