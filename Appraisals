@@ -9,7 +9,7 @@ appraise "rails32" do
 end
 
 appraise "rails40" do
-  gem "rails", "4.0.0"
+  gem "rails", "~> 4.0.2"
   gem "minitest", "~> 4.0"
   gem "mongodb_logger", :path => "../"
 end
