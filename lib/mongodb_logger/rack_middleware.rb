@@ -22,7 +22,15 @@ module MongodbLogger
         ip:         request_ip(request)
       }
 
-      Rails.logger.mongoize(log_attrs) do
+      @logger ||= if defined?(Rails)
+                    Rails.logger
+                  elsif defined?(LOGGER)
+                    LOGGER
+                  else
+                    MongodbLogger::Logger.new
+                  end
+
+      @logger.mongoize(log_attrs) do
         return @app.call(env)
       end
     end
