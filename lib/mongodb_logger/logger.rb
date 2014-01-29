@@ -21,21 +21,26 @@ module MongodbLogger
       ["moped", Adapers::Moped]
     ]
 
-    attr_reader :db_configuration, :mongo_adapter
+    attr_reader   :db_configuration, :mongo_adapter
+    attr_accessor :excluded_from_log
 
     def initialize(path = nil, level = DEBUG)
-      path ||= File.join(Rails.root, "log/#{Rails.env}.log")
-      @level = level
-      internal_initialize
-    rescue => e
-      # should use a config block for this
-      Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using Rails Logger due to exception: #{e.message}")
-    ensure
-      if disable_file_logging?
-        @log            = ::Logger.new(STDOUT)
-        @log.level      = @level
-      else
-        super(path, @level)
+      set_root_and_env
+
+      begin
+        path ||= File.join(@app_root, "log/#{@app_env}.log")
+        @level = level
+        internal_initialize
+      rescue => e
+        # should use a config block for this
+        Rails.env.production? ? (raise e) : (puts "MongodbLogger WARNING: Using Rails Logger due to exception: #{e.message}")
+      ensure
+        if disable_file_logging?
+          @log            = ::Logger.new(STDOUT)
+          @log.level      = @level
+        else
+          super(path, @level)
+        end
       end
     end
 
@@ -114,7 +119,7 @@ module MongodbLogger
         port: 27017,
         capsize: default_capsize,
         ssl: false}.merge(resolve_config).with_indifferent_access
-      @db_configuration[:collection] ||= defined?(Rails) ? "#{Rails.env}_log" : "production_log"
+      @db_configuration[:collection] ||= "#{@app_env}_log"
       @db_configuration[:application_name] ||= resolve_application_name
       @db_configuration[:write_options] ||= { w: 0, wtimeout: 200 }
 
@@ -130,9 +135,9 @@ module MongodbLogger
     def resolve_config
       config = {}
       CONFIGURATION_FILES.each do |filename|
-        config_file = Rails.root.join("config", filename)
-        if config_file.file?
-          config = YAML.load(ERB.new(config_file.read).result)[Rails.env.to_s]
+        config_file = File.join(@app_root, 'config', filename)
+        if File.file? config_file
+          config = YAML.load(ERB.new(File.new(config_file).read).result)[@app_env]
           config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
           break unless config.blank?
         end
@@ -167,6 +172,7 @@ module MongodbLogger
     end
 
     def insert_log_record(write_options)
+      return if (excluded_from_log || {}).any? { |k, v| v.include?(@mongo_record[k]) }
       @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
     end
 
@@ -203,6 +209,18 @@ module MongodbLogger
           }
         else
           data.inspect
+      end
+    end
+
+    def set_root_and_env
+      if defined? Rails
+        @app_root = Rails.root.to_s
+        @app_env  = Rails.env.to_s
+      elsif defined? RACK_ROOT
+        @app_root = RACK_ROOT
+        @app_env  = ENV['RACK_ENV'] || 'production'
+      else
+        raise 'Please define RACK_ROOT in the top of your config.ru like this: RACK_ROOT = File.dirname(__FILE__)'
       end
     end
 
