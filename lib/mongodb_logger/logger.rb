@@ -21,7 +21,8 @@ module MongodbLogger
       ["moped", Adapers::Moped]
     ]
 
-    attr_reader :db_configuration, :mongo_adapter
+    attr_reader   :db_configuration, :mongo_adapter
+    attr_accessor :excluded_from_log
 
     def initialize(path = nil, level = DEBUG)
       set_root_and_env
@@ -171,6 +172,7 @@ module MongodbLogger
     end
 
     def insert_log_record(write_options)
+      return if (excluded_from_log || {}).any? { |k, v| v.include?(@mongo_record[k]) }
       @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
     end
 

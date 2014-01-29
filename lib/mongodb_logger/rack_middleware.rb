@@ -1,6 +1,12 @@
 # Rack middleware for mounted rack app (e.g Grape)
 module MongodbLogger
   class RackMiddleware
+    @@log_attributes_filter = nil
+
+    def self.log_attributes_filter=(filter)
+      @@log_attributes_filter = filter
+    end
+
     def initialize(app)
       @app = app
     end
@@ -21,6 +27,8 @@ module MongodbLogger
         params:     request.params,
         ip:         request_ip(request)
       }
+
+      log_attrs = @@log_attributes_filter.call(log_attrs) if @@log_attributes_filter
 
       @logger ||= if defined?(Rails)
                     Rails.logger
