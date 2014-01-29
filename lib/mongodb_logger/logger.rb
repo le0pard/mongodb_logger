@@ -219,8 +219,6 @@ module MongodbLogger
       elsif defined? RACK_ROOT
         @app_root = RACK_ROOT
         @app_env  = ENV['RACK_ENV'] || 'production'
-      else
-        raise 'Please define RACK_ROOT in the top of your config.ru like this: RACK_ROOT = File.dirname(__FILE__)'
       end
     end
 
