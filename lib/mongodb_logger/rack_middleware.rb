@@ -20,7 +20,7 @@ module MongodbLogger
       path = request.path.split('/')
       log_attrs = {
         method:     request.request_method,
-        action:     path[2..-1].join('/'),
+        action:     (path[2..-1] || []).join('/'),
         controller: path[1],
         path:       request.path,
         url:        request.url,
