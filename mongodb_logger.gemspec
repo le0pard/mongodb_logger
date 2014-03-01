@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
 
   gem.extra_rdoc_files  = [ "LICENSE", "README.md" ]
   gem.rdoc_options      = ["--charset=UTF-8"]
+  gem.licenses          = ["MIT"]
 
   gem.add_development_dependency "rspec", ">= 2.14.0"
   gem.add_development_dependency "rspec-rails", ">= 2.14.0"
@@ -26,7 +27,9 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "appraisal", ">= 0.5.2"
   gem.add_development_dependency "aruba"
   # for tests
+  gem.add_development_dependency "rails", ">= 3.1.0"
   gem.add_development_dependency "mongo", ">= 1.9.2"
+  #gem.add_development_dependency "moped", "2.0.0.beta6"
 
   gem.add_dependency "rake",            ">= 0.9.0"
   gem.add_dependency "multi_json",      ">= 1.6.0"

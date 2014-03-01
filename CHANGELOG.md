@@ -1,6 +1,8 @@
 ## master
 
 * Allows a user to override the request_ip method (#56)
+* Better support Sinatra apps (#60)
+* Support moped 2.0.0
 
 ## 0.6.2
 

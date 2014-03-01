@@ -2,7 +2,8 @@
 require 'rubygems'
 require 'bundler'
 
-Bundler.require
+Bundler.require(:default)
+
 require 'rake'
 require 'rake/testtask'
 require 'bundler/gem_tasks'

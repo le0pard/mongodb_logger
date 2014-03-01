@@ -6,10 +6,10 @@ require 'mongodb_logger/server'
 
 # Set the MONGODBLOGGERCONFIG env variable
 # config file you want loaded on boot.
-if ENV['MONGODBLOGGERCONFIG'] && ::File.exists?(::File.expand_path(ENV['MONGODBLOGGERCONFIG']))
+if ENV['MONGODBLOGGERCONFIG'] && ::File.file?(::File.expand_path(ENV['MONGODBLOGGERCONFIG']))
   MongodbLogger::ServerConfig.set_config(::File.expand_path(ENV['MONGODBLOGGERCONFIG']))
   use Rack::ShowExceptions
-  
+
   map '/assets' do
     run MongodbLogger::Assets.instance
   end

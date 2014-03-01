@@ -10,7 +10,7 @@ module MongodbLogger
     def initialize(app)
       @app = app
     end
-    
+
     def request_ip(request)
       return request.env["REMOTE_ADDR"]
     end
@@ -30,16 +30,20 @@ module MongodbLogger
 
       log_attrs = @@log_attributes_filter.call(log_attrs) if @@log_attributes_filter
 
-      @logger ||= if defined?(Rails)
-                    Rails.logger
-                  elsif defined?(LOGGER)
-                    LOGGER
-                  else
-                    MongodbLogger::Logger.new
-                  end
-
-      @logger.mongoize(log_attrs) do
+      logger.mongoize(log_attrs) do
         return @app.call(env)
+      end
+    end
+
+    private
+
+    def logger
+      @logger ||= if defined?(Rails)
+        Rails.logger
+      elsif defined?(LOGGER)
+        LOGGER
+      else
+        MongodbLogger::Logger.new
       end
     end
   end
