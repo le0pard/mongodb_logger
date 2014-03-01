@@ -16,17 +16,14 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "rspec", ">= 2.14.0"
   gem.add_development_dependency "rspec-rails", ">= 2.14.0"
-  gem.add_development_dependency "shoulda"
-  gem.add_development_dependency "mocha"
   gem.add_development_dependency "cucumber"
   gem.add_development_dependency "cucumber-rails"
-  gem.add_development_dependency "capybara", '2.0.3'
-  gem.add_development_dependency "coffee-script"
-  gem.add_development_dependency "uglifier"
-  gem.add_development_dependency "jasmine"
+  gem.add_development_dependency "capybara", '2.2.1'
   gem.add_development_dependency "appraisal", ">= 0.5.2"
   gem.add_development_dependency "aruba"
   # for tests
+  gem.add_development_dependency "coffee-script"
+  gem.add_development_dependency "uglifier"
   gem.add_development_dependency "rails", ">= 3.1.0"
   gem.add_development_dependency "mongo", ">= 1.9.2"
   #gem.add_development_dependency "moped", "2.0.0.beta6"

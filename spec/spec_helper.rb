@@ -1,8 +1,5 @@
 require 'rspec'
 
-require 'mocha/api'
-require 'shoulda'
-
 require 'tempfile'
 require 'pathname'
 require 'fileutils'
