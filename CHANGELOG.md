@@ -1,8 +1,13 @@
 ## master
 
+
+## 0.6.3
+
 * Allows a user to override the request_ip method (#56)
 * Better support Sinatra apps (#60)
-* Support moped 2.0.0
+* Support moped 2.0.0.beta8
+* Support Rails 4.1.0.rc1
+* Removed unused actionpack
 
 ## 0.6.2
 
