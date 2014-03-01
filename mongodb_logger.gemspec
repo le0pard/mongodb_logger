@@ -21,16 +21,15 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "capybara", '~> 2.2.1'
   gem.add_development_dependency "appraisal", "~> 0.5.2"
   gem.add_development_dependency "aruba", "~> 0.5.4"
-  # for tests
-  gem.add_development_dependency "coffee-script", ">= 2.0.0"
+  # for tests deps
+  gem.add_development_dependency "coffee-script", "~> 2.2"
   gem.add_development_dependency "rails", ">= 3.1.0"
-  gem.add_development_dependency "mongo", ">= 1.9.2"
+  gem.add_development_dependency "mongo", "~> 1.9"
   #gem.add_development_dependency "moped", "2.0.0.beta6"
 
   gem.add_dependency "rake",            "~> 10.0"
   gem.add_dependency "multi_json",      "~> 1.8"
   gem.add_dependency "activesupport",   ">= 3.1.0"
-  gem.add_dependency "actionpack",      ">= 3.1.0"
   gem.add_dependency "sprockets",       ">= 2.0.0"
   gem.add_dependency "sinatra",         ">= 1.3"
   gem.add_dependency "erubis",          "~> 2.7"
