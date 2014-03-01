@@ -10,3 +10,8 @@ appraise "rails40" do
   gem "rails", "~> 4.0.2"
   gem "minitest", "~> 4.0"
 end
+
+appraise "rails41" do
+  gem "rails", "4.1.0.rc1"
+  gem "minitest", ">= 4.0"
+end
