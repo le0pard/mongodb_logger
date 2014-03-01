@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/le0pard/mongodb_logger.png)](https://travis-ci.org/le0pard/mongodb_logger)
 [![Code Climate](https://codeclimate.com/github/le0pard/mongodb_logger.png)](https://codeclimate.com/github/le0pard/mongodb_logger)
 
-MongodbLogger is a alternative logger for Rails, which log all requests of you application into MongoDB database.
+MongodbLogger is a alternative logger for Rails or Rack based app, which log all requests of you application into MongoDB database.
 It:
 
 * simple to integrate into existing Rails application;
@@ -42,7 +42,7 @@ Doesn't support the Rails version below 3.
         mkdir vendor/plugins/rails_log_stdout
         touch vendor/plugins/rails_log_stdout/.gitkeep
 
-   For Rails 4 just remove from Gemfile "rails_12factor" rubygem.
+   For Rails 4 just remove from Gemfile "rails_12factor" gem.
 
 1. Add MongodbLogger settings to database.yml for each environment in which you want to use the MongodbLogger. The MongodbLogger will also
    look for a separate mongodb\_logger.yml or mongoid.yml (if you are using mongoid) before looking in database.yml.
