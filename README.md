@@ -289,4 +289,4 @@ Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https:/
     >> collection.find({:request_time => {'$gt' => Time.utc(2010, 11, 18, 22, 59, 52)}})
 
 
-Copyright (c) 2009-2012 Phil Burrows, CustomInk (based on https://github.com/customink/central_logger) and Leopard released under the MIT license
+Copyright (c) 2009-2014 Phil Burrows, CustomInk (based on https://github.com/customink/central_logger) and Leopard released under the MIT license

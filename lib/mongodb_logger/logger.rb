@@ -17,8 +17,8 @@ module MongodbLogger
     LOG_LEVEL_SYM = [:debug, :info, :warn, :error, :fatal, :unknown]
 
     ADAPTERS = [
-      ["moped", Adapers::Moped],
-      ["mongo", Adapers::Mongo]
+      ["mongo", Adapers::Mongo],
+      ["moped", Adapers::Moped]
     ]
 
     attr_reader   :db_configuration, :mongo_adapter, :app_root, :app_env
@@ -116,11 +116,10 @@ module MongodbLogger
     end
 
     def configure
-      default_capsize = DEFAULT_COLLECTION_SIZE
       @db_configuration = {
         host: 'localhost',
         port: 27017,
-        capsize: default_capsize,
+        capsize: DEFAULT_COLLECTION_SIZE,
         ssl: false}.merge(resolve_config).with_indifferent_access
       @db_configuration[:collection] ||= "#{app_env}_log"
       @db_configuration[:application_name] ||= resolve_application_name
@@ -132,20 +131,30 @@ module MongodbLogger
     end
 
     def resolve_application_name
-      Rails.application.class.to_s.split("::").first if defined?(Rails)
+      if defined?(Rails)
+        Rails.application.class.to_s.split("::").first
+      else
+        "RackApp"
+      end
     end
 
     def resolve_config
       config = {}
       CONFIGURATION_FILES.each do |filename|
         config_file = File.join(app_root, 'config', filename)
-        if File.file? config_file
-          config = YAML.load(ERB.new(File.new(config_file).read).result)[app_env]
-          config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
-          break unless config.blank?
-        end
+        config = read_config_from_file(config_file)
+        break unless config.blank?
       end
       config
+    end
+
+    def read_config_from_file(file)
+      if File.file? config_file
+        config = YAML.load(ERB.new(File.new(config_file).read).result)[app_env]
+        config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
+        return config unless config.blank?
+      end
+      return nil
     end
 
     def find_adapter
@@ -221,7 +230,7 @@ module MongodbLogger
       elsif defined? RACK_ROOT
         @app_root, @app_env = RACK_ROOT, (ENV['RACK_ENV'] || 'production')
       else
-        raise "unknown app type: not Rails or Rack"
+        @app_root, @app_env = File.dirname(__FILE__), 'production'
       end
     end
 

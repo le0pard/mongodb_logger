@@ -11,10 +11,6 @@ module MongodbLogger
         config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
         config
       end
-
-      def set_root_and_env
-        @app_root, @app_env = File.dirname(__FILE__), 'production'
-      end
     end
 
     class << self
