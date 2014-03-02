@@ -56,10 +56,7 @@ module MongodbLogger
     def add(severity, message = nil, progname = nil, &block)
       $stdout.puts(message) if ENV['HEROKU_RACK'] # log in stdout on Heroku
       if @level && @level <= severity && (message.present? || progname.present?) && @mongo_record.present?
-        # do not modify the original message used by the buffered logger
-        msg = (message ? message : progname)
-        msg = logging_colorized? ? msg.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : msg
-        @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
+        add_log_message(severity, message, progname)
       end
       # may modify the original message
       disable_file_logging? ? message : (@level ? super : message)
@@ -74,9 +71,7 @@ module MongodbLogger
 
       runtime = Benchmark.measure{ yield }.real if block_given?
     rescue Exception => e
-      add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
-      # log exceptions
-      @mongo_record[:is_exception] = true
+      log_raised_error(e)
       # Reraise the exception for anyone else who cares
       raise e
     ensure
@@ -84,19 +79,7 @@ module MongodbLogger
       @mongo_record[:runtime] = ((runtime ||= 0) * 1000).ceil
       # error callback
       Base.on_log_exception(@mongo_record) if @mongo_record[:is_exception]
-      begin
-        @insert_block.call
-      rescue
-        begin
-          # try to nice serialize record
-          record_serializer @mongo_record, true
-          @insert_block.call
-        rescue
-          # do extra work to inspect (and flatten)
-          record_serializer @mongo_record, false
-          @insert_block.call rescue nil
-        end
-      end
+      ensure_write_to_mongodb
     end
 
     def excluded_from_log
@@ -135,6 +118,33 @@ module MongodbLogger
         Rails.application.class.to_s.split("::").first
       else
         "RackApp"
+      end
+    end
+
+    def add_log_message(severity, message, progname)
+      # do not modify the original message used by the buffered logger
+      msg = (message ? message : progname)
+      msg = logging_colorized? ? msg.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : msg
+      @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
+    end
+
+    def log_raised_error(e)
+      add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
+      # log exceptions
+      @mongo_record[:is_exception] = true
+    end
+
+    def ensure_write_to_mongodb
+      @insert_block.call
+    rescue
+      begin
+        # try to nice serialize record
+        record_serializer @mongo_record, true
+        @insert_block.call
+      rescue
+        # do extra work to inspect (and flatten)
+        record_serializer @mongo_record, false
+        @insert_block.call rescue nil
       end
     end
 
