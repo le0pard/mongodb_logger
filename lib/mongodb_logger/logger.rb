@@ -141,14 +141,13 @@ module MongodbLogger
     def resolve_config
       config = {}
       CONFIGURATION_FILES.each do |filename|
-        config_file = File.join(app_root, 'config', filename)
-        config = read_config_from_file(config_file)
+        config = read_config_from_file(File.join(app_root, 'config', filename))
         break unless config.blank?
       end
       config
     end
 
-    def read_config_from_file(file)
+    def read_config_from_file(config_file)
       if File.file? config_file
         config = YAML.load(ERB.new(File.new(config_file).read).result)[app_env]
         config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
