@@ -1,5 +1,8 @@
 ## master
 
+## 0.6.4
+
+* Fixed for moped gem < 2
 
 ## 0.6.3
 
