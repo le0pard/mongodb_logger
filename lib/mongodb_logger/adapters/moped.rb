@@ -26,7 +26,7 @@ module MongodbLogger
       end
 
       def insert_log_record(record, options = {})
-        record[:_id] = ::BSON::ObjectId.new
+        record[:_id] = bson_object_id.new
         @connection.with(write: options[:write_options])[collection_name].insert(record)
       end
 
@@ -46,7 +46,7 @@ module MongodbLogger
       end
 
       def find_by_id(id)
-        @collection.find("_id" => ::BSON::ObjectId.from_string(id)).first
+        @collection.find("_id" => bson_object_id.from_string(id)).first
       end
 
       def calculate_mapreduce(map, reduce, params = {})
@@ -73,6 +73,10 @@ module MongodbLogger
         end
         @connection_type = conn.class
         conn
+      end
+
+      def bson_object_id
+        defined?(::BSON::ObjectId) ? ::BSON::ObjectId : ::Moped::BSON::ObjectId
       end
 
     end
