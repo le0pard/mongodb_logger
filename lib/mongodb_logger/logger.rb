@@ -1,4 +1,5 @@
 require 'erb'
+require 'yaml'
 require 'uri'
 require 'active_support'
 require 'active_support/core_ext'
@@ -159,7 +160,7 @@ module MongodbLogger
 
     def read_config_from_file(config_file)
       if File.file? config_file
-        config = YAML.load(ERB.new(File.new(config_file).read).result)[app_env]
+        config = ::YAML.load(ERB.new(File.new(config_file).read).result)[app_env]
         config = config['mongodb_logger'] if config && config.has_key?('mongodb_logger')
         return config unless config.blank?
       end

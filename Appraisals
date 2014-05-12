@@ -3,15 +3,15 @@ appraise "rails31" do
 end
 
 appraise "rails32" do
-  gem "rails", "~> 3.2.14"
+  gem "rails", "~> 3.2.18"
 end
 
 appraise "rails40" do
-  gem "rails", "~> 4.0.2"
+  gem "rails", "~> 4.0.5"
   gem "minitest", "~> 4.0"
 end
 
 appraise "rails41" do
-  gem "rails", "4.1.0.rc1"
+  gem "rails", "4.1.1"
   gem "minitest", ">= 4.0"
 end

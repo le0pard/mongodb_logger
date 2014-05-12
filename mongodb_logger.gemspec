@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "aruba", "~> 0.5.4"
   # for tests deps
   gem.add_development_dependency "coffee-script", "~> 2.2"
-  gem.add_development_dependency "mongo", "~> 1.9"
+  gem.add_development_dependency "mongo", "~> 1.10"
   #gem.add_development_dependency "moped", "2.0.0.beta6"
 
   gem.add_dependency "rake",            "~> 10.0"
