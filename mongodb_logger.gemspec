@@ -14,8 +14,8 @@ Gem::Specification.new do |gem|
   gem.rdoc_options      = ["--charset=UTF-8"]
   gem.licenses          = ["MIT"]
 
-  gem.add_development_dependency "rspec", "~> 2.14.1"
-  gem.add_development_dependency "rspec-rails", "~> 2.14.1"
+  gem.add_development_dependency "rspec", ">= 3"
+  gem.add_development_dependency "rspec-rails", ">= 3"
   gem.add_development_dependency "cucumber", "~> 1.3.10"
   gem.add_development_dependency "cucumber-rails", "~> 1.4.0"
   gem.add_development_dependency "capybara", '~> 2.2.1'
@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
   #gem.add_development_dependency "moped", "2.0.0.beta6"
 
   gem.add_dependency "rake",            "~> 10.0"
-  gem.add_dependency "multi_json",      "~> 1.8"
+  gem.add_dependency "multi_json",      ">= 1.8"
   gem.add_dependency "activesupport",   ">= 3.1.0"
   gem.add_dependency "sprockets",       ">= 2.0.0"
   gem.add_dependency "sinatra",         ">= 1.3"

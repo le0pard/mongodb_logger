@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe TestsController do
+describe TestsController, type: :controller do
   before :each do
     @mongodb_logger = Rails.logger
     @mongo_adapter = @mongodb_logger.mongo_adapter

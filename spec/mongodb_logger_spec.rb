@@ -11,8 +11,8 @@ describe MongodbLogger::Logger do
 
   context "in instantiation" do
     before do
-      described_class.any_instance.stub(:internal_initialize).and_return(nil)
-      described_class.any_instance.stub(:disable_file_logging?).and_return(false)
+      allow_any_instance_of(described_class).to receive(:internal_initialize).and_return(nil)
+      allow_any_instance_of(described_class).to receive(:disable_file_logging?).and_return(false)
       @mongodb_logger = described_class.new
     end
 
@@ -41,7 +41,7 @@ describe MongodbLogger::Logger do
 
       it "authenticated by url" do
         @mongodb_logger.send(:connect)
-        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_true
+        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_truthy
         expect(@mongodb_logger.db_configuration['database']).to eq("system_log")
         expect(@mongodb_logger.db_configuration[:database]).to eq("system_log")
       end
@@ -61,7 +61,7 @@ describe MongodbLogger::Logger do
 
       it "authenticate with the credentials in the configuration" do
         @mongodb_logger.send(:connect)
-        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_true
+        expect(@mongodb_logger.mongo_adapter.authenticated?).to be_truthy
       end
     end
 
@@ -103,12 +103,12 @@ describe MongodbLogger::Logger do
       end
 
       it "not authenticate" do
-        expect(@mongo_adapter.authenticated?).to be_false
+        expect(@mongo_adapter.authenticated?).to be_falsey
       end
 
       it "create a capped collection in the database with the configured size" do
         @mongodb_logger.send(:check_for_collection)
-        expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_true
+        expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
         expect(@mongo_adapter.collection_stats[:storageSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
@@ -156,7 +156,7 @@ describe MongodbLogger::Logger do
       end
 
       it "detect logging is colorized" do
-        expect(@mongodb_logger.send(:logging_colorized?)).to be_true
+        expect(@mongodb_logger.send(:logging_colorized?)).to be_truthy
       end
 
       should_contain_one_log_record
