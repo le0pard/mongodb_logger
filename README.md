@@ -59,6 +59,8 @@ Doesn't support the Rails version below 3.
             capsize: <%= 10.megabytes %>   # default: 250MB
             host: localhost                # default: localhost
             port: 27017                    # default: 27017
+            username: null                 # default: null, username for MongoDB Auth
+            password: null                 # default: null, password for MongoDB Auth
             replica_set: true              # default: false - Adds retries for ConnectionFailure during voting for replica set master
             write_options:                 # default: {w: 0, wtimeout: 200} - write options for inserts (w - wait for insert to propagate to "w" numbers of nodes)
               w: 0
@@ -79,7 +81,7 @@ Doesn't support the Rails version below 3.
    Also you can use "url" parameter for setup connection to mongodb:
 
         development:
-          url: mongodb://localhost:27017/my_app
+          url: mongodb://username:password@localhost:27017/my_app
           capsize: <%= 10.megabytes %>
 
 
