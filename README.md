@@ -1,6 +1,7 @@
 # MongodbLogger
-[![Build Status](https://travis-ci.org/le0pard/mongodb_logger.png)](https://travis-ci.org/le0pard/mongodb_logger)
-[![Code Climate](https://codeclimate.com/github/le0pard/mongodb_logger.png)](https://codeclimate.com/github/le0pard/mongodb_logger)
+
+[![Build Status](https://travis-ci.org/le0pard/mongodb_logger.svg?branch=master)](https://travis-ci.org/le0pard/mongodb_logger)
+[![Code Climate](https://codeclimate.com/github/le0pard/mongodb_logger/badges/gpa.svg)](https://codeclimate.com/github/le0pard/mongodb_logger)
 
 MongodbLogger is a alternative logger for Rails or Rack based app, which log all requests of you application into MongoDB database.
 It:
