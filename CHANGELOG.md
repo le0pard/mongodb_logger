@@ -1,5 +1,8 @@
 ## master
 
+## 0.6.5
+
+* Support new Rails 4.2 and Ruby 2.2.x
 * Remove support Rails 3.x
 
 ## 0.6.4
