@@ -5,7 +5,7 @@ end
 
 class Rails
   module VERSION
-    MAJOR = 3
+    MAJOR = 4
   end
 
   def self.env

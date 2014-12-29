@@ -24,16 +24,8 @@ module RailsHelpers
     controller_filename = File.join(rails_root, 'app', 'controllers', "application_controller.rb")
   end
 
-  def rails3?
-    rails_version =~ /^3/
-  end
-
   def rails_root
     LOCAL_RAILS_ROOT
-  end
-
-  def rails_uses_rack?
-    rails3? || rails_version =~ /^2\.3/
   end
 
   def rails_version
@@ -59,14 +51,6 @@ module RailsHelpers
 
   def rails_manages_gems?
     rails_version =~ /^2\.[123]/
-  end
-
-  def rails_supports_initializers?
-    rails3? || rails_version =~ /^2\./
-  end
-
-  def rails_finds_generators_in_gems?
-    rails3? || rails_version =~ /^2\./
   end
 
   def version_string

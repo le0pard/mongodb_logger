@@ -1,5 +1,7 @@
 ## master
 
+* Remove support Rails 3.x
+
 ## 0.6.4
 
 * Fixed for moped gem < 2

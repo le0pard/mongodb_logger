@@ -96,7 +96,7 @@ module MongodbLogger
     end
 
     def disable_file_logging?
-      @db_configuration.fetch(:disable_file_logging, false)
+      @db_configuration && @db_configuration.fetch(:disable_file_logging, false)
     end
 
     def configure
