@@ -4,11 +4,11 @@
 </div> <!-- unit -->
 <% if collection_stats[:is_capped] %>
   <div class="progress">
-    <span class="size"><%=h number_to_human_size(collection_stats[:size]) %> of <%=h number_to_human_size(collection_stats[:storageSize]) %></span>
+    <span class="size"><%=h number_to_human_size(collection_stats[:size]) %> of <%=h number_to_human_size(collection_stats[:maxSize]) %></span>
     <div class="used" style="width: <%= percent_of_userd_memory(collection_stats) %>%"></div>
   </div> <!-- progress -->
 <% else %>
-  <div class="warning"><p>You do not use capped collection for logs. 
+  <div class="warning"><p>You do not use capped collection for logs.
     <a href="http://www.mongodb.org/display/DOCS/Capped+Collections#CappedCollections-Convertingacollectiontocapped" target="_blank" class="more">More info.</a></p>
   </div>
 <% end %>

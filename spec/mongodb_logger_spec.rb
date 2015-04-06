@@ -73,14 +73,14 @@ describe MongodbLogger::Logger do
       end
 
       it "set the default host, port, ssl and capsize if not configured" do
-        expect(@mongo_adapter.configuration['host']).to eq('localhost')
+        expect(@mongo_adapter.configuration['host']).to eq('127.0.0.1')
         expect(@mongo_adapter.configuration['port']).to eq(27017)
         expect(@mongo_adapter.configuration['capsize']).to eq(MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE)
         expect(@mongo_adapter.configuration['ssl']).to eq(false)
       end
 
       it "set the default host, port, ssl and capsize if not configured in sym keys" do
-        expect(@mongo_adapter.configuration[:host]).to eq('localhost')
+        expect(@mongo_adapter.configuration[:host]).to eq('127.0.0.1')
         expect(@mongo_adapter.configuration[:port]).to eq(27017)
         expect(@mongo_adapter.configuration[:capsize]).to eq(MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE)
         expect(@mongo_adapter.configuration[:ssl]).to eq(false)
@@ -108,10 +108,9 @@ describe MongodbLogger::Logger do
 
       it "create a capped collection in the database with the configured size" do
         @mongodb_logger.send(:check_for_collection)
-        expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
+        expect(@mongo_adapter.connection.database.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
-        expect(@mongo_adapter.collection_stats[:storageSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
-        expect(@mongo_adapter.collection_stats[:is_capped]).to be_truthy
+        expect(@mongo_adapter.connection.database.command(collstats: @mongo_adapter.collection.name).documents[0]["maxSize"].to_f).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
 
     end

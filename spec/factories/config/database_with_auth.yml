@@ -5,5 +5,5 @@ test:
   timeout: 5000
   mongodb_logger:
     database: system_log
-    username: admin
+    username: superuser
     password: password

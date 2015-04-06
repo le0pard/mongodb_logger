@@ -8,36 +8,46 @@ module MongodbLogger
         if @configuration[:url]
           uri = URI.parse(@configuration[:url])
           @configuration[:database] = uri.path.gsub(/^\//, '')
-          @connection ||= mongo_connection_object.db(@configuration[:database])
+          @connection ||= mongo_connection_object.with(database: @configuration[:database])
           @authenticated = true
         else
-          @connection ||= mongo_connection_object.db(@configuration[:database])
+          db_options = {database: @configuration[:database]}
           if @configuration[:username] && @configuration[:password]
             # the driver stores credentials in case reconnection is required
-            @authenticated = @connection.authenticate(@configuration[:username],
-                                                          @configuration[:password])
+            db_options.merge!(user: @configuration[:username],
+                           password: @configuration[:password])
+            @authenticated = true
           end
+          @connection ||= mongo_connection_object.with(db_options)
         end
       end
 
+      def check_for_collection
+        # setup the capped collection if it doesn't already exist
+        create_collection unless @connection.database.collection_names.include?(@configuration[:collection])
+        @collection = @connection[@configuration[:collection]]
+      end
+
       def create_collection
-        @connection.create_collection(collection_name, {
+        collection = @connection[collection_name,
           capped: @configuration[:capped],
           size: @configuration[:capsize].to_i # ignored if uncapped
-          })
+        ]
+        collection.create
+        collection
       end
 
       def insert_log_record(record, options = {})
         record[:_id] = ::BSON::ObjectId.new
-        @collection.insert(record, options[:write_options])
+        @collection.insert_one(record, write: options[:write_options])
       end
 
       def collection_stats
-        collection_stats_hash(@collection.stats)
+        collection_stats_hash(@collection.database.command(collstats: @collection.name).documents[0])
       end
 
       def rename_collection(to, drop_target = false)
-        rename_collection_command(mongo_connection_object.db("admin"), to, drop_target)
+        #rename_collection_command(@connection.database, to, drop_target)
       end
 
       # filter
@@ -46,7 +56,7 @@ module MongodbLogger
       end
 
       def find_by_id(id)
-        @collection.find_one(::BSON::ObjectId.from_string(id))
+        @collection.find(_id: ::BSON::ObjectId.from_string(id)).first
       end
 
       def calculate_mapreduce(map, reduce, params = {})
@@ -57,14 +67,14 @@ module MongodbLogger
 
       def mongo_connection_object
         if @configuration[:hosts]
-          conn = ::Mongo::MongoReplicaSetClient.new(@configuration[:hosts],
-            pool_timeout: 6, ssl: @configuration[:ssl])
+          conn = ::Mongo::Client.new(@configuration[:hosts].map{|(host,port)| "#{host}:#{port}"},
+            pool_timeout: 6, ssl: @configuration[:ssl],
+            replica_set: @configuration[:application_name])
           @configuration[:replica_set] = true
         elsif @configuration[:url]
-          conn = ::Mongo::MongoClient.from_uri(@configuration[:url])
+          conn = ::Mongo::Client.new(@configuration[:url])
         else
-          conn = ::Mongo::MongoClient.new(@configuration[:host],
-                                       @configuration[:port],
+          conn = ::Mongo::Client.new(["#{@configuration[:host]}:#{@configuration[:port]}"],
                                        pool_timeout: 6,
                                        ssl: @configuration[:ssl])
         end

@@ -15,8 +15,9 @@ module MongodbLogger::SpecMacros
 
   def should_have_default_capsize
     it "cap collection the same size as in default" do
-      expect(@mongo_adapter.collection_stats[:storageSize]).to be >= MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
-      expect(@mongo_adapter.collection_stats[:storageSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+      maxSize = @mongo_adapter.connection.database.command(collstats: @mongo_adapter.collection.name).documents[0]["maxSize"].to_f
+      expect(maxSize).to be >= MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE
+      expect(maxSize).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
     end
   end
 end

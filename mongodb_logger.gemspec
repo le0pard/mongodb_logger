@@ -16,24 +16,24 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "rspec", ">= 3"
   gem.add_development_dependency "rspec-rails", ">= 3"
-  gem.add_development_dependency "cucumber", "~> 1.3.10"
-  gem.add_development_dependency "cucumber-rails", "~> 1.4.0"
-  gem.add_development_dependency "capybara", '~> 2.2.1'
-  gem.add_development_dependency "appraisal", "~> 0.5.2"
-  gem.add_development_dependency "aruba", "~> 0.5.4"
+  gem.add_development_dependency "cucumber", ">= 2.0.0.rc5"
+  gem.add_development_dependency "cucumber-rails", "~> 1.4.2"
+  gem.add_development_dependency "capybara", '~> 2.4.4'
+  gem.add_development_dependency "appraisal", "~> 1.0.3"
+  gem.add_development_dependency "aruba", "~> 0.6.2"
   # for tests deps
-  gem.add_development_dependency "coffee-script", "~> 2.2"
-  gem.add_development_dependency "mongo", "~> 1.10"
-  #gem.add_development_dependency "moped", "2.0.0.beta6"
+  gem.add_development_dependency "coffee-script", "~> 2.3"
+  gem.add_development_dependency "mongo", "~> 2.0.2"
+  #gem.add_development_dependency "moped", "2.0.4"
 
-  gem.add_dependency "rake",            "~> 10.0"
+  gem.add_dependency "rake",            "~> 10.4"
   gem.add_dependency "multi_json",      ">= 1.8"
   gem.add_dependency "activesupport",   ">= 3.1.0"
   gem.add_dependency "sprockets",       ">= 2.0.0"
   gem.add_dependency "sinatra",         ">= 1.3"
   gem.add_dependency "erubis",          "~> 2.7"
-  gem.add_dependency "mustache",        "~> 0.99"
-  gem.add_dependency "vegas",           "~> 0.1.8"
+  gem.add_dependency "mustache",        "~> 1.0"
+  gem.add_dependency "vegas",           "~> 0.1.11"
 
   gem.bindir        = 'exe'
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }

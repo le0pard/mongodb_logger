@@ -39,13 +39,12 @@ module MongodbLogger::SpecHelper
   def create_mongo_user
     db_conf = @mongodb_logger.db_configuration
     @user = db_conf['username']
-    @mongo_connection = ::Mongo::Connection.new(db_conf['host'],
-                                             db_conf['port']).db(db_conf['database'])
-    @mongo_connection.add_user(@user, db_conf['password'])
+    @mongo_connection = ::Mongo::Client.new(["#{db_conf['host']}:#{db_conf['port']}"], database: db_conf['database'])
+    @mongo_connection.database.users.create(@user, password: db_conf['password'])
   end
 
   def remove_mongo_user
-    @mongo_connection.remove_user(@user)
+    @mongo_connection.database.users.remove(@user)
   end
 
   def common_mongodb_logger_setup(options = {}, config = DEFAULT_CONFIG)

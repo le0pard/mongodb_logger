@@ -13,9 +13,7 @@ module MongodbLogger
       end
 
       def check_for_collection
-        # setup the capped collection if it doesn't already exist
-        create_collection unless @connection.collection_names.include?(@configuration[:collection])
-        @collection = @connection[@configuration[:collection]]
+        raise "Not implemented"
       end
 
       def rename_collection_command(admin_session, to, drop_target = false)
@@ -34,7 +32,7 @@ module MongodbLogger
           is_capped: [1, true].include?(stats["capped"]),
           count: stats["count"].to_i,
           size: stats["size"].to_f,
-          storageSize: stats["storageSize"].to_f,
+          maxSize: stats["maxSize"].to_f,
           db_name: @configuration["database"],
           collection: collection_name
         }

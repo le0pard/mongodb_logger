@@ -10,6 +10,11 @@ ENV["RAILS_ENV"] ||= 'test'
 
 Dir["#{File.expand_path(File.join(File.dirname(__FILE__), "support"))}/**/*.rb"].each {|f| require f}
 
+if defined?(Mongo) && defined?(Mongo::Logger)
+  Mongo::Logger.logger = Logger.new($stdout)
+  Mongo::Logger.logger.level = Logger::INFO
+end
+
 RSpec.configure do |config|
   config.include MongodbLogger::SpecHelper
 

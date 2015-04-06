@@ -6,6 +6,6 @@ test:
   mongodb_logger:
     database: system_log
     application_name: mongo_foo
-    write_options: 
+    write_options:
       w: 1
       wtimeout: 200

@@ -4,4 +4,4 @@ test:
   pool: 5
   timeout: 5000
   mongodb_logger:
-    url: mongodb://localhost:27017/system_log
+    url: mongodb://127.0.0.1:27017/system_log?ssl=false

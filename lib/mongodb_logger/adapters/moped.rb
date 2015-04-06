@@ -21,6 +21,12 @@ module MongodbLogger
         end
       end
 
+      def check_for_collection
+        # setup the capped collection if it doesn't already exist
+        create_collection unless @connection.collection_names.include?(@configuration[:collection])
+        @collection = @connection[@configuration[:collection]]
+      end
+
       def create_collection
         @connection.command({
           create: collection_name,

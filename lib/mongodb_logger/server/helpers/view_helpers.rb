@@ -2,7 +2,7 @@
 module Sinatra::ViewHelpers
 
   def percent_of_userd_memory(collection_stats)
-    ((collection_stats[:size] / collection_stats[:storageSize]) * 100).round
+    ((collection_stats[:size] / collection_stats[:maxSize]) * 100).round
   end
 
   def meta_informations(log)
