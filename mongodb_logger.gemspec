@@ -35,6 +35,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "mustache",        "~> 0.99"
   gem.add_dependency "vegas",           "~> 0.1.8"
 
+  gem.bindir        = 'exe'
   gem.executables   = `git ls-files -- exe/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
