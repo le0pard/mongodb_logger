@@ -205,6 +205,6 @@ body {
 
 /*
 http://localhost:3000/mongodblogs/overview
-./bin/mongodb_logger_web ../mongo.yml -F
+./exe/mongodb_logger_web ../mongo.yml -F
 
  */
