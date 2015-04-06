@@ -36,9 +36,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency "vegas",           "~> 0.1.8"
 
   gem.bindir        = 'exe'
-  gem.executables   = `git ls-files -- exe/*`.split("\n").map{ |f| File.basename(f) }
-  gem.files         = `git ls-files`.split("\n")
-  gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  gem.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   gem.name          = "mongodb_logger"
   gem.require_paths = ["lib"]
   gem.version       = MongodbLogger::VERSION
