@@ -18,7 +18,7 @@
             <div class="pls"><strong>Collection:</strong> <%=h @collection_stats[:collection] %></div>
           </div> <!-- unit -->
           <div id="collection_stats">
-            <%= partial(:"shared/collection_stats", :object => @collection_stats) %>
+            <%= partial(:"shared/collection_stats", object: @collection_stats) %>
           </div>
         </div>
         <a href="<%=h url_path("overview") %>" class="logo"><img src="<%= asset_path 'logo.png' %>" alt="MongoDB Logger"></a>

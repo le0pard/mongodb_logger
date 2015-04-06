@@ -7,6 +7,7 @@ TEMP_DIR         = File.join(PROJECT_ROOT, 'tmp').freeze
 LOCAL_RAILS_ROOT = File.join(TEMP_DIR, 'rails_root').freeze
 
 Before do
+  # cleanup
   FileUtils.rm_rf(LOCAL_RAILS_ROOT)
 end
 

@@ -52,7 +52,7 @@ module MongodbLogger
 
       # filter
       def filter_by_conditions(filter)
-        @collection.find(filter.get_mongo_conditions).limit(filter.get_mongo_limit).sort('$natural', -1)
+        @collection.find(filter.get_mongo_conditions).limit(filter.get_mongo_limit).sort('$natural' => -1)
       end
 
       def find_by_id(id)
