@@ -22,9 +22,8 @@ describe MongodbLogger::Utils::Migrate do
         MongodbLogger::Utils::Migrate.new.run
         @mongodb_logger = MongodbLogger::Logger.new
         @mongo_adapter = @mongodb_logger.mongo_adapter
-        maxSize = @mongo_adapter.connection.database.command(collstats: @mongo_adapter.collection.name).documents[0]["maxSize"].to_f
-        expect(maxSize).to be >= 50.megabyte
-        expect(maxSize).to be < 51.megabyte
+        expect(@mongo_adapter.collection_stats[:maxSize]).to be >= 50.megabyte
+        expect(@mongo_adapter.collection_stats[:maxSize]).to be < 51.megabyte
       end
     end
 

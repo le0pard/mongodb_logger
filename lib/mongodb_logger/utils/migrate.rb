@@ -16,7 +16,7 @@ module MongodbLogger
 
           iterator, all_count = 0, @mongo_adapter.collection.find.count
           @mongo_adapter.collection.find.each do |row|
-            @migrate_logger.mongo_adapter.collection.insert(row)
+            @migrate_logger.mongo_adapter.collection.insert_one(row)
             progress (((iterator += 1).to_f / all_count.to_f) * 100).round
           end if all_count > 0
           progress 100

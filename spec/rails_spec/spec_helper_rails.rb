@@ -8,6 +8,11 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+if defined?(Mongo) && defined?(Mongo::Logger)
+  Mongo::Logger.logger = Logger.new($stdout)
+  Mongo::Logger.logger.level = Logger::INFO
+end
+
 RSpec.configure do |config|
 
   config.expect_with :rspec do |c|

@@ -73,13 +73,20 @@ module MongodbLogger
       private
 
       def mongo_connection_object
-        if @configuration[:hosts]
-          conn = ::Moped::Session.new(@configuration[:hosts].map{|(host,port)| "#{host}:#{port}"}, timeout: 6, ssl: @configuration[:ssl])
-          @configuration['replica_set'] = true
-        elsif @configuration[:url]
+        if @configuration[:url]
           conn = ::Moped::Session.connect(@configuration[:url])
         else
-          conn = ::Moped::Session.new(["#{@configuration[:host]}:#{@configuration[:port]}"], timeout: 6, ssl: @configuration[:ssl])
+          db_options = {timeout: 6}
+          if @configuration[:hosts]
+            hosts = @configuration[:hosts].map{|(host,port)| "#{host}:#{port}"}
+            db_options.merge!(replica_set: @configuration[:application_name])
+          else
+            hosts = ["#{@configuration[:host]}:#{@configuration[:port]}"]
+          end
+          # ssl not need here, because even false will try use ssl :(
+          db_options.merge!(ssl: @configuration[:ssl]) if @configuration[:ssl]
+          # connect
+          conn = ::Moped::Session.new(hosts, db_options)
         end
         @connection_type = conn.class
         conn

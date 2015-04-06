@@ -110,7 +110,7 @@ describe MongodbLogger::Logger do
         @mongodb_logger.send(:check_for_collection)
         expect(@mongo_adapter.connection.database.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
-        expect(@mongo_adapter.connection.database.command(collstats: @mongo_adapter.collection.name).documents[0]["maxSize"].to_f).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+        expect(@mongo_adapter.collection_stats[:maxSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
       end
 
     end

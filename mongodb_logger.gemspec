@@ -26,14 +26,14 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "mongo", "~> 2.0.2"
   #gem.add_development_dependency "moped", "2.0.4"
 
-  gem.add_dependency "rake",            "~> 10.4"
-  gem.add_dependency "multi_json",      ">= 1.8"
-  gem.add_dependency "activesupport",   ">= 3.1.0"
-  gem.add_dependency "sprockets",       ">= 2.0.0"
-  gem.add_dependency "sinatra",         ">= 1.3"
-  gem.add_dependency "erubis",          "~> 2.7"
-  gem.add_dependency "mustache",        "~> 1.0"
-  gem.add_dependency "vegas",           "~> 0.1.11"
+  gem.add_dependency "rake",              "~> 10.4"
+  gem.add_dependency "multi_json",        ">= 1.8"
+  gem.add_dependency "activesupport",     ">= 3.1.0"
+  gem.add_dependency "sprockets",         ">= 2.0.0"
+  gem.add_dependency "sinatra",           ">= 1.3"
+  gem.add_dependency "erubis",            "~> 2.7"
+  gem.add_dependency "mustache-sinatra",  "~> 1.0"
+  gem.add_dependency "vegas",             "~> 0.1"
 
   gem.bindir        = 'exe'
   gem.executables   = gem.files.grep(%r{^exe/}) { |f| File.basename(f) }

@@ -8,7 +8,7 @@ module MongodbLogger
         if @configuration[:url]
           uri = URI.parse(@configuration[:url])
           @configuration[:database] = uri.path.gsub(/^\//, '')
-          @connection ||= mongo_connection_object.with(database: @configuration[:database])
+          @connection ||= mongo_connection_object
           @authenticated = true
         else
           db_options = {database: @configuration[:database]}
@@ -47,7 +47,7 @@ module MongodbLogger
       end
 
       def rename_collection(to, drop_target = false)
-        #rename_collection_command(@connection.database, to, drop_target)
+        rename_collection_command(@connection.with(database: "admin").database, to, drop_target)
       end
 
       # filter
@@ -66,17 +66,20 @@ module MongodbLogger
       private
 
       def mongo_connection_object
-        if @configuration[:hosts]
-          conn = ::Mongo::Client.new(@configuration[:hosts].map{|(host,port)| "#{host}:#{port}"},
-            pool_timeout: 6, ssl: @configuration[:ssl],
-            replica_set: @configuration[:application_name])
-          @configuration[:replica_set] = true
-        elsif @configuration[:url]
+        if @configuration[:url]
           conn = ::Mongo::Client.new(@configuration[:url])
         else
-          conn = ::Mongo::Client.new(["#{@configuration[:host]}:#{@configuration[:port]}"],
-                                       pool_timeout: 6,
-                                       ssl: @configuration[:ssl])
+          db_options = {pool_timeout: 6}
+          if @configuration[:hosts]
+            hosts = @configuration[:hosts].map{|(host,port)| "#{host}:#{port}"}
+            db_options.merge!(replica_set: @configuration[:application_name])
+          else
+            hosts = ["#{@configuration[:host]}:#{@configuration[:port]}"]
+          end
+          # ssl not need here, because even false will try use ssl :(
+          db_options.merge!(ssl: @configuration[:ssl]) if @configuration[:ssl]
+          # connection
+          conn = ::Mongo::Client.new(hosts, db_options)
         end
         @connection_type = conn.class
         conn
