@@ -80,7 +80,7 @@ module MongodbLogger
         if @configuration[:url]
           conn = ::Moped::Session.connect(@configuration[:url])
         else
-          db_options = {timeout: 6}
+          db_options = { timeout: 6 }
           if @configuration[:hosts]
             hosts = @configuration[:hosts].map{|(host,port)| "#{host}:#{port}"}
             db_options.merge!(replica_set: @configuration[:application_name])

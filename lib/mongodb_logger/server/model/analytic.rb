@@ -55,32 +55,32 @@ function(key, values) {
 EOF
         case self.type.to_i
           when 1
-            params[:conditions].merge!({:is_exception => true})
+            params[:conditions].merge!({ is_exception: true })
           else
             # nothing
         end
 
-        @mongo_adapter.calculate_mapreduce(map, reduce, {:conditions => params[:conditions]})
+        @mongo_adapter.calculate_mapreduce(map, reduce, { conditions: params[:conditions] })
       end
 
       def get_data
         m_start= Date.parse(self.start_date) rescue Date.today
         m_end = Date.parse(self.end_date) rescue Date.today
 
-        conditions = { :request_time => {
+        conditions = { request_time: {
           '$gte' => Time.utc(m_start.year, m_start.month, m_start.day, 0, 0, 0),
           '$lte' => Time.utc(m_end.year, m_end.month, m_end.day, 23, 59, 59)
         }}
 
         all_data = calculate_default_map_reduce(
-          :conditions => conditions
+          conditions: conditions
         )
 
         {
-          :data => (all_data ? all_data.first.last : []),
-          :headers => {
-            :key => ["year", "month", "day", "hour"],
-            :value => ["count"]
+          data: (all_data && all_data.first ? all_data.first.last : []),
+          headers: {
+            key: ["year", "month", "day", "hour"],
+            value: ["count"]
           },
           unit: self.unit
         }

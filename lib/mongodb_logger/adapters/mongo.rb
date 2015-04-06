@@ -60,7 +60,7 @@ module MongodbLogger
       end
 
       def calculate_mapreduce(map, reduce, params = {})
-        @collection.map_reduce(map, reduce, { query: params[:conditions], sort: ['$natural', -1], out: { inline: true }, raw: true }).find()
+        @collection.find.map_reduce(map, reduce, { query: params[:conditions], sort: { '$natural' => -1 }, out: { inline: true }, raw: true }).find()
       end
 
       private
@@ -69,7 +69,7 @@ module MongodbLogger
         if @configuration[:url]
           conn = ::Mongo::Client.new(@configuration[:url])
         else
-          db_options = {pool_timeout: 6}
+          db_options = { pool_timeout: 6 }
           if @configuration[:hosts]
             hosts = @configuration[:hosts].map{|(host,port)| "#{host}:#{port}"}
             db_options.merge!(replica_set: @configuration[:application_name])
