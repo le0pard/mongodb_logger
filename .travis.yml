@@ -31,6 +31,7 @@ branches:
 
 matrix:
   allow_failures:
+    - rvm: 2.3
     - rvm: jruby-19mode
     - rvm: ruby-head
     - rvm: jruby-head
