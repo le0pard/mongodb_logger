@@ -7,6 +7,7 @@ module MongodbLogger::SpecHelper
   DEFAULT_CONFIG = "database.yml"
   DEFAULT_CONFIG_WITH_AUTH = "database_with_auth.yml"
   DEFAULT_CONFIG_CAPSIZE = "database_with_capsize.yml"
+  DEFAULT_CONFIG_UNCAPPED = "database_uncapped.yml"
   DEFAULT_CONFIG_WITH_URL = "database_with_url.yml"
   DEFAULT_CONFIG_WITH_SSL = "database_with_ssl.yml"
   DEFAULT_CONFIG_WITH_COLLECTION = "database_with_collection.yml"

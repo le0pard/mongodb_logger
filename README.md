@@ -57,7 +57,8 @@ Doesn't support the Rails version below 3.
           username: postgres
           mongodb_logger:
             database: my_app               # required (the only required setting)
-            capsize: <%= 10.megabytes %>   # default: 250MB
+            capped: true                   # default: true  - warning: uncapped collections introduce the vulnerability that the size of the collection grows too high, exceeding all avaialble disk space
+            capsize: <%= 10.megabytes %>   # default: 250MB - ignored if capped is set to false
             host: localhost                # default: localhost
             port: 27017                    # default: 27017
             username: null                 # default: null, username for MongoDB Auth
@@ -291,5 +292,12 @@ Demo Sources: [https://github.com/le0pard/mongodb_logger_example_heroku](https:/
 
     >> collection.find({:request_time => {'$gt' => Time.utc(2010, 11, 18, 22, 59, 52)}})
 
+## Using Uncapped Collections as Storage
+
+MongoDB's capped collections are a safe choice for storing logs where expiration happens automatically after exceeding the provided `capsize` (first in first out expiration).
+
+Capped collections comes with a few limitations, one of them being that you cannot manually delete log entries. Switching to a `capped: false` configuration will store all log entries in an uncapped collection and remove the constraints of uncapped collections.
+
+**Warning:** If you choose to deploy mongodb_logger with an uncapped collection configuration, you should implement an alternative way of cleaning up log records (cron job or similar). Uncapped collections can grow indifinely in size and take up more disk space than you anticipated.
 
 Copyright (c) 2009-2014 Phil Burrows, CustomInk (based on https://github.com/customink/central_logger) and Leopard released under the MIT license
