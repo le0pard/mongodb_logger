@@ -111,8 +111,23 @@ describe MongodbLogger::Logger do
         expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
         # new capped collections are X MB + 5888 bytes, but don't be too strict in case that changes
         expect(@mongo_adapter.collection_stats[:storageSize]).to be < MongodbLogger::Logger::DEFAULT_COLLECTION_SIZE + 1.megabyte
+        expect(@mongo_adapter.collection_stats[:is_capped]).to be_truthy
       end
 
+    end
+
+    context "if collection is configured not to be capped" do
+      before do
+        setup_for_config(MongodbLogger::SpecHelper::DEFAULT_CONFIG_UNCAPPED, MongodbLogger::SpecHelper::DEFAULT_CONFIG)
+        @mongodb_logger.send(:connect)
+        @mongo_adapter = @mongodb_logger.mongo_adapter
+      end
+
+      it "creates a collection without cap" do
+        @mongodb_logger.send(:check_for_collection)
+        expect(@mongo_adapter.connection.collection_names.include?(@mongo_adapter.configuration['collection'])).to be_truthy
+        expect(@mongo_adapter.collection_stats[:is_capped]).to be_falsy
+      end
     end
 
     context "ssl" do

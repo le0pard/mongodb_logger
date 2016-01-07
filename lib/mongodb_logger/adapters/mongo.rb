@@ -21,8 +21,10 @@ module MongodbLogger
       end
 
       def create_collection
-        @connection.create_collection(collection_name,
-          { capped: true, size: @configuration[:capsize].to_i })
+        @connection.create_collection(collection_name, {
+          capped: @configuration[:capped],
+          size: @configuration[:capsize].to_i # ignored if uncapped
+          })
       end
 
       def insert_log_record(record, options = {})
