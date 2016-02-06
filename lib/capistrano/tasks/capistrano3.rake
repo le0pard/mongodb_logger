@@ -1,7 +1,7 @@
 namespace :load do
   task :defaults do
-    set :mongodb_logger_asset_env, "RAILS_GROUPS=assets"
-    set :mongodb_logger_assets_dir, "public/assets"
+    set :mongodb_logger_asset_env, 'RAILS_GROUPS=assets'
+    set :mongodb_logger_assets_dir, 'public/assets'
     set :mongodb_logger_assets_role, [:app]
     set :mongodb_logger_db_role, [:app]
   end
