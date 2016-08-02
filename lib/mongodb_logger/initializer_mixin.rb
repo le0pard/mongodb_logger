@@ -12,8 +12,7 @@ module MongodbLogger
       logger.level = level
       logger
     rescue StandardError => e
-      logger = RailsLogger.new(STDERR)
-      logger.level = RailsLogger::WARN
+      logger = RailsLogger.new(STDERR, RailsLogger::WARN)
       logger.warn(
         "MongodbLogger Initializer Error: Rails will switched to standard logger." + "\n" +
         e.message + "\n" + e.backtrace.join("\n")
