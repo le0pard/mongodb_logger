@@ -47,16 +47,16 @@ module MongodbLogger
     def add_metadata(options = {})
       options.each do |key, value|
         unless [:messages, :request_time, :ip, :runtime, :application_name, :is_exception, :params, :session, :method].include?(key.to_sym)
-          @mongo_record[key] = value
+          Thread.current[:mongodb_logger_mongo_record][key] = value
         else
           raise ArgumentError, ":#{key} is a reserved key for the mongodb logger. Please choose a different key"
         end
-      end if @mongo_record
+      end if Thread.current[:mongodb_logger_mongo_record]
     end
 
     def add(severity, message = nil, progname = nil, &block)
       $stdout.puts(message) if ENV['HEROKU_RACK'] # log in stdout on Heroku
-      if @level && @level <= severity && (message.present? || progname.present?) && @mongo_record.present?
+      if @level && @level <= severity && (message.present? || progname.present?) && Thread.current[:mongodb_logger_mongo_record].present?
         add_log_message(severity, message, progname)
       end
       # may modify the original message
@@ -64,7 +64,7 @@ module MongodbLogger
     end
 
     def mongoize(options = {})
-      @mongo_record = options.merge({
+      Thread.current[:mongodb_logger_mongo_record] = options.merge({
         messages: Hash.new { |hash, key| hash[key] = Array.new },
         request_time: Time.now.getutc,
         application_name: @db_configuration['application_name']
@@ -77,9 +77,9 @@ module MongodbLogger
       raise e
     ensure
       # In case of exception, make sure runtime is set
-      @mongo_record[:runtime] = ((runtime ||= 0) * 1000).ceil
+      Thread.current[:mongodb_logger_mongo_record][:runtime] = ((runtime ||= 0) * 1000).ceil
       # error callback
-      Base.on_log_exception(@mongo_record) if @mongo_record[:is_exception]
+      Base.on_log_exception(Thread.current[:mongodb_logger_mongo_record]) if Thread.current[:mongodb_logger_mongo_record][:is_exception]
       ensure_write_to_mongodb
     end
 
@@ -129,13 +129,13 @@ module MongodbLogger
       # do not modify the original message used by the buffered logger
       msg = (message ? message : progname)
       msg = logging_colorized? ? msg.to_s.gsub(/(\e(\[([\d;]*[mz]?))?)?/, '').strip : msg
-      @mongo_record[:messages][LOG_LEVEL_SYM[severity]] << msg
+      Thread.current[:mongodb_logger_mongo_record][:messages][LOG_LEVEL_SYM[severity]] << msg
     end
 
     def log_raised_error(e)
       add(3, "#{e.message}\n#{e.backtrace.join("\n")}")
       # log exceptions
-      @mongo_record[:is_exception] = true
+      Thread.current[:mongodb_logger_mongo_record][:is_exception] = true
     end
 
     def ensure_write_to_mongodb
@@ -143,11 +143,11 @@ module MongodbLogger
     rescue
       begin
         # try to nice serialize record
-        record_serializer @mongo_record, true
+        record_serializer Thread.current[:mongodb_logger_mongo_record], true
         @insert_block.call
       rescue
         # do extra work to inspect (and flatten)
-        record_serializer @mongo_record, false
+        record_serializer Thread.current[:mongodb_logger_mongo_record], false
         @insert_block.call rescue nil
       end
     end
@@ -197,8 +197,8 @@ module MongodbLogger
     end
 
     def insert_log_record(write_options)
-      return if excluded_from_log && excluded_from_log.any? { |k, v| v.include?(@mongo_record[k]) }
-      @mongo_adapter.insert_log_record(@mongo_record, write_options: write_options)
+      return if excluded_from_log && excluded_from_log.any? { |k, v| v.include?(Thread.current[:mongodb_logger_mongo_record][k]) }
+      @mongo_adapter.insert_log_record(Thread.current[:mongodb_logger_mongo_record], write_options: write_options)
     end
 
     def logging_colorized?
